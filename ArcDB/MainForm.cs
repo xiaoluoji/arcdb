@@ -17,27 +17,27 @@ namespace ArcDB
     public partial class MainForm : Form
     {
         private readonly string RootPath = Application.StartupPath + @"\";   /*程序根目录*/
-        private string ConfigFile;                                                                        /*程序配置文件*/
-        private Configuration sysConfig;                                                            /*保存配置的变量*/
-        private string connString;                                                                       /*建立mysql连接的配置变量*/
+        private string _configFile;                                                                        /*程序配置文件*/
+        private Configuration _sysConfig;                                                            /*保存配置的变量*/
+        private string _connString;                                                                       /*建立mysql连接的配置变量*/
 
         public MainForm()
         {
             InitializeComponent();
-            ConfigFile = RootPath + "config.ini";
+            _configFile = RootPath + "config.ini";
         }
 
         //主窗口加载时的处理
         private void MainForm_Load(object sender, EventArgs e)
         {
-            if (File.Exists(ConfigFile))
+            if (File.Exists(_configFile))
             {
-                sysConfig = Configuration.LoadFromFile(ConfigFile);
+                _sysConfig = Configuration.LoadFromFile(_configFile);
                 loadSysconfig();
             }
             else
             {
-                sysConfig = new Configuration();
+                _sysConfig = new Configuration();
                 updateSysconfig();
             }
         }
@@ -59,29 +59,29 @@ namespace ArcDB
         private void MainForm_Closed(object sender, FormClosedEventArgs e)
         {
             updateSysconfig();
-            sysConfig.SaveToFile(ConfigFile);
+            _sysConfig.SaveToFile(_configFile);
         }
 
         //读取配置文件中的对应配置，并且更新到相应的控件中
         private void loadSysconfig()
         {
-            tboxHostName.Text = sysConfig["Database"]["Hostname"].StringValue;
-            tboxUserName.Text = sysConfig["Database"]["Username"].StringValue;
-            tboxDbName.Text = sysConfig["Database"]["Dbname"].StringValue;
-            tboxPort.Text = sysConfig["Database"]["Port"].StringValue;
-            tboxPassword.Text = sysConfig["Database"]["Password"].StringValue;
-            cboxCharset.Text = sysConfig["Database"]["Charset"].StringValue;
+            tboxHostName.Text = _sysConfig["Database"]["Hostname"].StringValue;
+            tboxUserName.Text = _sysConfig["Database"]["Username"].StringValue;
+            tboxDbName.Text = _sysConfig["Database"]["Dbname"].StringValue;
+            tboxPort.Text = _sysConfig["Database"]["Port"].StringValue;
+            tboxPassword.Text = _sysConfig["Database"]["Password"].StringValue;
+            cboxCharset.Text = _sysConfig["Database"]["Charset"].StringValue;
         }
 
-        //
+        //更新sysConfig对象中的配置参数
         private void updateSysconfig()
         {
-            sysConfig["Database"]["Hostname"].SetValue(tboxHostName.Text);
-            sysConfig["Database"]["Username"].SetValue(tboxUserName.Text);
-            sysConfig["Database"]["Dbname"].SetValue(tboxDbName.Text);
-            sysConfig["Database"]["Port"].SetValue(tboxPort.Text);
-            sysConfig["Database"]["Password"].SetValue(tboxPassword.Text);
-            sysConfig["Database"]["Charset"].SetValue(cboxCharset.Text);
+            _sysConfig["Database"]["Hostname"].SetValue(tboxHostName.Text);
+            _sysConfig["Database"]["Username"].SetValue(tboxUserName.Text);
+            _sysConfig["Database"]["Dbname"].SetValue(tboxDbName.Text);
+            _sysConfig["Database"]["Port"].SetValue(tboxPort.Text);
+            _sysConfig["Database"]["Password"].SetValue(tboxPassword.Text);
+            _sysConfig["Database"]["Charset"].SetValue(cboxCharset.Text);
         }
 
         //通过mysql配置参数生成需要建立mysql连接的配置字符串
@@ -111,31 +111,82 @@ namespace ArcDB
             return builder.ToString();
         }
 
-        //保存配置信息到配置文件中
-        private void btnSaveConfig_Click(object sender, EventArgs e)
+        private string getFilter()
         {
-            updateSysconfig();
-            sysConfig.SaveToFile(ConfigFile);
+            string filter = "";
+            if (cboxFilterCo_name.Text!="" && tboxFilterCo_name.Text!="")
+            {
+                filter += " where co_name " + cboxFilterCo_name.Text + " '"+tboxFilterCo_name.Text+"' ";
+            }
+
+            if (cboxFilterType_name.Text!="" && tboxFilterType_name.Text!="")
+            {
+                if (filter!="")
+                {
+                    filter+= " and  type_name " + cboxFilterType_name.Text + " '" + tboxFilterType_name.Text + "' ";
+                }
+                else
+                {
+                    filter += " where type_name " + cboxFilterType_name.Text + " '" + tboxFilterType_name.Text + "' ";
+                }
+            }
+            if (cboxFilterSource_site.Text != "" && tboxFilterSource_site.Text != "")
+            {
+                if (filter != "")
+                {
+                    filter += " and  source_site " + cboxFilterSource_site.Text + " '" + tboxFilterSource_site.Text + "' ";
+                }
+                else
+                {
+                    filter += " where source_site " + cboxFilterSource_site.Text + " '" + tboxFilterSource_site.Text + "' ";
+                }
+            }
+            if (cboxFilterCo_nums.Text != "" && tboxFilterCo_nums.Text != "")
+            {
+                try
+                {
+                    int nums = int.Parse(tboxFilterCo_nums.Text);
+                    if (filter != "")
+                    {
+                        filter += " and  co_nums " + cboxFilterCo_nums.Text + " '" + tboxFilterCo_nums.Text + "' ";
+                    }
+                    else
+                    {
+                        filter += " where co_nums " + cboxFilterCo_nums.Text + " '" + tboxFilterCo_nums.Text + "' ";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("采集数量过滤器输入错误，请检查是否为纯数字！");
+                }
+            }
+            return filter;
         }
 
-        private void btnLoadCoconfig_Click(object sender, EventArgs e)
+        private void loadCoConfig()
         {
-            connString = GetConnString();
-            if (connString!="")
+            _connString = GetConnString();
+            if (_connString != "")
             {
-                mySqlDB myDB = new mySqlDB(connString);
+                listViewCollect.Items.Clear();
+                mySqlDB myDB = new mySqlDB(_connString);
                 string sResult = "";
                 int counts = 0;
-                string sql = @"select cid,co_name,source_lang,source_site,up_time,co_time,co_nums from co_config";
-                List<Dictionary<string,object>> coConfigRecords = myDB.GetRecords(sql,ref sResult,ref counts);
-                if (sResult==mySqlDB.SUCCESS)
+                string filter = getFilter();
+                string sql = @"select cid,co_name,type_name,source_lang,source_site,up_time,co_time,co_nums from co_config";
+                if (filter != "")
+                {
+                    sql += filter;
+                }
+                List<Dictionary<string, object>> coConfigRecords = myDB.GetRecords(sql, ref sResult, ref counts);
+                if (sResult == mySqlDB.SUCCESS)
                 {
                     listViewCollect.GridLines = true;
                     listViewCollect.BeginUpdate();
-                    foreach (Dictionary<string,object> item in coConfigRecords)
+                    foreach (Dictionary<string, object> item in coConfigRecords)
                     {
                         List<string> subItems = new List<string>();
-                        foreach (KeyValuePair<string,object> kvp in item)
+                        foreach (KeyValuePair<string, object> kvp in item)
                         {
                             subItems.Add(kvp.Value.ToString());
                         }
@@ -143,9 +194,68 @@ namespace ArcDB
                         listViewCollect.Items.Add(listItem);
                     }
                     listViewCollect.EndUpdate();
+                    listViewCollect.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+
                 }
             }
+        }
+
+        //保存配置信息到配置文件中
+        private void btnSaveConfig_Click(object sender, EventArgs e)
+        {
+            updateSysconfig();
+            _sysConfig.SaveToFile(_configFile);
+        }
+
+        private void btnLoadCoconfig_Click(object sender, EventArgs e)
+        {
+            loadCoConfig();
         } //end of btnLoadCoconfig_Click
 
+        private void btnModifyCoconfig_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ListViewItem checkedItem = listViewCollect.CheckedItems[0];
+                int cid = int.Parse(checkedItem.SubItems[0].Text);
+                CoForm coFormModify = new CoForm(_connString,cid);
+                coFormModify.Text = "修改采集规则";
+                coFormModify.Show();
+                this.Enabled = false;
+                coFormModify.FormClosed += CoFormModify_FormClosed;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("没选择任何项，请选择需要修改的采集规则！");
+            }
+        }
+
+        private void CoFormModify_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Enabled = true;
+        }
+
+        private void btnTest_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnClearFilter_Click(object sender, EventArgs e)
+        {
+            cboxFilterCo_name.SelectedIndex = -1;
+            cboxFilterCo_nums.SelectedIndex = -1;
+            cboxFilterSource_site.SelectedIndex = -1;
+            cboxFilterType_name.SelectedIndex = -1;
+            tboxFilterCo_name.Text = "";
+            tboxFilterCo_nums.Text = "";
+            tboxFilterSource_site.Text = "";
+            tboxFilterType_name.Text = "";
+            loadCoConfig();
+        }
+
+        private void btnTest_Click_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }

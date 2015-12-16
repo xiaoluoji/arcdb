@@ -124,6 +124,11 @@ namespace SharpMysql
             conn.Dispose();
             return dt;
         }
+
+        public static string EscapeString(string stringVar)
+        {
+            return MySqlHelper.EscapeString(stringVar);
+        }
     }
 
 }
