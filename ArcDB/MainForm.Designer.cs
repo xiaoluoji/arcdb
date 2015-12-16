@@ -30,6 +30,8 @@
         {
             this.tabctrMainform = new System.Windows.Forms.TabControl();
             this.tabPageCollect = new System.Windows.Forms.TabPage();
+            this.btnDeleteCoconfig = new System.Windows.Forms.Button();
+            this.btnCopyCoconfig = new System.Windows.Forms.Button();
             this.btnCoArticles = new System.Windows.Forms.Button();
             this.btnAddCoconfig = new System.Windows.Forms.Button();
             this.btnClearFilter = new System.Windows.Forms.Button();
@@ -78,7 +80,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.tboxPassword = new System.Windows.Forms.TextBox();
             this.cboxCharset = new System.Windows.Forms.ComboBox();
-            this.btnCopyCoconfig = new System.Windows.Forms.Button();
             this.tabctrMainform.SuspendLayout();
             this.tabPageCollect.SuspendLayout();
             this.gboxFilter.SuspendLayout();
@@ -105,6 +106,7 @@
             // 
             // tabPageCollect
             // 
+            this.tabPageCollect.Controls.Add(this.btnDeleteCoconfig);
             this.tabPageCollect.Controls.Add(this.btnCopyCoconfig);
             this.tabPageCollect.Controls.Add(this.btnCoArticles);
             this.tabPageCollect.Controls.Add(this.btnAddCoconfig);
@@ -120,6 +122,24 @@
             this.tabPageCollect.TabIndex = 0;
             this.tabPageCollect.Text = "采集内容";
             this.tabPageCollect.UseVisualStyleBackColor = true;
+            // 
+            // btnDeleteCoconfig
+            // 
+            this.btnDeleteCoconfig.Location = new System.Drawing.Point(559, 571);
+            this.btnDeleteCoconfig.Name = "btnDeleteCoconfig";
+            this.btnDeleteCoconfig.Size = new System.Drawing.Size(133, 37);
+            this.btnDeleteCoconfig.TabIndex = 9;
+            this.btnDeleteCoconfig.Text = "删除采集规则";
+            this.btnDeleteCoconfig.UseVisualStyleBackColor = true;
+            // 
+            // btnCopyCoconfig
+            // 
+            this.btnCopyCoconfig.Location = new System.Drawing.Point(420, 571);
+            this.btnCopyCoconfig.Name = "btnCopyCoconfig";
+            this.btnCopyCoconfig.Size = new System.Drawing.Size(133, 37);
+            this.btnCopyCoconfig.TabIndex = 8;
+            this.btnCopyCoconfig.Text = "复制采集规则";
+            this.btnCopyCoconfig.UseVisualStyleBackColor = true;
             // 
             // btnCoArticles
             // 
@@ -138,10 +158,11 @@
             this.btnAddCoconfig.TabIndex = 6;
             this.btnAddCoconfig.Text = "增加采集规则";
             this.btnAddCoconfig.UseVisualStyleBackColor = true;
+            this.btnAddCoconfig.Click += new System.EventHandler(this.btnAddCoconfig_Click);
             // 
             // btnClearFilter
             // 
-            this.btnClearFilter.Location = new System.Drawing.Point(559, 571);
+            this.btnClearFilter.Location = new System.Drawing.Point(701, 571);
             this.btnClearFilter.Name = "btnClearFilter";
             this.btnClearFilter.Size = new System.Drawing.Size(133, 37);
             this.btnClearFilter.TabIndex = 5;
@@ -382,7 +403,7 @@
             // 
             // up_time
             // 
-            this.up_time.Text = "加入日期";
+            this.up_time.Text = "加入/修改日期";
             this.up_time.Width = 95;
             // 
             // co_time
@@ -569,21 +590,14 @@
             this.cboxCharset.TabIndex = 28;
             this.cboxCharset.Text = "utf8";
             // 
-            // btnCopyCoconfig
-            // 
-            this.btnCopyCoconfig.Location = new System.Drawing.Point(420, 571);
-            this.btnCopyCoconfig.Name = "btnCopyCoconfig";
-            this.btnCopyCoconfig.Size = new System.Drawing.Size(133, 37);
-            this.btnCopyCoconfig.TabIndex = 8;
-            this.btnCopyCoconfig.Text = "复制采集规则";
-            this.btnCopyCoconfig.UseVisualStyleBackColor = true;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1015, 659);
             this.Controls.Add(this.tabctrMainform);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "内容源工具";
@@ -593,7 +607,6 @@
             this.tabctrMainform.ResumeLayout(false);
             this.tabPageCollect.ResumeLayout(false);
             this.gboxFilter.ResumeLayout(false);
-            this.gboxFilter.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.panel2.ResumeLayout(false);
@@ -661,6 +674,7 @@
         private System.Windows.Forms.Button btnAddCoconfig;
         private System.Windows.Forms.Button btnCoArticles;
         private System.Windows.Forms.Button btnCopyCoconfig;
+        private System.Windows.Forms.Button btnDeleteCoconfig;
     }
 }
 

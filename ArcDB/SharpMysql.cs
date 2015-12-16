@@ -17,11 +17,19 @@ namespace SharpMysql
         //private string  connString  = "Server=127.0.0.1;Database=test;Uid=test;Pwd=test;charset=utf8"
         public static readonly string SUCCESS = "SUCCESS";
         private readonly string SERROR = "ERROR";
-        private string connString;
-        private MySqlConnection conn;
+        private string _connString;
+        private long _lastInsertedId;
+        private MySqlConnection _conn;
+
+
         public mySqlDB(string dbinfo)
         {
-            connString = dbinfo;
+            _connString = dbinfo;
+        }
+
+        public long LastInsertedId
+        {
+             get {return _lastInsertedId; }
         }
 
         /*GetRecords 直接返回一个类型为 List<Dictionary<string,object>>的list，如果有多行返回结果，则list记录着每一行记录*/
@@ -30,17 +38,17 @@ namespace SharpMysql
             DataTable dt = new DataTable();
             List<Dictionary<string, object>> Records = new List<Dictionary<string, object>>();
             MySqlDataAdapter da = new MySqlDataAdapter();
-            conn = new MySqlConnection();
+            _conn = new MySqlConnection();
             try
             {
-                conn.ConnectionString = connString;
-                conn.Open();
+                _conn.ConnectionString = _connString;
+                _conn.Open();
                 MySqlCommand sComm = new MySqlCommand();
                 sComm.CommandText = sSql;
-                sComm.Connection = conn;
+                sComm.Connection = _conn;
                 da.SelectCommand = sComm;
                 da.Fill(dt);
-                conn.Close();
+                _conn.Close();
                 sResult = SUCCESS;
                 counts = 0;
                 foreach (DataRow row in dt.Rows)
@@ -57,12 +65,12 @@ namespace SharpMysql
             catch (Exception ex)
             {
                 sResult = SERROR + ": " + ex.Message;
-                if (conn.State == ConnectionState.Open)
+                if (_conn.State == ConnectionState.Open)
                 {
-                    conn.Close();
+                    _conn.Close();
                 }
             }
-            conn.Dispose();
+            _conn.Dispose();
             return Records;
         }
 
@@ -71,27 +79,28 @@ namespace SharpMysql
         public int executeDMLSQL(string sSql, ref string sResult)
         {
             int irows = 0;
-            conn = new MySqlConnection();
+            _conn = new MySqlConnection();
             try
             {
-                conn.ConnectionString = connString;
-                conn.Open();
+                _conn.ConnectionString = _connString;
+                _conn.Open();
                 MySqlCommand sComm = new MySqlCommand();
                 sComm.CommandText = sSql;
-                sComm.Connection = conn;
+                sComm.Connection = _conn;
                 irows = sComm.ExecuteNonQuery();
-                conn.Close();
+                _lastInsertedId= sComm.LastInsertedId;
+                _conn.Close();
                 sResult = SUCCESS;
             }
             catch (Exception ex)
             {
                 sResult = SERROR + ": " + ex.Message;
-                if (conn.State == ConnectionState.Open)
+                if (_conn.State == ConnectionState.Open)
                 {
-                    conn.Close();
+                    _conn.Close();
                 }
             }
-            conn.Dispose();
+            _conn.Dispose();
             return irows;
         }
 
@@ -100,28 +109,28 @@ namespace SharpMysql
         {
             DataTable dt = new DataTable();
             MySqlDataAdapter da = new MySqlDataAdapter();
-            conn = new MySqlConnection();
+            _conn = new MySqlConnection();
             try
             {
-                conn.ConnectionString = connString;
-                conn.Open();
+                _conn.ConnectionString = _connString;
+                _conn.Open();
                 MySqlCommand sComm = new MySqlCommand();
                 sComm.CommandText = sSql;
-                sComm.Connection = conn;
+                sComm.Connection = _conn;
                 da.SelectCommand = sComm;
                 da.Fill(dt);
-                conn.Close();
+                _conn.Close();
                 sResult = SUCCESS;
             }
             catch (Exception ex)
             {
                 sResult = SERROR + ": " + ex.Message;
-                if (conn.State == ConnectionState.Open)
+                if (_conn.State == ConnectionState.Open)
                 {
-                    conn.Close();
+                    _conn.Close();
                 }
             }
-            conn.Dispose();
+            _conn.Dispose();
             return dt;
         }
 

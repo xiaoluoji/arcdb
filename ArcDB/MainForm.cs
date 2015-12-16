@@ -197,6 +197,10 @@ namespace ArcDB
                     listViewCollect.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
 
                 }
+                else
+                {
+                    MessageBox.Show(string.Format("加载数据出错!：{0}", sResult));
+                }
             }
         }
 
@@ -217,12 +221,13 @@ namespace ArcDB
             try
             {
                 ListViewItem checkedItem = listViewCollect.CheckedItems[0];
-                int cid = int.Parse(checkedItem.SubItems[0].Text);
-                CoForm coFormModify = new CoForm(_connString,cid);
+                long cid = long.Parse(checkedItem.SubItems[0].Text);
+                CoForm coFormModify = new CoForm(_connString, cid);
                 coFormModify.Text = "修改采集规则";
                 coFormModify.Show();
                 this.Enabled = false;
                 coFormModify.FormClosed += CoFormModify_FormClosed;
+
             }
             catch (Exception ex)
             {
@@ -230,15 +235,22 @@ namespace ArcDB
             }
         }
 
+        private void btnAddCoconfig_Click(object sender, EventArgs e)
+        {
+            CoForm coFormAdd = new CoForm(_connString, -1);
+            coFormAdd.Text = "添加新采集规则";
+            coFormAdd.Show();
+            this.Enabled = false;
+            coFormAdd.FormClosed += CoFormModify_FormClosed;
+
+        }
+
         private void CoFormModify_FormClosed(object sender, FormClosedEventArgs e)
         {
             this.Enabled = true;
+            loadCoConfig();
         }
 
-        private void btnTest_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void btnClearFilter_Click(object sender, EventArgs e)
         {
@@ -253,9 +265,6 @@ namespace ArcDB
             loadCoConfig();
         }
 
-        private void btnTest_Click_1(object sender, EventArgs e)
-        {
 
-        }
     }
 }

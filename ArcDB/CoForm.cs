@@ -19,11 +19,11 @@ namespace ArcDB
     {
         private readonly string RootPath = Application.StartupPath + @"\";   /*程序根目录*/
         private string _connString;
-        private int _cid;
+        private long _cid;
 
         
 
-        public CoForm(string connString,int cid)
+        public CoForm(string connString,long cid)
         {
             _connString = connString;
             _cid = cid;
@@ -36,13 +36,28 @@ namespace ArcDB
                 displayConfig();
             }
         }
-        /*
-        private List<string>splitConfig(string config)
+
+        private void CoForm_Closing(object sender, FormClosingEventArgs e)
         {
-            List<string> templistConfig = new List<string>();
-            
+            string showMessage = "";
+            if (_cid==-1)
+            {
+                showMessage = "放弃添加新规则？放弃请选择“是”";
+            }
+            else
+            {
+                showMessage = "将要推出采集规则编辑，请确认是否保存规则，是否退出编辑？";
+            }
+            if (MessageBox.Show(showMessage, "询问", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                e.Cancel = false;
+            }
+            else
+            {
+                e.Cancel = true;
+            }
         }
-        */
+
         private void displayConfig()
         {
             mySqlDB myDB = new mySqlDB(_connString);
@@ -113,38 +128,120 @@ namespace ArcDB
             string arcSubPageStartNum = tboxArcSubpageStartNum.Text;
             string subNodeParams = tboxSubNodeParams.Text;
             string regexParams = tboxRegexParams.Text;
-            if (_cid!=-1)
+            if (coName=="" || sourceLang=="" || typeName=="" || sourceSite=="" || coOffline=="" || listPath=="" || startPageNumber=="" || stopPageNumber=="" || xpathArcurlNode=="" || xpathTitleNode=="" || xpathContentNode=="")
             {
-                sql = "update co_config set co_name = '" + coName + "'";
-                sql = sql + ", type_name = '" + typeName + "'";
-                sql = sql + ", source_lang = '" + sourceLang + "'";
-                sql = sql + ", source_site = '" + sourceSite + "'";
-                sql = sql + ", co_offline = '" + coOffline + "'";
-                sql = sql + ", list_path = '" + listPath + "'";
-                sql = sql + ", start_page_number = '" + startPageNumber + "'";
-                sql = sql + ", stop_page_number = '" + stopPageNumber + "'";
-                sql = sql + ", more_list_pages = '" + moreListPages + "'";
-                sql = sql + ", xpath_arcurl_node = '" + xpathArcurlNode + "'";
-                sql = sql + ", xpath_title_node = '" + xpathTitleNode + "'";
-                sql = sql + ", xpath_content_node = '" + xpathContentNode + "'";
-                sql = sql + ", arc_subpage_symbol = '" + arcSubPageSymbol + "'";
-                sql = sql + ", arc_subpage_startnum = '" + arcSubPageStartNum + "'";
-                sql = sql + ", sub_node_params = '" + subNodeParams + "'";
-                sql = sql + ", regex_params = '" + regexParams + "'";
-                sql = sql + " where cid = '" + _cid.ToString() + "'";
-                try
+                MessageBox.Show("必填项未填写完整，请检查表达是否填写完整！");
+            }
+            else
+            {
+                if (_cid != -1)
                 {
-                    counts = myDB.executeDMLSQL(sql, ref sResult);
-                    if (counts==1 && sResult==mySqlDB.SUCCESS)
+                    sql = "update co_config set co_name = '" + coName + "'";
+                    sql = sql + ", type_name = '" + typeName + "'";
+                    sql = sql + ", source_lang = '" + sourceLang + "'";
+                    sql = sql + ", source_site = '" + mySqlDB.EscapeString(sourceSite) + "'";
+                    sql = sql + ", co_offline = '" + coOffline + "'";
+                    sql = sql + ", list_path = '" + mySqlDB.EscapeString(listPath) + "'";
+                    sql = sql + ", start_page_number = '" + startPageNumber + "'";
+                    sql = sql + ", stop_page_number = '" + stopPageNumber + "'";
+                    sql = sql + ", xpath_arcurl_node = '" + mySqlDB.EscapeString(xpathArcurlNode) + "'";
+                    sql = sql + ", xpath_title_node = '" + mySqlDB.EscapeString(xpathTitleNode) + "'";
+                    sql = sql + ", xpath_content_node = '" + mySqlDB.EscapeString(xpathContentNode) + "'";
+                    if (arcSubPageSymbol != "")
                     {
-                        MessageBox.Show("成功更新采集规则！");
+                        sql = sql + ", arc_subpage_symbol = '" + mySqlDB.EscapeString(arcSubPageSymbol) + "'";
+                    }
+                    if (arcSubPageStartNum != "")
+                    {
+                        sql = sql + ", arc_subpage_startnum = '" + arcSubPageStartNum + "'";
+                    }
+                    if (moreListPages != "")
+                    {
+                        sql = sql + ", more_list_pages = '" + mySqlDB.EscapeString(moreListPages) + "'";
+                    }
+                    if (subNodeParams != "")
+                    {
+                        sql = sql + ", sub_node_params = '" + mySqlDB.EscapeString(subNodeParams) + "'";
+                    }
+                    if (regexParams != "")
+                    {
+                        sql = sql + ", regex_params = '" + mySqlDB.EscapeString(regexParams) + "'";
+                    }
+                    sql = sql + " where cid = '" + _cid.ToString() + "'";
+
+                    try
+                    {
+                        counts = myDB.executeDMLSQL(sql, ref sResult);
+                        if (counts == 1 && sResult == mySqlDB.SUCCESS)
+                        {
+                            MessageBox.Show("成功更新采集规则！");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(string.Format("修改规则出错！ 请检查数据格式是否正确！错误信息：", ex.Message));
                     }
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show(string.Format("保存数据出错！ 请检查数据格式是否正确！错误信息：", ex.Message));
-                }
-            }
+                    sql = "insert into co_config (co_name,type_name,source_lang,source_site,co_offline,list_path,start_page_number,stop_page_number,xpath_arcurl_node,xpath_title_node,xpath_content_node";
+                    string valueOption = "";
+                    if (arcSubPageSymbol != "")
+                    {
+                        sql = sql + ",arc_subpage_symbol" ;
+                        valueOption =valueOption+ ",'" + mySqlDB.EscapeString(arcSubPageSymbol) + "'";
+                    }
+                    if (arcSubPageStartNum != "")
+                    {
+                        sql = sql + ", arc_subpage_startnum";
+                        valueOption=valueOption+",'"+ arcSubPageStartNum + "'";
+                    }
+                    if (moreListPages != "")
+                    {
+                        sql = sql + ",more_list_pages";
+                        valueOption=valueOption+ ",'"+mySqlDB.EscapeString(moreListPages) + "'";
+                    }
+                    if (subNodeParams != "")
+                    {
+                        sql = sql + ",sub_node_params";
+                        valueOption=valueOption+ ",'"+mySqlDB.EscapeString(subNodeParams) + "'";
+                    }
+                    if (regexParams != "")
+                    {
+                        sql = sql + ",regex_params";
+                        valueOption=valueOption+",'"+ mySqlDB.EscapeString(regexParams) + "'";
+                    }
+                    sql = sql + ") values ('" + coName + "'";
+                    sql = sql + ",'" + typeName + "'";
+                    sql = sql + ",'" + sourceLang + "'";
+                    sql = sql + ",'" + mySqlDB.EscapeString(sourceSite) + "'";
+                    sql = sql + ",'" + coOffline + "'";
+                    sql = sql + ",'" + mySqlDB.EscapeString(listPath) + "'";
+                    sql = sql + ",'" + startPageNumber + "'";
+                    sql = sql + ",'" + stopPageNumber + "'";
+                    sql = sql + ",'" + mySqlDB.EscapeString(xpathArcurlNode) + "'";
+                    sql = sql + ",'" + mySqlDB.EscapeString(xpathTitleNode) + "'";
+                    sql = sql + ",'" + mySqlDB.EscapeString(xpathContentNode) + "'";
+                    sql = sql + valueOption + ")";
+                    try
+                    {
+                        counts = myDB.executeDMLSQL(sql, ref sResult);
+                        if (counts == 1 && sResult == mySqlDB.SUCCESS)
+                        {
+                            _cid = myDB.LastInsertedId;
+                            MessageBox.Show(string.Format("成功添加新采集规则！新规则ID：{0}",_cid));
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(string.Format("添加新规则错误！ 请检查数据格式是否正确！错误信息：", ex.Message));
+                    }
+
+
+                } //添加规则结束
+
+            }//判断表单数据是否填写完整结束
+
 
         }
 

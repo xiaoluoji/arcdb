@@ -347,9 +347,9 @@
             // cboxCoSource_Site
             // 
             this.cboxCoSource_Site.FormattingEnabled = true;
-            this.cboxCoSource_Site.Location = new System.Drawing.Point(710, 33);
+            this.cboxCoSource_Site.Location = new System.Drawing.Point(656, 33);
             this.cboxCoSource_Site.Name = "cboxCoSource_Site";
-            this.cboxCoSource_Site.Size = new System.Drawing.Size(247, 26);
+            this.cboxCoSource_Site.Size = new System.Drawing.Size(301, 26);
             this.cboxCoSource_Site.TabIndex = 6;
             // 
             // cboxCoSource_Lang
@@ -368,9 +368,9 @@
             this.lblCoSource_Site.AutoSize = true;
             this.lblCoSource_Site.Location = new System.Drawing.Point(552, 37);
             this.lblCoSource_Site.Name = "lblCoSource_Site";
-            this.lblCoSource_Site.Size = new System.Drawing.Size(152, 18);
+            this.lblCoSource_Site.Size = new System.Drawing.Size(98, 18);
             this.lblCoSource_Site.TabIndex = 5;
-            this.lblCoSource_Site.Text = "来源网站(选填): ";
+            this.lblCoSource_Site.Text = "来源网站: ";
             // 
             // tabCoArcConfig
             // 
@@ -597,6 +597,7 @@
             this.Name = "CoForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "CoForm";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CoForm_Closing);
             this.Load += new System.EventHandler(this.CoForm_Load);
             this.tabctrCoform.ResumeLayout(false);
             this.tabCoListConfig.ResumeLayout(false);
