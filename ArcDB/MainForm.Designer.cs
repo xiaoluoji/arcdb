@@ -131,6 +131,7 @@
             this.btnDeleteCoconfig.TabIndex = 9;
             this.btnDeleteCoconfig.Text = "删除采集规则";
             this.btnDeleteCoconfig.UseVisualStyleBackColor = true;
+            this.btnDeleteCoconfig.Click += new System.EventHandler(this.btnDeleteCoconfig_Click);
             // 
             // btnCopyCoconfig
             // 

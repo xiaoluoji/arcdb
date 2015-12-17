@@ -54,6 +54,11 @@ namespace ArcDB
                 e.Cancel = true;
             }
         }
+        private void CoFormModify_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Enabled = true;
+            loadCoConfig();
+        }
 
         //主窗口关闭后的处理
         private void MainForm_Closed(object sender, FormClosedEventArgs e)
@@ -245,11 +250,76 @@ namespace ArcDB
 
         }
 
-        private void CoFormModify_FormClosed(object sender, FormClosedEventArgs e)
+        private void btnDeleteCoconfig_Click(object sender, EventArgs e)
         {
-            this.Enabled = true;
-            loadCoConfig();
+            try
+            {
+                ListView.CheckedListViewItemCollection checkedItems= listViewCollect.CheckedItems;
+                if (checkedItems.Count>0)
+                {
+                    List<long> cidList = new List<long>();
+                    string cidString = "";
+                    foreach (ListViewItem item in checkedItems)
+                    {
+                        long cid = long.Parse(item.SubItems[0].Text);
+                        cidList.Add(cid);
+                        cidString = cidString + cid.ToString() + ", ";
+                    }
+                    string showMessage = "确认删除采集以下" + checkedItems.Count.ToString() + "项采集规则项？: " + cidString.TrimEnd(',', ' ');
+                    if (MessageBox.Show(showMessage, "确认删除", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        mySqlDB myDB = new mySqlDB(_connString);
+                        string sResult = "";
+                        int counts = 0;
+                        string deletedItems = "";
+                        string unDeletedItems = "";
+                        string errorMessage = "";
+                        string messageAfterDelete = "";
+                        foreach (long id in cidList)
+                        {
+                            string sql = "delete from co_config where cid = '" + id.ToString() + "'";
+                            try
+                            {
+                                counts = myDB.executeDMLSQL(sql, ref sResult);
+                                if (sResult == mySqlDB.SUCCESS && counts == 1)
+                                    deletedItems = deletedItems + id.ToString() + ", ";
+                                else
+                                    unDeletedItems = unDeletedItems + id.ToString() + ", ";
+                            }
+                            catch (Exception exDb)
+                            {
+                                errorMessage = errorMessage + exDb.Message+"\n";
+                                unDeletedItems = unDeletedItems + ", ";
+                            }
+                        }
+                        if (deletedItems!="")
+                        {
+                            messageAfterDelete = "成功删除以下规则：" + deletedItems.TrimEnd(',', ' ')+"\n";
+                            if (unDeletedItems != "")
+                                messageAfterDelete = messageAfterDelete + "未成功删除项：" + unDeletedItems.TrimEnd(',', ' ') + "\n";
+                            messageAfterDelete = messageAfterDelete + errorMessage;
+                        }
+                        else if (unDeletedItems!="")
+                        {
+                            messageAfterDelete = messageAfterDelete + "未成功删除项：" + unDeletedItems.TrimEnd(',', ' ') + "\n"+errorMessage;
+                        }
+                        MessageBox.Show(messageAfterDelete);
+                        loadCoConfig();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("未选中任何规则，请选择要删除的规则项！");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format("删除出错！{0}",ex.Message));
+            }
+
         }
+
+
 
 
         private void btnClearFilter_Click(object sender, EventArgs e)
