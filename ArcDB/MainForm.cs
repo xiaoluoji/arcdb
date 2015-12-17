@@ -236,7 +236,7 @@ namespace ArcDB
             }
             catch (Exception ex)
             {
-                MessageBox.Show("没选择任何项，请选择需要修改的采集规则！");
+                MessageBox.Show("未选中任何采集规则，请选择需要修改的采集规则！");
             }
         }
 
@@ -309,7 +309,7 @@ namespace ArcDB
                 }
                 else
                 {
-                    MessageBox.Show("未选中任何规则，请选择要删除的规则项！");
+                    MessageBox.Show("未选中任何采集规则，请选择要删除的规则项！");
                 }
             }
             catch (Exception ex)
@@ -319,8 +319,41 @@ namespace ArcDB
 
         }
 
-
-
+        private void btnCopyCoconfig_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ListViewItem checkedItem = listViewCollect.CheckedItems[0];
+                long cid = long.Parse(checkedItem.SubItems[0].Text);
+                string coName = checkedItem.SubItems[1].Text;
+                mySqlDB myDB = new mySqlDB(_connString);
+                string sResult = "";
+                int count = 0;
+                long LastInsertedId;
+                string sql = "insert into co_config(co_name,type_name,source_lang,source_site,co_offline,list_path,more_list_pages,xpath_arcurl_node,";
+                sql=sql+ " xpath_title_node,xpath_content_node,arc_subpage_symbol,arc_subpage_startnum,sub_node_params,regex_params) ";
+                sql = sql + " select co_name,type_name,source_lang,source_site,co_offline,list_path,more_list_pages,xpath_arcurl_node,";
+                sql = sql + "xpath_title_node,xpath_content_node,arc_subpage_symbol,arc_subpage_startnum,sub_node_params,regex_params";
+                sql =sql+" from co_config where cid = '" + cid.ToString() + "'";
+                count = myDB.executeDMLSQL(sql, ref sResult);
+                if (sResult == mySqlDB.SUCCESS && count == 1)
+                {
+                    LastInsertedId = myDB.LastInsertedId;
+                    MessageBox.Show(string.Format("复制成功！复制的采集规则ID为：{0}", LastInsertedId));
+                    string sqlRename = "update co_config set co_name = '" + coName + "复件'" + " where cid ='" + LastInsertedId.ToString() + "'";
+                    count = myDB.executeDMLSQL(sqlRename, ref sResult);
+                    loadCoConfig();
+                }
+                else
+                {
+                    MessageBox.Show(string.Format("复制失败：{0}",sResult));
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("请选择需要复制的采集规则项！");
+            }
+        }
 
         private void btnClearFilter_Click(object sender, EventArgs e)
         {

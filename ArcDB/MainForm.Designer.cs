@@ -141,6 +141,7 @@
             this.btnCopyCoconfig.TabIndex = 8;
             this.btnCopyCoconfig.Text = "复制采集规则";
             this.btnCopyCoconfig.UseVisualStyleBackColor = true;
+            this.btnCopyCoconfig.Click += new System.EventHandler(this.btnCopyCoconfig_Click);
             // 
             // btnCoArticles
             // 
