@@ -11,6 +11,12 @@ using SharpMysql;
 using SharpConfig;
 using Murmur;
 using System.IO;
+using ArticleCollect;
+using System.Runtime.Remoting.Messaging;
+using System.Threading;
+using System.Diagnostics;
+
+
 
 namespace ArcDB
 {
@@ -25,6 +31,7 @@ namespace ArcDB
         {
             InitializeComponent();
             _configFile = RootPath + "config.ini";
+            CheckForIllegalCrossThreadCalls = false;
         }
 
         //主窗口加载时的处理
@@ -368,6 +375,9 @@ namespace ArcDB
             loadCoConfig();
         }
 
+        private void btnCoArticles_Click(object sender, EventArgs e)
+        {
 
+        }
     }
 }

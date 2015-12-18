@@ -151,6 +151,7 @@
             this.btnCoArticles.TabIndex = 7;
             this.btnCoArticles.Text = "采集";
             this.btnCoArticles.UseVisualStyleBackColor = true;
+            this.btnCoArticles.Click += new System.EventHandler(this.btnCoArticles_Click);
             // 
             // btnAddCoconfig
             // 

@@ -58,7 +58,6 @@
             this.cboxCoSource_Lang = new System.Windows.Forms.ComboBox();
             this.lblCoSource_Site = new System.Windows.Forms.Label();
             this.tabCoArcConfig = new System.Windows.Forms.TabPage();
-            this.button1 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -79,6 +78,14 @@
             this.lblXpathTitleNode = new System.Windows.Forms.Label();
             this.btnCoTest = new System.Windows.Forms.Button();
             this.btnSaveCoConfig = new System.Windows.Forms.Button();
+            this.tabCoTest = new System.Windows.Forms.TabPage();
+            this.tboxArticlesPages = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.tboxArticlesContent = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.tboxStatistics = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.btnCancelCoTest = new System.Windows.Forms.Button();
             this.tabctrCoform.SuspendLayout();
             this.tabCoListConfig.SuspendLayout();
             this.gboxCoArcurlGetRule.SuspendLayout();
@@ -88,17 +95,19 @@
             this.tabCoArcConfig.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.gboxArcBasicinfo.SuspendLayout();
+            this.tabCoTest.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabctrCoform
             // 
             this.tabctrCoform.Controls.Add(this.tabCoListConfig);
             this.tabctrCoform.Controls.Add(this.tabCoArcConfig);
+            this.tabctrCoform.Controls.Add(this.tabCoTest);
             this.tabctrCoform.Dock = System.Windows.Forms.DockStyle.Top;
             this.tabctrCoform.Location = new System.Drawing.Point(0, 0);
             this.tabctrCoform.Name = "tabctrCoform";
             this.tabctrCoform.SelectedIndex = 0;
-            this.tabctrCoform.Size = new System.Drawing.Size(978, 540);
+            this.tabctrCoform.Size = new System.Drawing.Size(978, 633);
             this.tabctrCoform.TabIndex = 1;
             // 
             // tabCoListConfig
@@ -109,7 +118,7 @@
             this.tabCoListConfig.Location = new System.Drawing.Point(4, 28);
             this.tabCoListConfig.Name = "tabCoListConfig";
             this.tabCoListConfig.Padding = new System.Windows.Forms.Padding(3, 5, 3, 3);
-            this.tabCoListConfig.Size = new System.Drawing.Size(970, 508);
+            this.tabCoListConfig.Size = new System.Drawing.Size(970, 601);
             this.tabCoListConfig.TabIndex = 0;
             this.tabCoListConfig.Text = "列表配置";
             this.tabCoListConfig.UseVisualStyleBackColor = true;
@@ -118,9 +127,9 @@
             // 
             this.gboxCoArcurlGetRule.Controls.Add(this.tboxXpathArcurlNode);
             this.gboxCoArcurlGetRule.Controls.Add(this.lblXpathArcurlNode);
-            this.gboxCoArcurlGetRule.Location = new System.Drawing.Point(3, 377);
+            this.gboxCoArcurlGetRule.Location = new System.Drawing.Point(3, 475);
             this.gboxCoArcurlGetRule.Name = "gboxCoArcurlGetRule";
-            this.gboxCoArcurlGetRule.Size = new System.Drawing.Size(964, 109);
+            this.gboxCoArcurlGetRule.Size = new System.Drawing.Size(964, 120);
             this.gboxCoArcurlGetRule.TabIndex = 11;
             this.gboxCoArcurlGetRule.TabStop = false;
             this.gboxCoArcurlGetRule.Text = "文章网址匹配规则";
@@ -155,7 +164,7 @@
             this.gboxCoListGetRule.Controls.Add(this.tboxCoListPath);
             this.gboxCoListGetRule.Location = new System.Drawing.Point(3, 136);
             this.gboxCoListGetRule.Name = "gboxCoListGetRule";
-            this.gboxCoListGetRule.Size = new System.Drawing.Size(964, 224);
+            this.gboxCoListGetRule.Size = new System.Drawing.Size(964, 327);
             this.gboxCoListGetRule.TabIndex = 10;
             this.gboxCoListGetRule.TabStop = false;
             this.gboxCoListGetRule.Text = "列表网址获取规则";
@@ -163,7 +172,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(15, 130);
+            this.label2.Location = new System.Drawing.Point(15, 162);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(80, 18);
             this.label2.TabIndex = 15;
@@ -171,16 +180,16 @@
             // 
             // tboxMoreListPages
             // 
-            this.tboxMoreListPages.Location = new System.Drawing.Point(122, 101);
+            this.tboxMoreListPages.Location = new System.Drawing.Point(122, 130);
             this.tboxMoreListPages.Multiline = true;
             this.tboxMoreListPages.Name = "tboxMoreListPages";
-            this.tboxMoreListPages.Size = new System.Drawing.Size(836, 106);
+            this.tboxMoreListPages.Size = new System.Drawing.Size(836, 176);
             this.tboxMoreListPages.TabIndex = 14;
             // 
             // lblCoMoreListPages
             // 
             this.lblCoMoreListPages.AutoSize = true;
-            this.lblCoMoreListPages.Location = new System.Drawing.Point(15, 103);
+            this.lblCoMoreListPages.Location = new System.Drawing.Point(15, 135);
             this.lblCoMoreListPages.Name = "lblCoMoreListPages";
             this.lblCoMoreListPages.Size = new System.Drawing.Size(98, 18);
             this.lblCoMoreListPages.TabIndex = 13;
@@ -189,7 +198,7 @@
             // lblCoListInfo
             // 
             this.lblCoListInfo.AutoSize = true;
-            this.lblCoListInfo.Location = new System.Drawing.Point(15, 75);
+            this.lblCoListInfo.Location = new System.Drawing.Point(15, 83);
             this.lblCoListInfo.Name = "lblCoListInfo";
             this.lblCoListInfo.Size = new System.Drawing.Size(917, 18);
             this.lblCoListInfo.TabIndex = 12;
@@ -374,25 +383,15 @@
             // 
             // tabCoArcConfig
             // 
-            this.tabCoArcConfig.Controls.Add(this.button1);
             this.tabCoArcConfig.Controls.Add(this.groupBox1);
             this.tabCoArcConfig.Controls.Add(this.gboxArcBasicinfo);
             this.tabCoArcConfig.Location = new System.Drawing.Point(4, 28);
             this.tabCoArcConfig.Name = "tabCoArcConfig";
             this.tabCoArcConfig.Padding = new System.Windows.Forms.Padding(3, 5, 3, 3);
-            this.tabCoArcConfig.Size = new System.Drawing.Size(970, 508);
+            this.tabCoArcConfig.Size = new System.Drawing.Size(970, 601);
             this.tabCoArcConfig.TabIndex = 1;
             this.tabCoArcConfig.Text = "内容配置";
             this.tabCoArcConfig.UseVisualStyleBackColor = true;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(408, 509);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(144, 33);
-            this.button1.TabIndex = 19;
-            this.button1.Text = "测试";
-            this.button1.UseVisualStyleBackColor = true;
             // 
             // groupBox1
             // 
@@ -402,9 +401,9 @@
             this.groupBox1.Controls.Add(this.tboxSubNodeParams);
             this.groupBox1.Controls.Add(this.lblRegexParams);
             this.groupBox1.Controls.Add(this.lblSubNodeParams);
-            this.groupBox1.Location = new System.Drawing.Point(3, 222);
+            this.groupBox1.Location = new System.Drawing.Point(3, 235);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(964, 267);
+            this.groupBox1.Size = new System.Drawing.Size(964, 360);
             this.groupBox1.TabIndex = 18;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "需要清理的内容";
@@ -412,7 +411,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(15, 183);
+            this.label4.Location = new System.Drawing.Point(15, 233);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(224, 18);
             this.label4.TabIndex = 19;
@@ -421,7 +420,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(15, 71);
+            this.label3.Location = new System.Drawing.Point(15, 66);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(224, 18);
             this.label3.TabIndex = 18;
@@ -429,24 +428,24 @@
             // 
             // tboxRegexParams
             // 
-            this.tboxRegexParams.Location = new System.Drawing.Point(254, 149);
+            this.tboxRegexParams.Location = new System.Drawing.Point(254, 199);
             this.tboxRegexParams.Multiline = true;
             this.tboxRegexParams.Name = "tboxRegexParams";
-            this.tboxRegexParams.Size = new System.Drawing.Size(691, 100);
+            this.tboxRegexParams.Size = new System.Drawing.Size(691, 150);
             this.tboxRegexParams.TabIndex = 17;
             // 
             // tboxSubNodeParams
             // 
-            this.tboxSubNodeParams.Location = new System.Drawing.Point(254, 36);
+            this.tboxSubNodeParams.Location = new System.Drawing.Point(254, 31);
             this.tboxSubNodeParams.Multiline = true;
             this.tboxSubNodeParams.Name = "tboxSubNodeParams";
-            this.tboxSubNodeParams.Size = new System.Drawing.Size(691, 100);
+            this.tboxSubNodeParams.Size = new System.Drawing.Size(691, 150);
             this.tboxSubNodeParams.TabIndex = 16;
             // 
             // lblRegexParams
             // 
             this.lblRegexParams.AutoSize = true;
-            this.lblRegexParams.Location = new System.Drawing.Point(15, 152);
+            this.lblRegexParams.Location = new System.Drawing.Point(15, 202);
             this.lblRegexParams.Name = "lblRegexParams";
             this.lblRegexParams.Size = new System.Drawing.Size(206, 18);
             this.lblRegexParams.TabIndex = 1;
@@ -455,7 +454,7 @@
             // lblSubNodeParams
             // 
             this.lblSubNodeParams.AutoSize = true;
-            this.lblSubNodeParams.Location = new System.Drawing.Point(15, 41);
+            this.lblSubNodeParams.Location = new System.Drawing.Point(15, 36);
             this.lblSubNodeParams.Name = "lblSubNodeParams";
             this.lblSubNodeParams.Size = new System.Drawing.Size(233, 18);
             this.lblSubNodeParams.TabIndex = 0;
@@ -475,7 +474,7 @@
             this.gboxArcBasicinfo.Controls.Add(this.lblXpathTitleNode);
             this.gboxArcBasicinfo.Location = new System.Drawing.Point(3, 10);
             this.gboxArcBasicinfo.Name = "gboxArcBasicinfo";
-            this.gboxArcBasicinfo.Size = new System.Drawing.Size(964, 192);
+            this.gboxArcBasicinfo.Size = new System.Drawing.Size(964, 204);
             this.gboxArcBasicinfo.TabIndex = 0;
             this.gboxArcBasicinfo.TabStop = false;
             this.gboxArcBasicinfo.Text = "文章基本信息";
@@ -484,7 +483,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.label1.Location = new System.Drawing.Point(493, 155);
+            this.label1.Location = new System.Drawing.Point(493, 160);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(332, 18);
             this.label1.TabIndex = 23;
@@ -494,7 +493,7 @@
             // 
             this.lblArcSubpageSymbolInfo.AutoSize = true;
             this.lblArcSubpageSymbolInfo.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.lblArcSubpageSymbolInfo.Location = new System.Drawing.Point(15, 155);
+            this.lblArcSubpageSymbolInfo.Location = new System.Drawing.Point(15, 160);
             this.lblArcSubpageSymbolInfo.Name = "lblArcSubpageSymbolInfo";
             this.lblArcSubpageSymbolInfo.Size = new System.Drawing.Size(332, 18);
             this.lblArcSubpageSymbolInfo.TabIndex = 22;
@@ -568,7 +567,7 @@
             // 
             // btnCoTest
             // 
-            this.btnCoTest.Location = new System.Drawing.Point(330, 557);
+            this.btnCoTest.Location = new System.Drawing.Point(437, 648);
             this.btnCoTest.Name = "btnCoTest";
             this.btnCoTest.Size = new System.Drawing.Size(144, 33);
             this.btnCoTest.TabIndex = 12;
@@ -578,7 +577,7 @@
             // 
             // btnSaveCoConfig
             // 
-            this.btnSaveCoConfig.Location = new System.Drawing.Point(503, 557);
+            this.btnSaveCoConfig.Location = new System.Drawing.Point(287, 648);
             this.btnSaveCoConfig.Name = "btnSaveCoConfig";
             this.btnSaveCoConfig.Size = new System.Drawing.Size(144, 33);
             this.btnSaveCoConfig.TabIndex = 13;
@@ -586,14 +585,97 @@
             this.btnSaveCoConfig.UseVisualStyleBackColor = true;
             this.btnSaveCoConfig.Click += new System.EventHandler(this.btnSaveCoConfig_Click);
             // 
+            // tabCoTest
+            // 
+            this.tabCoTest.Controls.Add(this.label7);
+            this.tabCoTest.Controls.Add(this.tboxStatistics);
+            this.tabCoTest.Controls.Add(this.label6);
+            this.tabCoTest.Controls.Add(this.tboxArticlesContent);
+            this.tabCoTest.Controls.Add(this.label5);
+            this.tabCoTest.Controls.Add(this.tboxArticlesPages);
+            this.tabCoTest.Location = new System.Drawing.Point(4, 28);
+            this.tabCoTest.Name = "tabCoTest";
+            this.tabCoTest.Padding = new System.Windows.Forms.Padding(3);
+            this.tabCoTest.Size = new System.Drawing.Size(970, 601);
+            this.tabCoTest.TabIndex = 2;
+            this.tabCoTest.Text = "测试采集";
+            this.tabCoTest.UseVisualStyleBackColor = true;
+            // 
+            // tboxArticlesPages
+            // 
+            this.tboxArticlesPages.Location = new System.Drawing.Point(3, 33);
+            this.tboxArticlesPages.Multiline = true;
+            this.tboxArticlesPages.Name = "tboxArticlesPages";
+            this.tboxArticlesPages.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.tboxArticlesPages.Size = new System.Drawing.Size(959, 178);
+            this.tboxArticlesPages.TabIndex = 3;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 8);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(98, 18);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "文章链接：";
+            // 
+            // tboxArticlesContent
+            // 
+            this.tboxArticlesContent.Location = new System.Drawing.Point(3, 245);
+            this.tboxArticlesContent.Multiline = true;
+            this.tboxArticlesContent.Name = "tboxArticlesContent";
+            this.tboxArticlesContent.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.tboxArticlesContent.Size = new System.Drawing.Size(959, 182);
+            this.tboxArticlesContent.TabIndex = 12;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(3, 219);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(98, 18);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "文章内容：";
+            // 
+            // tboxStatistics
+            // 
+            this.tboxStatistics.Location = new System.Drawing.Point(3, 462);
+            this.tboxStatistics.Multiline = true;
+            this.tboxStatistics.Name = "tboxStatistics";
+            this.tboxStatistics.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.tboxStatistics.Size = new System.Drawing.Size(959, 133);
+            this.tboxStatistics.TabIndex = 14;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 438);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(188, 18);
+            this.label7.TabIndex = 15;
+            this.label7.Text = "错误提示 & 采集统计：";
+            // 
+            // btnCancelCoTest
+            // 
+            this.btnCancelCoTest.Location = new System.Drawing.Point(587, 649);
+            this.btnCancelCoTest.Name = "btnCancelCoTest";
+            this.btnCancelCoTest.Size = new System.Drawing.Size(144, 33);
+            this.btnCancelCoTest.TabIndex = 14;
+            this.btnCancelCoTest.Text = "取消测试";
+            this.btnCancelCoTest.UseVisualStyleBackColor = true;
+            this.btnCancelCoTest.Click += new System.EventHandler(this.btnCancelCoTest_Click);
+            // 
             // CoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(978, 613);
+            this.ClientSize = new System.Drawing.Size(978, 694);
+            this.Controls.Add(this.btnCancelCoTest);
             this.Controls.Add(this.btnSaveCoConfig);
             this.Controls.Add(this.btnCoTest);
             this.Controls.Add(this.tabctrCoform);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "CoForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "CoForm";
@@ -614,6 +696,8 @@
             this.groupBox1.PerformLayout();
             this.gboxArcBasicinfo.ResumeLayout(false);
             this.gboxArcBasicinfo.PerformLayout();
+            this.tabCoTest.ResumeLayout(false);
+            this.tabCoTest.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -657,7 +741,6 @@
         private System.Windows.Forms.Label lblRegexParams;
         private System.Windows.Forms.Label lblSubNodeParams;
         private System.Windows.Forms.Button btnCoTest;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox tboxArcSubpageSymbol;
         private System.Windows.Forms.Label lblArcSubpageSymbol;
         private System.Windows.Forms.TextBox tboxArcSubpageStartNum;
@@ -670,5 +753,13 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label lblCoTypeName;
         private System.Windows.Forms.ComboBox cboxCoTypeName;
+        private System.Windows.Forms.TabPage tabCoTest;
+        private System.Windows.Forms.TextBox tboxArticlesPages;
+        private System.Windows.Forms.TextBox tboxArticlesContent;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox tboxStatistics;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button btnCancelCoTest;
     }
 }

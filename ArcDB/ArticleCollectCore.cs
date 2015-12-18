@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Threading;
 
 
+
 namespace ArticleCollect
 {
     class ArticleCollectCore
