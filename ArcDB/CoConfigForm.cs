@@ -19,7 +19,7 @@ using System.Collections;
 
 namespace ArcDB
 {
-    public partial class CoForm : Form
+    public partial class CoConfigForm : Form
     {
         private readonly string RootPath = Application.StartupPath + @"\";   /*程序根目录*/
         private string _connString;
@@ -44,7 +44,7 @@ namespace ArcDB
         private CancellationTokenSource cancelToken = new CancellationTokenSource();
 
         //构造函数
-        public CoForm(string connString,long cid)
+        public CoConfigForm(string connString,long cid)
         {
             _connString = connString;
             _cid = cid;

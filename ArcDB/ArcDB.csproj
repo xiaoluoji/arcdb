@@ -75,11 +75,11 @@
   <ItemGroup>
     <Compile Include="ArticleCollectCore.cs" />
     <Compile Include="ArticleCollectOffline.cs" />
-    <Compile Include="CoForm.cs">
+    <Compile Include="CoConfigForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CoForm.Designer.cs">
-      <DependentUpon>CoForm.cs</DependentUpon>
+    <Compile Include="CoConfigForm.Designer.cs">
+      <DependentUpon>CoConfigForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -90,8 +90,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SharpMysql.cs" />
-    <EmbeddedResource Include="CoForm.resx">
-      <DependentUpon>CoForm.cs</DependentUpon>
+    <EmbeddedResource Include="CoConfigForm.resx">
+      <DependentUpon>CoConfigForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

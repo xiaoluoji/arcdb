@@ -1,6 +1,6 @@
 ﻿namespace ArcDB
 {
-    partial class CoForm
+    partial class CoConfigForm
     {
         /// <summary>
         /// Required designer variable.
@@ -76,15 +76,15 @@
             this.tboxXpathTitleNode = new System.Windows.Forms.TextBox();
             this.lblXpathContentNode = new System.Windows.Forms.Label();
             this.lblXpathTitleNode = new System.Windows.Forms.Label();
+            this.tabCoTest = new System.Windows.Forms.TabPage();
+            this.label7 = new System.Windows.Forms.Label();
+            this.tboxStatistics = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.tboxArticlesContent = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.tboxArticlesPages = new System.Windows.Forms.TextBox();
             this.btnCoTest = new System.Windows.Forms.Button();
             this.btnSaveCoConfig = new System.Windows.Forms.Button();
-            this.tabCoTest = new System.Windows.Forms.TabPage();
-            this.tboxArticlesPages = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.tboxArticlesContent = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.tboxStatistics = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
             this.btnCancelCoTest = new System.Windows.Forms.Button();
             this.tabctrCoform.SuspendLayout();
             this.tabCoListConfig.SuspendLayout();
@@ -565,6 +565,76 @@
             this.lblXpathTitleNode.TabIndex = 0;
             this.lblXpathTitleNode.Text = "文章标题Xpath表达式：";
             // 
+            // tabCoTest
+            // 
+            this.tabCoTest.Controls.Add(this.label7);
+            this.tabCoTest.Controls.Add(this.tboxStatistics);
+            this.tabCoTest.Controls.Add(this.label6);
+            this.tabCoTest.Controls.Add(this.tboxArticlesContent);
+            this.tabCoTest.Controls.Add(this.label5);
+            this.tabCoTest.Controls.Add(this.tboxArticlesPages);
+            this.tabCoTest.Location = new System.Drawing.Point(4, 28);
+            this.tabCoTest.Name = "tabCoTest";
+            this.tabCoTest.Padding = new System.Windows.Forms.Padding(3);
+            this.tabCoTest.Size = new System.Drawing.Size(970, 601);
+            this.tabCoTest.TabIndex = 2;
+            this.tabCoTest.Text = "测试采集";
+            this.tabCoTest.UseVisualStyleBackColor = true;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 438);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(188, 18);
+            this.label7.TabIndex = 15;
+            this.label7.Text = "错误提示 & 采集统计：";
+            // 
+            // tboxStatistics
+            // 
+            this.tboxStatistics.Location = new System.Drawing.Point(3, 462);
+            this.tboxStatistics.Multiline = true;
+            this.tboxStatistics.Name = "tboxStatistics";
+            this.tboxStatistics.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.tboxStatistics.Size = new System.Drawing.Size(959, 133);
+            this.tboxStatistics.TabIndex = 14;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(3, 219);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(98, 18);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "文章内容：";
+            // 
+            // tboxArticlesContent
+            // 
+            this.tboxArticlesContent.Location = new System.Drawing.Point(3, 245);
+            this.tboxArticlesContent.Multiline = true;
+            this.tboxArticlesContent.Name = "tboxArticlesContent";
+            this.tboxArticlesContent.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.tboxArticlesContent.Size = new System.Drawing.Size(959, 182);
+            this.tboxArticlesContent.TabIndex = 12;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 8);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(98, 18);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "文章链接：";
+            // 
+            // tboxArticlesPages
+            // 
+            this.tboxArticlesPages.Location = new System.Drawing.Point(3, 33);
+            this.tboxArticlesPages.Multiline = true;
+            this.tboxArticlesPages.Name = "tboxArticlesPages";
+            this.tboxArticlesPages.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.tboxArticlesPages.Size = new System.Drawing.Size(959, 178);
+            this.tboxArticlesPages.TabIndex = 3;
+            // 
             // btnCoTest
             // 
             this.btnCoTest.Location = new System.Drawing.Point(437, 648);
@@ -585,76 +655,6 @@
             this.btnSaveCoConfig.UseVisualStyleBackColor = true;
             this.btnSaveCoConfig.Click += new System.EventHandler(this.btnSaveCoConfig_Click);
             // 
-            // tabCoTest
-            // 
-            this.tabCoTest.Controls.Add(this.label7);
-            this.tabCoTest.Controls.Add(this.tboxStatistics);
-            this.tabCoTest.Controls.Add(this.label6);
-            this.tabCoTest.Controls.Add(this.tboxArticlesContent);
-            this.tabCoTest.Controls.Add(this.label5);
-            this.tabCoTest.Controls.Add(this.tboxArticlesPages);
-            this.tabCoTest.Location = new System.Drawing.Point(4, 28);
-            this.tabCoTest.Name = "tabCoTest";
-            this.tabCoTest.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCoTest.Size = new System.Drawing.Size(970, 601);
-            this.tabCoTest.TabIndex = 2;
-            this.tabCoTest.Text = "测试采集";
-            this.tabCoTest.UseVisualStyleBackColor = true;
-            // 
-            // tboxArticlesPages
-            // 
-            this.tboxArticlesPages.Location = new System.Drawing.Point(3, 33);
-            this.tboxArticlesPages.Multiline = true;
-            this.tboxArticlesPages.Name = "tboxArticlesPages";
-            this.tboxArticlesPages.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tboxArticlesPages.Size = new System.Drawing.Size(959, 178);
-            this.tboxArticlesPages.TabIndex = 3;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 8);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(98, 18);
-            this.label5.TabIndex = 11;
-            this.label5.Text = "文章链接：";
-            // 
-            // tboxArticlesContent
-            // 
-            this.tboxArticlesContent.Location = new System.Drawing.Point(3, 245);
-            this.tboxArticlesContent.Multiline = true;
-            this.tboxArticlesContent.Name = "tboxArticlesContent";
-            this.tboxArticlesContent.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tboxArticlesContent.Size = new System.Drawing.Size(959, 182);
-            this.tboxArticlesContent.TabIndex = 12;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 219);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(98, 18);
-            this.label6.TabIndex = 13;
-            this.label6.Text = "文章内容：";
-            // 
-            // tboxStatistics
-            // 
-            this.tboxStatistics.Location = new System.Drawing.Point(3, 462);
-            this.tboxStatistics.Multiline = true;
-            this.tboxStatistics.Name = "tboxStatistics";
-            this.tboxStatistics.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tboxStatistics.Size = new System.Drawing.Size(959, 133);
-            this.tboxStatistics.TabIndex = 14;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 438);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(188, 18);
-            this.label7.TabIndex = 15;
-            this.label7.Text = "错误提示 & 采集统计：";
-            // 
             // btnCancelCoTest
             // 
             this.btnCancelCoTest.Location = new System.Drawing.Point(587, 649);
@@ -665,7 +665,7 @@
             this.btnCancelCoTest.UseVisualStyleBackColor = true;
             this.btnCancelCoTest.Click += new System.EventHandler(this.btnCancelCoTest_Click);
             // 
-            // CoForm
+            // CoConfigForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -676,7 +676,7 @@
             this.Controls.Add(this.tabctrCoform);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
-            this.Name = "CoForm";
+            this.Name = "CoConfigForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "CoForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CoForm_Closing);

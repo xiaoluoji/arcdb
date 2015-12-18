@@ -234,7 +234,7 @@ namespace ArcDB
             {
                 ListViewItem checkedItem = listViewCollect.CheckedItems[0];
                 long cid = long.Parse(checkedItem.SubItems[0].Text);
-                CoForm coFormModify = new CoForm(_connString, cid);
+                CoConfigForm coFormModify = new CoConfigForm(_connString, cid);
                 coFormModify.Text = "修改采集规则";
                 coFormModify.Show();
                 this.Enabled = false;
@@ -249,7 +249,7 @@ namespace ArcDB
 
         private void btnAddCoconfig_Click(object sender, EventArgs e)
         {
-            CoForm coFormAdd = new CoForm(_connString, -1);
+            CoConfigForm coFormAdd = new CoConfigForm(_connString, -1);
             coFormAdd.Text = "添加新采集规则";
             coFormAdd.Show();
             this.Enabled = false;
