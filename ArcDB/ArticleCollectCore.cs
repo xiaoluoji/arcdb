@@ -466,17 +466,21 @@ namespace ArticleCollect
             po.CancellationToken = CancelToken.Token;
             try
             {
-                Parallel.ForEach(articlePages, po, articlePath =>
+                if (articlePages!=null)
                 {
-                    po.CancellationToken.ThrowIfCancellationRequested();
-                    Dictionary<string, string> article;
-                    article = GetArticleContentOffline(articlePath, xpathTitleNode, xpathContentNode, subNodeParams, regexParams,arcSubpageSymbol,arcSubpageStartNum);
-                    lock (articleAddLock)
+                    Parallel.ForEach(articlePages, po, articlePath =>
                     {
-                        articleList.Add(article);
-                        _currentProcessedArticles = articleList.Count();
-                    }
-                });
+                        po.CancellationToken.ThrowIfCancellationRequested();
+                        Dictionary<string, string> article;
+                        article = GetArticleContentOffline(articlePath, xpathTitleNode, xpathContentNode, subNodeParams, regexParams, arcSubpageSymbol, arcSubpageStartNum);
+                        lock (articleAddLock)
+                        {
+                            articleList.Add(article);
+                            _currentProcessedArticles = articleList.Count();
+                        }
+                    });
+                }
+
             }
             catch (OperationCanceledException exCancel)
             {

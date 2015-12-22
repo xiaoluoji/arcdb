@@ -53,7 +53,8 @@
             this.lblFileterCo_name = new System.Windows.Forms.Label();
             this.cboxFilterCo_name = new System.Windows.Forms.ComboBox();
             this.btnModifyCoconfig = new System.Windows.Forms.Button();
-            this.listViewCollect = new System.Windows.Forms.ListView();
+            //this.listViewCollect = new System.Windows.Forms.ListView();
+            this.listViewCollect = new ListViewNF();
             this.cid = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.co_name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.type_name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -646,7 +647,8 @@
         private System.Windows.Forms.ComboBox cboxCharset;
         private System.Windows.Forms.Button btnSaveConfig;
         private System.Windows.Forms.Button btnLoadCoconfig;
-        private System.Windows.Forms.ListView listViewCollect;
+        //private System.Windows.Forms.ListView listViewCollect;
+        private ListViewNF listViewCollect;
         private System.Windows.Forms.ColumnHeader cid;
         private System.Windows.Forms.ColumnHeader co_name;
         private System.Windows.Forms.ColumnHeader source_lang;

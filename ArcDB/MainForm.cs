@@ -66,6 +66,12 @@ namespace ArcDB
             this.Enabled = true;
             loadCoConfig();
         }
+        private void CoArticleForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Enabled = true;
+            loadCoConfig();
+        }
+
 
         //主窗口关闭后的处理
         private void MainForm_Closed(object sender, FormClosedEventArgs e)
@@ -377,7 +383,27 @@ namespace ArcDB
 
         private void btnCoArticles_Click(object sender, EventArgs e)
         {
+            ListView.CheckedListViewItemCollection checkedItems = listViewCollect.CheckedItems;
+            if (checkedItems.Count>0)
+            {
+                Dictionary<long, string> dicCids = new Dictionary<long, string>();
+                foreach (ListViewItem item in checkedItems)
+                {
+                    long cid = long.Parse(item.SubItems[0].Text);
+                    dicCids.Add(cid, item.SubItems[1].Text);
+                }
+                CoArticleForm coArticleForm = new CoArticleForm(_connString, dicCids);
+                coArticleForm.Show();
+                coArticleForm.StartCoTask();
+                this.Enabled = false;
+                coArticleForm.FormClosed += CoArticleForm_FormClosed;
+            }
+            else
+            {
+                MessageBox.Show("未选中任何采集项，请至少选择一项采集规则！");
+            }
 
         }
+
     }
 }
