@@ -376,6 +376,52 @@ namespace ArcDB
             }
         }
 
+        //更新采集规则项的最后采集时间以及采集数量
+        private void updateCoState(ArticleCollectOffline collectOffline)
+        {
+            long cid = collectOffline.Cid;
+            mySqlDB myDB = new mySqlDB(_connString);
+            string sResult = "";
+            int counts = 0;
+            int coNums = collectOffline.CurrentSavedArticles;
+            string sql = "update co_config set co_nums=co_nums+'" + coNums.ToString()+ "' where cid='"+cid.ToString()+"'";
+            counts=myDB.executeDMLSQL(sql, ref sResult);
+            if (sResult!=mySqlDB.SUCCESS)
+            {
+                List<Exception> coException = collectOffline.CoException;
+                Exception mysqlError = new Exception(sResult);
+                coException.Add(mysqlError);
+            }
+            sql = "update co_config set co_time=CURRENT_TIMESTAMP where cid='" + cid.ToString() + "'";
+            counts = myDB.executeDMLSQL(sql, ref sResult);
+            if (sResult != mySqlDB.SUCCESS)
+            {
+                List<Exception> coException = collectOffline.CoException;
+                Exception mysqlError = new Exception(sResult);
+                coException.Add(mysqlError);
+            }
+        }
+
+        //输出采集过程中的异常信息
+        private void printErrors(List<Exception> coExption)
+        {
+            int count = 0;
+            foreach (Exception item in coExption)
+            {
+                count = count + 1;
+                tboxErrorOutput.AppendText(string.Format("Error {0}: --------------------------\n", count));
+                tboxErrorOutput.AppendText(string.Format("From: {0}   Message:{1}\n", item.TargetSite, item.Message));
+                if (item.Data != null)
+                {
+                    foreach (DictionaryEntry de in item.Data)
+                    {
+                        tboxErrorOutput.AppendText(string.Format("{0} : {1} \n", de.Key, de.Value));
+                    }
+                }
+
+            }
+        }
+
         //将文章保存进数据库,以及对文章内容中的图片做相关处理，复制到新的路径，以及生成最终的网络访问URL
         //private object picNumLock = new object();
         private void saveArticles(ArticleCollectOffline collectOffline)
@@ -534,7 +580,8 @@ namespace ArcDB
                     }  //循环处理文章结束
                 }
             }
-
+            updateCoState(collectOffline);
+            Thread.Sleep(2000);   //延时2秒，等待监控状态最后一次更新完毕
             collectOffline.CoState = "采集结束";
             //保存文章结束后开始下一个采集任务
             removeOneCollection(cid);   //从监控列表中移除保存完毕的采集对象
@@ -704,24 +751,6 @@ namespace ArcDB
             */
         }
 
-        private void printErrors(List<Exception> coExption)
-        {
-            int count = 0;
-            foreach (Exception item in coExption)
-            {
-                count = count + 1;
-                tboxErrorOutput.AppendText(string.Format("Error {0}: --------------------------\n", count));
-                tboxErrorOutput.AppendText(string.Format("From: {0}   Message:{1}\n", item.TargetSite, item.Message));
-                if (item.Data != null)
-                {
-                    foreach (DictionaryEntry de in item.Data)
-                    {
-                        tboxErrorOutput.AppendText(string.Format("{0} : {1} \n", de.Key, de.Value));
-                    }
-                }
-
-            }
-        }
 
         public void StartCoTask()
         {
