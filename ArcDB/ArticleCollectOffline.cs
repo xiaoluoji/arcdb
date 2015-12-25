@@ -16,6 +16,8 @@ namespace ArticleCollect
     {
         #region Fields
         private long _cid;                                                               //采集规则ID
+        private string _typeName;                                                 //采集所属分类
+        private string _sourceSite;                                                 //采集来源网址
         private string _listPath;                                                      //列表页本地路径
         private int _listStartPageNumber;                                     //列表页起始页面编号
         private int _listStopPageNumber;                                     //列表页起始页面编号
@@ -34,6 +36,7 @@ namespace ArticleCollect
         private bool _isRecordError;                                             //是否开启错误记录
         private CancellationTokenSource _cancelToken;             //用来获取取消事件的对象
         private string _coState = "";                                            //保存当前采集状态
+        private int _savedArticleNums=0;                                   //保存当前已经储存到数据库的采集文章数
 
 
         #endregion
@@ -65,6 +68,18 @@ namespace ArticleCollect
         public long Cid
         {
             get { return _cid; }
+        }
+        //返回采集文章保存分类
+        public string TypeName
+        {
+            get { return _typeName; }
+            set { _typeName = value; }
+        }
+        //返回采集来源网址
+        public string SourceSite
+        {
+            get { return _sourceSite; }
+            set { _sourceSite = value; }
         }
         //返回列表页路径
         public string ListPath
@@ -188,6 +203,12 @@ namespace ArticleCollect
         {
             get { return _collectOffline.CurrentGetArticlePages; }
         }
+        //返回当前已经储存到数据库的采集文章数
+        public  int CurrentSavedArticles
+        {
+            get { return _savedArticleNums; }
+            set { _savedArticleNums = value; }
+        }
         //去除数据库已采集记录后剩下需要采集的文章数量, 通过统计 _correctArticlePages集合来计算
         public int CurrentNeedConums
         {
@@ -260,7 +281,7 @@ namespace ArticleCollect
             _coState = "采集文章";
             //创建用来返回最终文章的List
             _articles = _collectOffline.CoArticlesOffline(_correctArticlePages, _xpathArcurlNode, _xpathTitleNode, _xpathContentNode, _subNodeParams, _regexParams,_arcSubpageSymbol,_arcSubpageStartNum);
-            _coState = "采集结束";
+            //_coState = "采集结束";
         }
 
         #endregion

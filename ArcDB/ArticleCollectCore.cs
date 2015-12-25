@@ -242,7 +242,14 @@ namespace ArticleCollect
                 {
                     string imgRelPath = imgNode.Attributes["src"].Value;
                     string imgFullPath = GetFullPathOffline(articlePath, imgRelPath);
-                    content = content.Replace(imgRelPath, imgFullPath);
+                    if (File.Exists(imgFullPath))
+                    {
+                        content = content.Replace(imgRelPath, imgFullPath);
+                    }
+                    else
+                    {
+                        content = content.Replace(imgNode.OuterHtml, "");
+                    }
                 }
                 return content;
             }

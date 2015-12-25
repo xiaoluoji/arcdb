@@ -197,7 +197,7 @@ namespace ArcDB
             }
             else
             {
-                if (_cid != -1)
+                if (_cid != -1)  //如果传入cid不等于-1说明是更新配置
                 {
                     sql = "update co_config set co_name = '" + _coName + "'";
                     sql = sql + ", type_name = '" + _typeName + "'";
@@ -245,7 +245,7 @@ namespace ArcDB
                         MessageBox.Show(string.Format("修改规则出错！ 请检查数据格式是否正确！错误信息：", ex.Message));
                     }
                 }
-                else
+                else   //增加新配置
                 {
                     sql = "insert into co_config (co_name,type_name,source_lang,source_site,co_offline,list_path,start_page_number,stop_page_number,xpath_arcurl_node,xpath_title_node,xpath_content_node";
                     string valueOption = "";

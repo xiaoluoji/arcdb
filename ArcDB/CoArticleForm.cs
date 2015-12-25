@@ -28,9 +28,13 @@ namespace ArcDB
         private string _connString;                                                                               //数据库连接字符串
         System.Threading.Timer _timerUpdateForm;                                                  //listViewCoArticles状态更新定时器
         private Queue<long> _queueCids;                                                                  //采集规则ID队列
-        Stopwatch swGlobal = new Stopwatch();
+        Stopwatch swGlobal = new Stopwatch();                                                        //监控总任务时间
+        private List<string> _hashList;                                                                         //用来检测采集文章URL HASH是否重复的集合
+        private int _cfgPicNum=0;                                                                               //保存数据库图片总数，用来做图片分表处理
+        private string _cfgBasePath="";                                                                       //图片保存根目录
+        private string _cfgImgBaseurl="";                                                                   //图片网址所使用的域名
 
-        public CoArticleForm(string connString,Dictionary<long,string>dicCids)
+        public CoArticleForm(string connString, Dictionary<long, string> dicCids)
         {
             CheckForIllegalCrossThreadCalls = false;
             InitializeComponent();
@@ -80,8 +84,9 @@ namespace ArcDB
                         currentItem.SubItems[4].Text = currentCollectWork.CurrentGetArticlePages.ToString();
                         currentItem.SubItems[5].Text = currentCollectWork.CurrentNeedConums.ToString();
                         currentItem.SubItems[6].Text = currentCollectWork.CurrentProcessedArticles.ToString();
+                        currentItem.SubItems[7].Text = currentCollectWork.CurrentSavedArticles.ToString();
                         string timeUsed = currentWatch.Elapsed.ToString();
-                        currentItem.SubItems[7].Text = timeUsed.Remove(8, 8);
+                        currentItem.SubItems[8].Text = timeUsed.Remove(8, 8);
                         listViewCoArticles.EndUpdate();
                     }
                     else if (dic == null)
@@ -115,7 +120,10 @@ namespace ArcDB
                     Dictionary<string, object> dic = collectItem.Value;
                     long currentCid = collectItem.Key;
                     ArticleCollectOffline currentCollectWork = (ArticleCollectOffline)dic["collect"];
-                    currentCollectWork.CancelToken.Cancel();
+                    if (currentCollectWork.CoState!="保存文章") //如果采集正在保存文章至数据库则不能取消
+                    {
+                        currentCollectWork.CancelToken.Cancel();
+                    }
                 }
                 catch (Exception)
                 {
@@ -133,7 +141,10 @@ namespace ArcDB
                     Dictionary<string, object> dic = collectItem.Value;
                     long currentCid = collectItem.Key;
                     ArticleCollectOffline currentCollectWork = (ArticleCollectOffline)dic["collect"];
-                    currentCollectWork.CancelToken.Cancel();
+                    if (currentCollectWork.CoState != "保存文章")//如果采集正在保存文章至数据库则不能取消
+                    {
+                        currentCollectWork.CancelToken.Cancel();
+                    }
                 }
                 catch (Exception)
                 {
@@ -143,9 +154,9 @@ namespace ArcDB
         }
 
         //检查必填项是否正确填写，这里暂时只是用 string.IsNullOrWhiteSpace()判断是否为空值，未做进一步校验，以后完善
-        private bool validateCoConfig(Dictionary<string,string> coConfigs)
+        private bool validateCoConfig(Dictionary<string, string> coConfigs)
         {
-            foreach (KeyValuePair<string,string> kvp in coConfigs)
+            foreach (KeyValuePair<string, string> kvp in coConfigs)
             {
                 if (string.IsNullOrWhiteSpace(kvp.Value))
                 {
@@ -170,9 +181,9 @@ namespace ArcDB
         {
             _queueCids = new Queue<long>();
             listViewCoArticles.BeginUpdate();
-            foreach (KeyValuePair<long,string> kvp in _dicCids)
+            foreach (KeyValuePair<long, string> kvp in _dicCids)
             {
-                string[] subItems = new string[] { "待采集",kvp.Key.ToString(), kvp.Value,"0","0","0","0","0"};
+                string[] subItems = new string[] { "待采集", kvp.Key.ToString(), kvp.Value, "0", "0", "0", "0", "0" };
                 ListViewItem listItem = new ListViewItem(subItems);
                 listViewCoArticles.Items.Add(listItem);
                 _queueCids.Enqueue(kvp.Key);
@@ -192,12 +203,13 @@ namespace ArcDB
             return linesArr.ToList<string>();
         }
         //从需要执行的采集Cid队列中获取一条CID记录
-        private long getOneCid() 
+        private object queueLock = new object();
+        private long getOneCid()
         {
             long cid = -1;
-            lock (_queueCids)
+            lock (queueLock)
             {
-                if (_queueCids.Count>0)
+                if (_queueCids.Count > 0)
                 {
                     cid = _queueCids.Dequeue();
                 }
@@ -232,12 +244,303 @@ namespace ArcDB
         }
 
         //检查文章是否已经采集过, 将采集过的URL记录从采集对象中的文章页集合中剔除
+        private object hashLock = new object();
         private void removeDumpArcpages(ArticleCollectOffline collectOffline)
         {
-            List<string> articlePages = collectOffline.CorrectArticlePages;
-            //collectOffline.CorrectArticlePages = null;
+            List<string> articleNeedCoPages = new List<string>();
+            List<string> currentGetArcPages = collectOffline.CorrectArticlePages;
+            if (_hashList == null)
+            {
+                mySqlDB myDB = new mySqlDB(_connString);
+                string sResult = "";
+                int counts = 0;
+                string sql = "select hash from arc_contents";
+
+                List<Dictionary<string, object>> hashDicList = myDB.GetRecords(sql, ref sResult, ref counts);
+                if (sResult == mySqlDB.SUCCESS && counts > 0)
+                {
+                    _hashList = new List<string>();
+                    foreach (var item in hashDicList)
+                    {
+                        lock (hashLock)
+                        {
+                            _hashList.Add(item["hash"].ToString());
+                        }
+                    }
+                }
+            }
+            if (_hashList != null)
+            {
+                foreach (var arcUrl in currentGetArcPages)
+                {
+                    if (!_hashList.Contains(GetHashAsString(arcUrl)))
+                    {
+                        articleNeedCoPages.Add(arcUrl);
+                    }
+                }
+            }
+            collectOffline.CorrectArticlePages = articleNeedCoPages;
         }
-        
+
+        //从数据库获取相关的配置信息
+        private bool getSysConfig(ArticleCollectOffline collectOffline)
+        {
+            mySqlDB myDB = new mySqlDB(_connString);
+            string sResult = "";
+            int counts = 0;
+            string sql = "";
+            List<Dictionary<string, object>> dbResult;
+            //读取保存图片的根目录变量
+            if (_cfgBasePath=="")
+            {
+                sql = "select value from sys_config where varname='cfg_basepath'";
+                dbResult = myDB.GetRecords(sql, ref sResult, ref counts);
+                if (sResult == mySqlDB.SUCCESS && counts > 0)
+                {
+                    _cfgBasePath = dbResult[0]["value"].ToString();
+                }
+                else
+                    return false;
+            }
+            //读取图片总数变量
+            if (_cfgPicNum ==0)
+            {
+                sql = "select value from sys_config where varname='cfg_pic_num'";
+                dbResult = myDB.GetRecords(sql, ref sResult, ref counts);
+                if (sResult == mySqlDB.SUCCESS && counts > 0)
+                {
+                    _cfgPicNum = int.Parse(dbResult[0]["value"].ToString());
+                }
+                else
+                    return false;
+            }
+            //读取base URL变量
+            if (_cfgImgBaseurl=="")
+            {
+                sql = "select value from sys_config where varname='cfg_img_baseurl'";
+                dbResult = myDB.GetRecords(sql, ref sResult, ref counts);
+                if (sResult == mySqlDB.SUCCESS && counts > 0)
+                {
+                    _cfgImgBaseurl = dbResult[0]["value"].ToString();
+                }
+                else
+                    return false;
+            }
+            if (_cfgBasePath==""||_cfgImgBaseurl=="")
+            {
+                return false;
+            }
+            return true;
+        }
+        //获取文章内容中的图片路径
+        private List<string>getImgPath(string content, ArticleCollectOffline collectOffline)
+        {
+            HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+            List<string> imgPathList = new List<string>();
+            try
+            {
+                doc.LoadHtml(content);
+                HtmlAgilityPack.HtmlNodeCollection imgNodes = doc.DocumentNode.SelectNodes("//img");
+                foreach (HtmlAgilityPack.HtmlNode imgNode in imgNodes)
+                {
+                    string imgPath = imgNode.Attributes["src"].Value;
+                    imgPathList.Add(imgPath);
+                }
+            }
+            catch (Exception ex)
+            {
+                List<Exception> coException = collectOffline.CoException;
+                coException.Add(ex);
+            }
+            return imgPathList;
+        }
+
+        //更新数据系统配置表中的图片总数参数
+        private bool updateCfgPicnum(ArticleCollectOffline collectOffline)
+        {
+            mySqlDB myDB = new mySqlDB(_connString);
+            string sResult = "";
+            int counts = 0;
+            string sql = "update sys_config set value='" + _cfgPicNum.ToString() + "' where varname='cfg_pic_num'";
+            counts = myDB.executeDMLSQL(sql, ref sResult);
+            if (sResult==mySqlDB.SUCCESS && counts>0)
+            {
+                return true;
+            }
+            else
+            {
+                List<Exception> coException = collectOffline.CoException;
+                Exception mysqlError = new Exception(sResult);
+                coException.Add(mysqlError);
+                return false;
+            }
+        }
+
+        //将文章保存进数据库,以及对文章内容中的图片做相关处理，复制到新的路径，以及生成最终的网络访问URL
+        //private object picNumLock = new object();
+        private void saveArticles(ArticleCollectOffline collectOffline)
+        {
+            collectOffline.CoState = "保存文章";
+            long cid = collectOffline.Cid;
+
+            if (getSysConfig(collectOffline))  //正确获取相关配置参数后再进行下一步处理
+            {
+                string typeName = collectOffline.TypeName;
+                string sourceSite = collectOffline.SourceSite;
+                int typeNameID = 0;  //采集分类ID
+                int sourceSiteID = 0;  //来源网址ID
+                mySqlDB myDB = new mySqlDB(_connString);
+                string sResult = "";
+                int counts = 0;
+                //获取当前采集分类ID，如果数据库不存在则将当前采集分类插入数据库
+                List<Dictionary<string, object>> dbResult;
+                string sql = "select tid from arc_type where type_name='" + typeName + "'";
+                dbResult = myDB.GetRecords(sql, ref sResult, ref counts);
+                if (sResult == mySqlDB.SUCCESS && counts > 0)
+                {
+                    typeNameID = (int)dbResult[0]["tid"];
+                }
+                else
+                {
+                    sql = "insert into arc_type (type_name) values('" + typeName + "')";
+                    counts = myDB.executeDMLSQL(sql, ref sResult);
+                    if (sResult == mySqlDB.SUCCESS && counts > 0)
+                    {
+                        typeNameID = (int)myDB.LastInsertedId;
+                    }
+                }
+                sResult = "";
+                counts = 0;
+                //获取当前采集来源网址ID，如果数据库不存在则将当前采集分类插入数据库
+                sql = "select id from source_site where source_site='" + sourceSite + "'";
+                dbResult = myDB.GetRecords(sql, ref sResult, ref counts);
+                if (sResult == mySqlDB.SUCCESS && counts > 0)
+                {
+                    sourceSiteID = (int)dbResult[0]["id"];
+                }
+                else
+                {
+                    sql = "insert into source_site (source_site) values('" + sourceSite + "')";
+                    counts = myDB.executeDMLSQL(sql, ref sResult);
+                    if (sResult == mySqlDB.SUCCESS && counts > 0)
+                    {
+                        sourceSiteID = (int)myDB.LastInsertedId;
+                    }
+                }
+                if (typeNameID != 0 && sourceSiteID != 0)  //必须要正确获得 typeNameID 和 sourceSiteID后才进行下一步的文章和图片的处理
+                {
+                    List<Dictionary<string, string>> articles = collectOffline.Articles;
+                    var arcList = from d in articles
+                                  orderby d["title"]
+                                  ascending
+                                  select d;
+                    foreach (Dictionary<string, string> article in arcList)
+                    {
+                        sResult = "";
+                        counts = 0;
+                        string arcTitle = article["title"];
+                        string arcUrl = article["url"];
+                        string arcContent = article["content"];
+                        string hash = GetHashAsString(arcUrl);
+                        int aid = 0;
+                        sql = "insert into arc_contents (type_id,cid,title,source_site,content,url,hash) values ('" + typeNameID.ToString() + "'";
+                        sql = sql + ",'" + cid.ToString() + "'";
+                        sql = sql + ",'" + arcTitle + "'";
+                        sql = sql + ",'" + sourceSite + "'";
+                        sql = sql + ",'" + arcContent + "'";
+                        sql = sql + ",'" + arcUrl + "'";
+                        sql = sql + ",'" + hash + "')";
+                        counts = myDB.executeDMLSQL(sql, ref sResult);
+                        if (sResult == mySqlDB.SUCCESS && counts > 0)
+                        {
+                            aid = (int)myDB.LastInsertedId;
+                        }
+                        else   //如果插入文章内容出错，则将错误信息记录下来到当前采集对象中
+                        {
+                            List<Exception> coException = collectOffline.CoException;
+                            Exception mysqlError = new Exception(sResult);
+                            coException.Add(mysqlError);
+                        }
+                        if (aid != 0)
+                        {
+                            collectOffline.CurrentSavedArticles++;
+                            List<string> imgPathList = getImgPath(arcContent, collectOffline); //获取文章中的所有图片路径
+                            foreach (string imgPath in imgPathList)  //循环处理文章中包含的图片，将图片复制到新的路径，用于图片服务器访问，生成图片最终用于网络访问的URL
+                            {
+                                string fileExtenstion = Path.GetExtension(imgPath);
+                                sResult = "";
+                                counts = 0;
+                                string picFilePath = _cfgBasePath + @"src\"; //用来保存采集的图片要存储在采集服务器上的路径；
+                                int firstSubDirNum = 0;  //一级子目录编号，同时也是图片域名的子域名编号
+                                int secondSubDirNum = 0;  //二级子目录编号
+                                firstSubDirNum = _cfgPicNum / 100000;
+                                secondSubDirNum = _cfgPicNum % 100000 / 10000;
+                                picFilePath = picFilePath + firstSubDirNum.ToString() + @"\" + secondSubDirNum;
+                                if (!Directory.Exists(picFilePath))
+                                {
+                                    Directory.CreateDirectory(picFilePath);
+                                }
+                                string randomFileName = Path.GetRandomFileName();
+                                string picFileName = picFilePath + @"\" + randomFileName + fileExtenstion;
+                                string imgUrlPath = @"http://img" + firstSubDirNum.ToString() + "." + _cfgImgBaseurl + "/" + secondSubDirNum.ToString() + "/";
+                                string imgUrl = imgUrlPath + randomFileName + fileExtenstion;
+                                while (File.Exists(picFileName))  //随机生成新的图片文件名，如果随机文件名重复则要反复生成，直到不重复为止
+                                {
+                                    randomFileName = Path.GetRandomFileName();
+                                    picFileName= picFilePath + @"\" + randomFileName + fileExtenstion;
+                                    imgUrl= imgUrlPath + randomFileName + fileExtenstion;
+                                }
+                                try
+                                {
+                                    File.Copy(imgPath, picFileName);   //将源图片复制到新的路径中，用于图片服务器访问
+                                    sql = "insert into arc_pics(cid,aid,ssid,pic_path,source_path,pic_url) values ('" + cid.ToString() + "'";
+                                    sql = sql + ",'" + aid.ToString() + "'";
+                                    sql = sql + ",'" + sourceSiteID.ToString() + "'";
+                                    sql = sql + ",'" + picFileName + "'";
+                                    sql = sql + ",'" + imgPath + "'";
+                                    sql = sql + ",'" + imgUrl + "')";
+                                    counts = myDB.executeDMLSQL(sql, ref sResult);
+                                    if (sResult==mySqlDB.SUCCESS && counts>0)
+                                    {
+                                        _cfgPicNum++;
+                                        if (!updateCfgPicnum(collectOffline))   //如果更新数据系统配置表中的图片总数参数失败的话，就退出当前处理过程，不然的话会导致图片总数出问题。
+                                        {
+                                            return;
+                                        }
+                                        arcContent = arcContent.Replace(imgPath, imgUrl);
+                                    }
+                                }
+                                catch (Exception ex) //如果复制图片过程中出错的话，保存出错异常，退出当前处理过程
+                                {
+                                    List<Exception> coException = collectOffline.CoException;
+                                    coException.Add(ex);
+                                    return;
+                                }
+                            } //循环处理文章中的图片结束
+                            sResult = "";
+                            counts = 0;
+                            sql = "update arc_contents set content='" + arcContent + "' where aid='" + aid.ToString() + "'";
+                            counts = myDB.executeDMLSQL(sql, ref sResult);
+                            if (sResult!=mySqlDB.SUCCESS) //如果更新文章内容出错，则将错误信息记录下来到当前采集对象中
+                            {
+                                List<Exception> coException = collectOffline.CoException;
+                                Exception mysqlError = new Exception(sResult);
+                                coException.Add(mysqlError);
+                                return;
+                            }
+
+                        }  //判断文章是否正确插入到数据库结束
+
+                    }  //循环处理文章结束
+                }
+            }
+
+            collectOffline.CoState = "采集结束";
+            //保存文章结束后开始下一个采集任务
+            removeOneCollection(cid);   //从监控列表中移除保存完毕的采集对象
+            ThreadPool.QueueUserWorkItem(startOneTask, null);
+        }
+
 
         private delegate ArticleCollectOffline CollectProcess(ArticleCollectOffline collectOffline);
 
@@ -348,14 +651,12 @@ namespace ArcDB
         private void ProcessCollectArticlesComplete(IAsyncResult itfAR)
         {
             //异步执行采集文章内容完成后
-            CollectProcess collectProcessCollectArticles = (CollectProcess)((AsyncResult)itfAR).AsyncDelegate;
+            CollectProcess collectProcessCollectArticles = (CollectProcess)((AsyncResult)itfAR).AsyncDelegate; 
             ArticleCollectOffline collectOffline = collectProcessCollectArticles.EndInvoke(itfAR);
             //输出采集文档信息
             if (collectOffline.CancelException == null)
             {
-                long cid = collectOffline.Cid;
-                removeOneCollection(cid);
-                ThreadPool.QueueUserWorkItem(startOneTask, null);
+                saveArticles(collectOffline);
             }
             else
             {
@@ -373,13 +674,12 @@ namespace ArcDB
             }
 
 
-            //startOneTask(new object());
+
             /*
+            List<Exception> coException = collectOffline.CoException;
             printErrors(coException);
             List<Dictionary<string, string>> articles = collectOffline.Articles;
-            List<Exception> coException = collectOffline.CoException;
 
-            
             tboxErrorOutput.AppendText(string.Format("采集文章总数：{0} \n", articles.Count));
             tboxErrorOutput.AppendText("-----------------------------------------------------------------------------------\n");
             var arcList = from d in articles
@@ -431,6 +731,8 @@ namespace ArcDB
                 );
 
             swGlobal.Start();
+            //采集任务队列只采用单进程来完成！！切记，否则存储采集文章时会出错
+            //同时因为核心采集类中已经使用多线程进行采集，所以此处采用多线程来完成采集任务队列也并不能加快速度
             ThreadPool.QueueUserWorkItem(startOneTask,null);
         }
 
@@ -497,6 +799,8 @@ namespace ArcDB
                             collectOffline.AddListPages(moreListPages);
                         }
                         collectOffline.CancelToken = cancelToken;
+                        collectOffline.TypeName = dicConfig["type_name"].ToString();
+                        collectOffline.SourceSite = dicConfig["source_site"].ToString();
                         Stopwatch sw = new Stopwatch();
                         sw.Start();
                         CollectProcess collectProcessListPages = new CollectProcess(ProcessListPages);

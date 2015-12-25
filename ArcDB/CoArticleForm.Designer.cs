@@ -40,6 +40,7 @@ namespace ArcDB
             this.co_get_arcs = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.co_need_conums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.co_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.co_saved_articles = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.time_used = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tboxErrorOutput = new System.Windows.Forms.TextBox();
             this.lblErrorOutput = new System.Windows.Forms.Label();
@@ -58,6 +59,7 @@ namespace ArcDB
             this.co_get_arcs,
             this.co_need_conums,
             this.co_nums,
+            this.co_saved_articles,
             this.time_used});
             this.listViewCoArticles.Dock = System.Windows.Forms.DockStyle.Top;
             this.listViewCoArticles.Location = new System.Drawing.Point(0, 0);
@@ -79,27 +81,32 @@ namespace ArcDB
             // co_name
             // 
             this.co_name.Text = "采集名称";
-            this.co_name.Width = 120;
+            this.co_name.Width = 91;
             // 
             // co_listpages_num
             // 
             this.co_listpages_num.Text = "列表页数";
-            this.co_listpages_num.Width = 120;
+            this.co_listpages_num.Width = 91;
             // 
             // co_get_arcs
             // 
             this.co_get_arcs.Text = "获取文章数";
-            this.co_get_arcs.Width = 120;
+            this.co_get_arcs.Width = 104;
             // 
             // co_need_conums
             // 
             this.co_need_conums.Text = "需采文章数";
-            this.co_need_conums.Width = 120;
+            this.co_need_conums.Width = 103;
             // 
             // co_nums
             // 
             this.co_nums.Text = "已采文章数";
             this.co_nums.Width = 120;
+            // 
+            // co_saved_articles
+            // 
+            this.co_saved_articles.Text = "已保存文章";
+            this.co_saved_articles.Width = 120;
             // 
             // time_used
             // 
@@ -163,7 +170,9 @@ namespace ArcDB
             this.Controls.Add(this.lblErrorOutput);
             this.Controls.Add(this.tboxErrorOutput);
             this.Controls.Add(this.listViewCoArticles);
+            this.MaximizeBox = false;
             this.Name = "CoArticleForm";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "采集文章";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CoArticleForm_Closing);
             this.ResumeLayout(false);
@@ -187,7 +196,8 @@ namespace ArcDB
         private System.Windows.Forms.Button btnCancelCurrent;
         private System.Windows.Forms.Button btnCancelAll;
         private System.Windows.Forms.Label labTime;
-        private ColumnHeader co_need_conums;
+        private System.Windows.Forms.ColumnHeader co_need_conums;
+        private System.Windows.Forms.ColumnHeader co_saved_articles;
     }
 
 }
