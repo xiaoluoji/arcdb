@@ -183,7 +183,7 @@ namespace ArcDB
             listViewCoArticles.BeginUpdate();
             foreach (KeyValuePair<long, string> kvp in _dicCids)
             {
-                string[] subItems = new string[] { "待采集", kvp.Key.ToString(), kvp.Value, "0", "0", "0", "0", "0" };
+                string[] subItems = new string[] { "待采集", kvp.Key.ToString(), kvp.Value, "0", "0", "0", "0", "0","0" };
                 ListViewItem listItem = new ListViewItem(subItems);
                 listViewCoArticles.Items.Add(listItem);
                 _queueCids.Enqueue(kvp.Key);
@@ -278,8 +278,8 @@ namespace ArcDB
                         articleNeedCoPages.Add(arcUrl);
                     }
                 }
+                collectOffline.CorrectArticlePages = articleNeedCoPages;
             }
-            collectOffline.CorrectArticlePages = articleNeedCoPages;
         }
 
         //从数据库获取相关的配置信息
@@ -398,7 +398,7 @@ namespace ArcDB
                 dbResult = myDB.GetRecords(sql, ref sResult, ref counts);
                 if (sResult == mySqlDB.SUCCESS && counts > 0)
                 {
-                    typeNameID = (int)dbResult[0]["tid"];
+                    typeNameID = int.Parse(dbResult[0]["tid"].ToString());
                 }
                 else
                 {
@@ -416,7 +416,7 @@ namespace ArcDB
                 dbResult = myDB.GetRecords(sql, ref sResult, ref counts);
                 if (sResult == mySqlDB.SUCCESS && counts > 0)
                 {
-                    sourceSiteID = (int)dbResult[0]["id"];
+                    sourceSiteID = int.Parse(dbResult[0]["id"].ToString());
                 }
                 else
                 {
@@ -448,7 +448,7 @@ namespace ArcDB
                         sql = sql + ",'" + arcTitle + "'";
                         sql = sql + ",'" + sourceSite + "'";
                         sql = sql + ",'" + arcContent + "'";
-                        sql = sql + ",'" + arcUrl + "'";
+                        sql = sql + ",'" + mySqlDB.EscapeString(arcUrl) + "'";
                         sql = sql + ",'" + hash + "')";
                         counts = myDB.executeDMLSQL(sql, ref sResult);
                         if (sResult == mySqlDB.SUCCESS && counts > 0)
@@ -482,7 +482,7 @@ namespace ArcDB
                                 }
                                 string randomFileName = Path.GetRandomFileName();
                                 string picFileName = picFilePath + @"\" + randomFileName + fileExtenstion;
-                                string imgUrlPath = @"http://img" + firstSubDirNum.ToString() + "." + _cfgImgBaseurl + "/" + secondSubDirNum.ToString() + "/";
+                                string imgUrlPath = @"http://img" + firstSubDirNum.ToString() + @"." + _cfgImgBaseurl + @"/" + secondSubDirNum.ToString() + @"/";
                                 string imgUrl = imgUrlPath + randomFileName + fileExtenstion;
                                 while (File.Exists(picFileName))  //随机生成新的图片文件名，如果随机文件名重复则要反复生成，直到不重复为止
                                 {
@@ -496,8 +496,8 @@ namespace ArcDB
                                     sql = "insert into arc_pics(cid,aid,ssid,pic_path,source_path,pic_url) values ('" + cid.ToString() + "'";
                                     sql = sql + ",'" + aid.ToString() + "'";
                                     sql = sql + ",'" + sourceSiteID.ToString() + "'";
-                                    sql = sql + ",'" + picFileName + "'";
-                                    sql = sql + ",'" + imgPath + "'";
+                                    sql = sql + ",'" + mySqlDB.EscapeString(picFileName) + "'";
+                                    sql = sql + ",'" +mySqlDB.EscapeString(imgPath) + "'";
                                     sql = sql + ",'" + imgUrl + "')";
                                     counts = myDB.executeDMLSQL(sql, ref sResult);
                                     if (sResult==mySqlDB.SUCCESS && counts>0)
@@ -656,6 +656,11 @@ namespace ArcDB
             //输出采集文档信息
             if (collectOffline.CancelException == null)
             {
+                /*
+                long cid = collectOffline.Cid;
+                removeOneCollection(cid);
+                ThreadPool.QueueUserWorkItem(startOneTask, null);
+                */
                 saveArticles(collectOffline);
             }
             else
