@@ -581,10 +581,12 @@ namespace ArcDB
                 }
             }
             updateCoState(collectOffline);
+            printErrors(collectOffline.CoException);
             Thread.Sleep(2000);   //延时2秒，等待监控状态最后一次更新完毕
             collectOffline.CoState = "采集结束";
-            //保存文章结束后开始下一个采集任务
             removeOneCollection(cid);   //从监控列表中移除保存完毕的采集对象
+
+            //保存文章结束后开始下一个采集任务
             ThreadPool.QueueUserWorkItem(startOneTask, null);
         }
 
@@ -632,18 +634,11 @@ namespace ArcDB
                 catch (Exception)
                 {
                 }
-
+                Thread.Sleep(1000);
                 long cid = collectOffline.Cid;
                 removeOneCollection(cid);
                 ThreadPool.QueueUserWorkItem(startOneTask, null);
-
             }
-
-            //输出列表文档的信息
-            /*
-            List<string> listPages = collectOffline.ListPages;
-            tboxErrorOutput.AppendText(string.Format("本次获取列表页面数：{0}\n", listPages.Count));
-            */
         }
 
         //异步执行获取文章URL集合结束
@@ -672,6 +667,7 @@ namespace ArcDB
                 catch (Exception)
                 {
                 }
+                Thread.Sleep(1000);
                 long cid = collectOffline.Cid;
                 removeOneCollection(cid);
                 ThreadPool.QueueUserWorkItem(startOneTask, null);
@@ -720,12 +716,11 @@ namespace ArcDB
                 catch (Exception)
                 {
                 }
+                Thread.Sleep(1000);
                 long cid = collectOffline.Cid;
                 removeOneCollection(cid);
                 ThreadPool.QueueUserWorkItem(startOneTask, null);
             }
-
-
 
             /*
             List<Exception> coException = collectOffline.CoException;
