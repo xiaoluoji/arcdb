@@ -405,5 +405,22 @@ namespace ArcDB
 
         }
 
+        private void btnSelectAll_Click(object sender, EventArgs e)
+        {
+            ListView.ListViewItemCollection items = listViewCollect.Items;
+            foreach (ListViewItem item in items)
+            {
+                item.Checked = true;
+            }
+        }
+
+        private void btnUnselectAll_Click(object sender, EventArgs e)
+        {
+            ListView.ListViewItemCollection items = listViewCollect.Items;
+            foreach (ListViewItem item in items)
+            {
+                item.Checked = false;
+            }
+        }
     }
 }

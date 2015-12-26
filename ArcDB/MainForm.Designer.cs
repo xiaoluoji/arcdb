@@ -53,8 +53,7 @@
             this.lblFileterCo_name = new System.Windows.Forms.Label();
             this.cboxFilterCo_name = new System.Windows.Forms.ComboBox();
             this.btnModifyCoconfig = new System.Windows.Forms.Button();
-            //this.listViewCollect = new System.Windows.Forms.ListView();
-            this.listViewCollect = new ListViewNF();
+            this.listViewCollect = new ArcDB.ListViewNF();
             this.cid = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.co_name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.type_name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -81,6 +80,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.tboxPassword = new System.Windows.Forms.TextBox();
             this.cboxCharset = new System.Windows.Forms.ComboBox();
+            this.btnSelectAll = new System.Windows.Forms.Button();
+            this.btnUnselectAll = new System.Windows.Forms.Button();
             this.tabctrMainform.SuspendLayout();
             this.tabPageCollect.SuspendLayout();
             this.gboxFilter.SuspendLayout();
@@ -176,6 +177,8 @@
             // 
             // gboxFilter
             // 
+            this.gboxFilter.Controls.Add(this.btnUnselectAll);
+            this.gboxFilter.Controls.Add(this.btnSelectAll);
             this.gboxFilter.Controls.Add(this.panel3);
             this.gboxFilter.Controls.Add(this.panel2);
             this.gboxFilter.Controls.Add(this.panel1);
@@ -594,6 +597,26 @@
             this.cboxCharset.TabIndex = 28;
             this.cboxCharset.Text = "utf8";
             // 
+            // btnSelectAll
+            // 
+            this.btnSelectAll.Location = new System.Drawing.Point(337, 92);
+            this.btnSelectAll.Name = "btnSelectAll";
+            this.btnSelectAll.Size = new System.Drawing.Size(133, 37);
+            this.btnSelectAll.TabIndex = 10;
+            this.btnSelectAll.Text = "全选采集规则";
+            this.btnSelectAll.UseVisualStyleBackColor = true;
+            this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
+            // 
+            // btnUnselectAll
+            // 
+            this.btnUnselectAll.Location = new System.Drawing.Point(476, 92);
+            this.btnUnselectAll.Name = "btnUnselectAll";
+            this.btnUnselectAll.Size = new System.Drawing.Size(133, 37);
+            this.btnUnselectAll.TabIndex = 11;
+            this.btnUnselectAll.Text = "取消全选";
+            this.btnUnselectAll.UseVisualStyleBackColor = true;
+            this.btnUnselectAll.Click += new System.EventHandler(this.btnUnselectAll_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
@@ -680,6 +703,8 @@
         private System.Windows.Forms.Button btnCoArticles;
         private System.Windows.Forms.Button btnCopyCoconfig;
         private System.Windows.Forms.Button btnDeleteCoconfig;
+        private System.Windows.Forms.Button btnUnselectAll;
+        private System.Windows.Forms.Button btnSelectAll;
     }
 }
 
