@@ -71,7 +71,7 @@ namespace ArcDB
                     Dictionary<string, object> dic = collectItem.Value;
                     long currentCid = collectItem.Key;
                     ArticleCollectOffline currentCollectWork = (ArticleCollectOffline)dic["collect"];
-                    if (currentCollectWork.CoState != "采集结束" && currentCollectWork.CancelException == null && dic != null)
+                    if (currentCollectWork.CoState != "采集完毕" && currentCollectWork.CancelException == null && dic != null)
                     {
                         Stopwatch currentWatch = (Stopwatch)dic["watch"];
                         ListViewItem currentItem = listViewCoArticles.Items.Cast<ListViewItem>().First(item => item.SubItems[1].Text == currentCid.ToString());
@@ -376,6 +376,36 @@ namespace ArcDB
             }
         }
 
+        //更新文章内容，这里是更新将文章内容中的本地路径替换成图片服务器访问的URL链接后的内容，包括增加文章缩略图
+        private bool updateArcContent(ArticleCollectOffline collectOffline, int aid,string arcContent,string litpicUrl)
+        {
+            mySqlDB myDB = new mySqlDB(_connString);
+            string sResult = "";
+            int counts = 0;
+            string sql = "update arc_contents set content='" + arcContent + "' where aid='" + aid.ToString() + "'";
+            counts = myDB.executeDMLSQL(sql, ref sResult);
+            if (sResult != mySqlDB.SUCCESS)
+            {
+                List<Exception> coException = collectOffline.CoException;
+                Exception mysqlError = new Exception(sResult);
+                coException.Add(mysqlError);
+                return false;
+            }
+            if (litpicUrl!="")
+            {
+                sql = "update arc_contents set litpic='" + litpicUrl + "' where aid='" + aid.ToString() + "'";
+                counts = myDB.executeDMLSQL(sql, ref sResult);
+                if (sResult != mySqlDB.SUCCESS) //如果更新文章内容出错，则将错误信息记录下来到当前采集对象中
+                {
+                    List<Exception> coException = collectOffline.CoException;
+                    Exception mysqlError = new Exception(sResult);
+                    coException.Add(mysqlError);
+                    return false;
+                }
+            }
+            return true;
+        }
+
         //更新采集规则项的最后采集时间以及采集数量
         private void updateCoState(ArticleCollectOffline collectOffline)
         {
@@ -507,10 +537,11 @@ namespace ArcDB
                             Exception mysqlError = new Exception(sResult);
                             coException.Add(mysqlError);
                         }
-                        if (aid != 0)
+                        if (aid != 0)  //判断文章是否正确插入到数据库中，正确插入文章后返回的ID不会是0
                         {
                             collectOffline.CurrentSavedArticles++;
                             List<string> imgPathList = getImgPath(arcContent, collectOffline); //获取文章中的所有图片路径
+                            string litpicUrl = "";
                             foreach (string imgPath in imgPathList)  //循环处理文章中包含的图片，将图片复制到新的路径，用于图片服务器访问，生成图片最终用于网络访问的URL
                             {
                                 string fileExtenstion = Path.GetExtension(imgPath);
@@ -554,6 +585,10 @@ namespace ArcDB
                                             return;
                                         }
                                         arcContent = arcContent.Replace(imgPath, imgUrl);
+                                        if (litpicUrl=="")
+                                        {
+                                            litpicUrl = imgUrl;
+                                        }
                                     }
                                 }
                                 catch (Exception ex) //如果复制图片过程中出错的话，保存出错异常，退出当前处理过程
@@ -563,15 +598,9 @@ namespace ArcDB
                                     return;
                                 }
                             } //循环处理文章中的图片结束
-                            sResult = "";
-                            counts = 0;
-                            sql = "update arc_contents set content='" + arcContent + "' where aid='" + aid.ToString() + "'";
-                            counts = myDB.executeDMLSQL(sql, ref sResult);
-                            if (sResult!=mySqlDB.SUCCESS) //如果更新文章内容出错，则将错误信息记录下来到当前采集对象中
+                            bool isArcContentUpdated = updateArcContent(collectOffline, aid, arcContent, litpicUrl); //更新处理完毕后的文章内容和缩略图
+                            if (!isArcContentUpdated)  //如果文章更新失败退出当前处理过程
                             {
-                                List<Exception> coException = collectOffline.CoException;
-                                Exception mysqlError = new Exception(sResult);
-                                coException.Add(mysqlError);
                                 return;
                             }
 
@@ -582,8 +611,11 @@ namespace ArcDB
             }
             updateCoState(collectOffline);
             printErrors(collectOffline.CoException);
-            Thread.Sleep(2000);   //延时2秒，等待监控状态最后一次更新完毕
             collectOffline.CoState = "采集结束";
+            Thread.Sleep(2000);   //延时2秒，等待监控状态最后一次更新完毕
+            collectOffline.CoState = "采集完毕";
+            Thread.Sleep(2000);
+
             removeOneCollection(cid);   //从监控列表中移除保存完毕的采集对象
 
             //保存文章结束后开始下一个采集任务
