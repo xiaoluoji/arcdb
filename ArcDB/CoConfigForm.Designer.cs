@@ -678,7 +678,7 @@
             this.MaximizeBox = false;
             this.Name = "CoConfigForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "CoForm";
+            this.Text = "采集规则配置";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CoForm_Closing);
             this.Load += new System.EventHandler(this.CoForm_Load);
             this.tabctrCoform.ResumeLayout(false);
