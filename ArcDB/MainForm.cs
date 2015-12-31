@@ -27,6 +27,7 @@ namespace ArcDB
         private Configuration _sysConfig;                                                           //保存配置的变量
         private string _coConnString;                                                                  //建立采集数据库连接的配置变量
         private string _pubConnString;                                                               //建立发布数据库连接的配置变量
+        private string _pubTablePrename;                                                          //CMS数据库中的表前缀
 
         #region Main Form相关
         public MainForm()
@@ -127,6 +128,7 @@ namespace ArcDB
         private string GetPubConnString()
         {
             updateSysconfig();
+            _pubTablePrename = tboxPubTablePrename.Text;
             if (tboxPubDbName.Text == "" || tboxPubHostName.Text == "" || tboxPubPort.Text == "" || tboxPubUserName.Text == "" || cboxPubCharset.Text == "" || tboxPubPort.Text == "")
             {
                 MessageBox.Show("请将发布数据库配置信息填写完整！", "提示！", MessageBoxButtons.OK);
@@ -570,13 +572,46 @@ namespace ArcDB
         //点击修改发布规则按钮
         private void btnModifyPubConfig_Click(object sender, EventArgs e)
         {
+            try
+            {
+                ListViewItem checkedItem = listViewPublish.CheckedItems[0];
+                int pubID = int.Parse(checkedItem.SubItems[0].Text);
+                PubConfigForm pubFormModify = new PubConfigForm(_coConnString,_pubConnString, pubID,_pubTablePrename);
+                pubFormModify.Text = "修改发布规则";
+                pubFormModify.Show();
+                this.Enabled = false;
+                pubFormModify.FormClosed += PubFormModify_FormClosed;
 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("未选中任何采集规则，请选择需要修改的采集规则！");
+            }
         }
+
+        private void PubFormModify_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Enabled = true;
+            loadPubConfig();
+        }
+
         //点击增加发布规则按钮
         private void btnAddPubConfig_Click(object sender, EventArgs e)
         {
+            PubConfigForm pubFormAdd = new PubConfigForm(_coConnString, _pubConnString, -1,_pubTablePrename);
+            pubFormAdd.Text = "新增发布规则";
+            pubFormAdd.Show();
+            this.Enabled = false;
+            pubFormAdd.FormClosed += PubFormAdd_FormClosed;
 
         }
+
+        private void PubFormAdd_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Enabled = true;
+            loadPubConfig();
+        }
+
         //点击复制发布规则按钮
         private void btnCopyPubConfig_Click(object sender, EventArgs e)
         {

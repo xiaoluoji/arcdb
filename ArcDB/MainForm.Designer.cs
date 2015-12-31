@@ -538,7 +538,7 @@
             this.btnDelPubConfig.Name = "btnDelPubConfig";
             this.btnDelPubConfig.Size = new System.Drawing.Size(133, 37);
             this.btnDelPubConfig.TabIndex = 16;
-            this.btnDelPubConfig.Text = "删除采集规则";
+            this.btnDelPubConfig.Text = "删除发布规则";
             this.btnDelPubConfig.UseVisualStyleBackColor = true;
             this.btnDelPubConfig.Click += new System.EventHandler(this.btnDelPubConfig_Click);
             // 
@@ -548,7 +548,7 @@
             this.btnCopyPubConfig.Name = "btnCopyPubConfig";
             this.btnCopyPubConfig.Size = new System.Drawing.Size(133, 37);
             this.btnCopyPubConfig.TabIndex = 15;
-            this.btnCopyPubConfig.Text = "复制采集规则";
+            this.btnCopyPubConfig.Text = "复制发布规则";
             this.btnCopyPubConfig.UseVisualStyleBackColor = true;
             this.btnCopyPubConfig.Click += new System.EventHandler(this.btnCopyPubConfig_Click);
             // 
@@ -568,7 +568,7 @@
             this.btnAddPubConfig.Name = "btnAddPubConfig";
             this.btnAddPubConfig.Size = new System.Drawing.Size(133, 37);
             this.btnAddPubConfig.TabIndex = 13;
-            this.btnAddPubConfig.Text = "增加采集规则";
+            this.btnAddPubConfig.Text = "增加发布规则";
             this.btnAddPubConfig.UseVisualStyleBackColor = true;
             this.btnAddPubConfig.Click += new System.EventHandler(this.btnAddPubConfig_Click);
             // 
@@ -588,7 +588,7 @@
             this.btnModifyPubConfig.Name = "btnModifyPubConfig";
             this.btnModifyPubConfig.Size = new System.Drawing.Size(133, 37);
             this.btnModifyPubConfig.TabIndex = 11;
-            this.btnModifyPubConfig.Text = "修改采集规则";
+            this.btnModifyPubConfig.Text = "修改发布规则";
             this.btnModifyPubConfig.UseVisualStyleBackColor = true;
             this.btnModifyPubConfig.Click += new System.EventHandler(this.btnModifyPubConfig_Click);
             // 
@@ -632,7 +632,7 @@
             this.btnPubSelectAll.Name = "btnPubSelectAll";
             this.btnPubSelectAll.Size = new System.Drawing.Size(133, 37);
             this.btnPubSelectAll.TabIndex = 10;
-            this.btnPubSelectAll.Text = "全选采集规则";
+            this.btnPubSelectAll.Text = "全选发布规则";
             this.btnPubSelectAll.UseVisualStyleBackColor = true;
             this.btnPubSelectAll.Click += new System.EventHandler(this.btnPubSelectAll_Click);
             // 

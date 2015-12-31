@@ -61,7 +61,7 @@ namespace ArcDB
             }
         }
 
-        //表达关闭时候执行的操作
+        //表单关闭时候执行的操作
         private void CoForm_Closing(object sender, FormClosingEventArgs e)
         {
             string showMessage = "";
