@@ -33,6 +33,7 @@ namespace ArcDB
         private string _pubNums;
         private string _randomDateStart;
         private string _randomDateStop;
+        private CancellationTokenSource cancelTokenSource;
 
         //构造方法
         public PubConfigForm(string coConnString,string pubConnString,int pubID,string pubTablePrename)
@@ -43,9 +44,9 @@ namespace ArcDB
             _pubTablePrename = pubTablePrename;
             InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
-
         }
 
+        #region 事件区域
         //表单加载时执行的方法
         private void PubConfigForm_Load(object sender, EventArgs e)
         {
@@ -55,6 +56,42 @@ namespace ArcDB
             }
             loadCoTypeInfo();  //加载采集分类信息
             loadPubTypeInfo(); //加载CMS分类信息
+        }
+        
+        //表单关闭前的提示
+        private void PubConfigForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            string showMessage = "";
+            if (_pubID == -1)
+            {
+                showMessage = "放弃添加新规则？放弃请选择“是”";
+            }
+            else
+            {
+                showMessage = "将要推出采集规则编辑，请确认是否保存规则，是否退出编辑？";
+            }
+            if (MessageBox.Show(showMessage, "询问", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                e.Cancel = false;
+            }
+            else
+            {
+                e.Cancel = true;
+            }
+        }
+
+        //RandomDateStart 日期选择器的值变更时，修改配置值为新的值
+        private void dtpRandomDateStart_ValueChanged(object sender, EventArgs e)
+        {
+            string randomDateStart = dtpRandomDateStart.Value.ToShortDateString();
+            tboxRandomDateStart.Text = randomDateStart;
+        }
+
+        //RandomDateStop 日期选择器的值变更时，修改配置值为新的值
+        private void dtpRandomDateStop_ValueChanged(object sender, EventArgs e)
+        {
+            string randomDateStop = dtpRandomDateStop.Value.ToShortDateString();
+            tboxRandomDateStop.Text = randomDateStop;
         }
 
         //当选中listViewCoTypeinfo中的分类项的时候，讲表单中采集分类ID和采集分类名称更新为选中的值
@@ -93,6 +130,10 @@ namespace ArcDB
             }
         }
 
+        #endregion 事件区域
+
+
+        #region 配置发布规则
         //加载采集分类信息
         private void loadCoTypeInfo(string searchCondition="")
         {
@@ -199,6 +240,11 @@ namespace ArcDB
                 int pubNums = int.Parse(_pubNums);
                 DateTime randomDateStart = DateTime.Parse(_randomDateStart);
                 DateTime randomDateStop = DateTime.Parse(_randomDateStop);
+                TimeSpan ts = randomDateStop - randomDateStart;
+                if (ts.TotalDays<0)
+                {
+                    return false;
+                }
             }
             catch (Exception)
             {
@@ -288,8 +334,8 @@ namespace ArcDB
                 }
                 else
                 {
-                    sql = "insert into pub_config(pub_name,co_typeid,co_typename,pub_typeid,pub_typename,pub_nums,random_date_start,random_date_stop";
-                    sql = sql + ") values ('" + _pubName + "'";
+                    sql = "insert into pub_config(pub_name,co_typeid,co_typename,pub_typeid,pub_typename,pub_nums,random_date_start,random_date_stop)";
+                    sql = sql + " values ('" + _pubName + "'";
                     sql = sql + ",'" + _coTypeid + "'";
                     sql = sql + ",'" + _coTypename + "'";
                     sql = sql + ",'" + _pubTypeid + "'";
@@ -320,14 +366,79 @@ namespace ArcDB
             saveConfig();
         }
 
+        //点击 采集分类搜索按钮
         private void btnSearchCoTypename_Click(object sender, EventArgs e)
         {
             loadCoTypeInfo(tboxSearchCoTypename.Text);
         }
 
+        //点击 发布分类搜索按钮
         private void btnSearchPubTypename_Click(object sender, EventArgs e)
         {
             loadPubTypeInfo(tboxSearchPubTypename.Text);
         }
+
+
+        #endregion 配置发布规则
+
+
+        // 点击 测试发布按钮
+        private void btnPubTest_Click(object sender, EventArgs e)
+        {
+            tabctrPubform.SelectedTab = tabPubTest;
+            setVarValue();  //先将变量中的值更新成当前控件中的值
+            bool validateResult = validatePubConfig();
+            if (!validateResult)
+            {
+                MessageBox.Show("必填项未填写完整或未填写正确，请检查表达是否填写完整并正确填写！");
+            }
+            else
+            {
+                int coTypeid = int.Parse(_coTypeid);
+                int pubTypeid = int.Parse(_pubTypeid);
+                //测试发布一篇文章
+                ArticlePublish articlePublishTest = new ArticlePublish(_pubID, _coConnString, _pubConnString, _pubTablePrename, coTypeid,pubTypeid,1, _randomDateStart, _randomDateStop);
+                cancelTokenSource = new CancellationTokenSource();
+                articlePublishTest.CancelTokenSource = cancelTokenSource;
+                articlePublishTest.ProcessPublishArticles();
+                long aid = articlePublishTest.LastExportedCoid;
+                long cmsAid = articlePublishTest.LastExportedCmsid;
+                if (aid == -1 || cmsAid==-1)
+                {
+                    Exception cancelException = articlePublishTest.CancelException;
+                    if (cancelException!=null)
+                    {
+                        tboxPubTestResult.AppendText(cancelException.Message + "\n");
+                        if (cancelException.Data!=null)
+                        {
+                            foreach (DictionaryEntry de in cancelException.Data)
+                            {
+                                tboxPubTestResult.AppendText(string.Format("{0} :  {1} \n", de.Key, de.Value));
+                            }
+                        }
+                    }
+                    List<Exception> listException = articlePublishTest.PubException;
+                    if (listException.Count>0)
+                    {
+                        foreach (Exception item in listException)
+                        {
+                            tboxPubTestResult.AppendText(item.Message + "\n");
+                            if (item.Data!=null)
+                            {
+                                foreach (DictionaryEntry de  in item.Data)
+                                {
+                                    tboxPubTestResult.AppendText(string.Format("{0} :  {1} \n", de.Key, de.Value));
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    tboxPubTestResult.AppendText(string.Format("发布文章成功！ 采集文章ID是：{0}  CMS文章ID是：{1} \n",aid,cmsAid));
+                }
+            }
+        }
+
     }
 }

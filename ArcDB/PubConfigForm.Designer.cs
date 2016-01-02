@@ -291,6 +291,7 @@
             this.dtpRandomDateStop.Name = "dtpRandomDateStop";
             this.dtpRandomDateStop.Size = new System.Drawing.Size(200, 28);
             this.dtpRandomDateStop.TabIndex = 18;
+            this.dtpRandomDateStop.ValueChanged += new System.EventHandler(this.dtpRandomDateStop_ValueChanged);
             // 
             // lblRandomDateStart
             // 
@@ -314,6 +315,7 @@
             this.dtpRandomDateStart.Name = "dtpRandomDateStart";
             this.dtpRandomDateStart.Size = new System.Drawing.Size(200, 28);
             this.dtpRandomDateStart.TabIndex = 15;
+            this.dtpRandomDateStart.ValueChanged += new System.EventHandler(this.dtpRandomDateStart_ValueChanged);
             // 
             // tboxPubNums
             // 
@@ -394,8 +396,9 @@
             this.btnPubTest.Name = "btnPubTest";
             this.btnPubTest.Size = new System.Drawing.Size(144, 33);
             this.btnPubTest.TabIndex = 14;
-            this.btnPubTest.Text = "测试采集";
+            this.btnPubTest.Text = "测试发布";
             this.btnPubTest.UseVisualStyleBackColor = true;
+            this.btnPubTest.Click += new System.EventHandler(this.btnPubTest_Click);
             // 
             // listViewPubTypeinfo
             // 
@@ -459,6 +462,7 @@
             this.Controls.Add(this.tabctrPubform);
             this.Name = "PubConfigForm";
             this.Text = "发布规则配置";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PubConfigForm_FormClosing);
             this.Load += new System.EventHandler(this.PubConfigForm_Load);
             this.tabctrPubform.ResumeLayout(false);
             this.tabPubConfig.ResumeLayout(false);

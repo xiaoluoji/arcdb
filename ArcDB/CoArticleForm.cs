@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SharpMysql;
-using SharpConfig;
 using Murmur;
 using System.IO;
 using ArticleCollect;
@@ -30,7 +29,7 @@ namespace ArcDB
         private Queue<long> _queueCids;                                                                  //采集规则ID队列
         Stopwatch swGlobal = new Stopwatch();                                                        //监控总任务时间
         private List<string> _hashList;                                                                         //用来检测采集文章URL HASH是否重复的集合
-        private int _cfgPicNum=0;                                                                               //保存数据库图片总数，用来做图片分表处理
+        private int _cfgPicNum=0;                                                                               //保存数据库图片总数，用来判断图片子域名
         private string _cfgBasePath="";                                                                       //图片保存根目录
         private string _cfgImgBaseurl="";                                                                   //图片网址所使用的域名
 
@@ -377,7 +376,7 @@ namespace ArcDB
         }
 
         //更新文章内容，这里是更新将文章内容中的本地路径替换成图片服务器访问的URL链接后的内容，包括增加文章缩略图
-        private bool updateArcContent(ArticleCollectOffline collectOffline, int aid,string arcContent,string litpicUrl)
+        private bool updateArcContent(ArticleCollectOffline collectOffline, long aid,string arcContent,string litpicUrl)
         {
             mySqlDB myDB = new mySqlDB(_connString);
             string sResult = "";
@@ -518,7 +517,7 @@ namespace ArcDB
                         string arcUrl = article["url"];
                         string arcContent = article["content"];
                         string hash = GetHashAsString(arcUrl);
-                        int aid = 0;
+                        long aid = 0;
                         sql = "insert into arc_contents (type_id,cid,title,source_site,content,url,hash) values ('" + typeNameID.ToString() + "'";
                         sql = sql + ",'" + cid.ToString() + "'";
                         sql = sql + ",'" + arcTitle + "'";
@@ -529,7 +528,7 @@ namespace ArcDB
                         counts = myDB.executeDMLSQL(sql, ref sResult);
                         if (sResult == mySqlDB.SUCCESS && counts > 0)
                         {
-                            aid = (int)myDB.LastInsertedId;
+                            aid = myDB.LastInsertedId;
                         }
                         else   //如果插入文章内容出错，则将错误信息记录下来到当前采集对象中
                         {

@@ -75,6 +75,7 @@
   <ItemGroup>
     <Compile Include="ArticleCollectCore.cs" />
     <Compile Include="ArticleCollectOffline.cs" />
+    <Compile Include="ArticlePublish.cs" />
     <Compile Include="CoArticleForm.cs">
       <SubType>Form</SubType>
     </Compile>
