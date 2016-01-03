@@ -37,7 +37,7 @@ namespace ArcDB
             this.btnCancelCurrent = new System.Windows.Forms.Button();
             this.btnCancelAll = new System.Windows.Forms.Button();
             this.labTime = new System.Windows.Forms.Label();
-            this.listViewCoArticles = new ListViewNF();
+            this.listViewCoArticles = new ArcDB.ListViewNF();
             this.co_state = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cid = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.co_name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -45,8 +45,8 @@ namespace ArcDB
             this.co_get_arcs = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.co_need_conums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.co_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.time_used = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.co_saved_articles = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.time_used = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // tboxErrorOutput
@@ -149,15 +149,15 @@ namespace ArcDB
             this.co_nums.Text = "已采文章数";
             this.co_nums.Width = 120;
             // 
-            // time_used
-            // 
-            this.time_used.Text = "耗时";
-            this.time_used.Width = 120;
-            // 
             // co_saved_articles
             // 
             this.co_saved_articles.Text = "保存文章数";
             this.co_saved_articles.Width = 120;
+            // 
+            // time_used
+            // 
+            this.time_used.Text = "耗时";
+            this.time_used.Width = 120;
             // 
             // CoArticleForm
             // 
@@ -170,6 +170,7 @@ namespace ArcDB
             this.Controls.Add(this.lblErrorOutput);
             this.Controls.Add(this.tboxErrorOutput);
             this.Controls.Add(this.listViewCoArticles);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "CoArticleForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "采集文章";

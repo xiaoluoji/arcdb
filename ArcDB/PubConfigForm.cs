@@ -403,6 +403,7 @@ namespace ArcDB
                 articlePublishTest.ProcessPublishArticles();
                 long aid = articlePublishTest.LastExportedCoid;
                 long cmsAid = articlePublishTest.LastExportedCmsid;
+                int exportedNums = articlePublishTest.CurrentExportedArticles;
                 if (aid == -1 || cmsAid==-1)
                 {
                     Exception cancelException = articlePublishTest.CancelException;
@@ -436,6 +437,7 @@ namespace ArcDB
                 else
                 {
                     tboxPubTestResult.AppendText(string.Format("发布文章成功！ 采集文章ID是：{0}  CMS文章ID是：{1} \n",aid,cmsAid));
+                    tboxPubTestResult.AppendText(string.Format("此次发布数量：{0}\n", exportedNums));
                 }
             }
         }

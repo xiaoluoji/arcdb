@@ -527,14 +527,14 @@ namespace ArcDB
         {
             _coConnString = GetCoConnString();
             _pubConnString = GetPubConnString();
-            if (_coConnString != "")
+            if (_coConnString != "" && _pubConnString!="")
             {
                 listViewPublish.Items.Clear();
                 mySqlDB myDB = new mySqlDB(_coConnString);
                 string sResult = "";
                 int counts = 0;
                 string filter = getPubFilter();
-                string sql = @"select id,pub_name,co_typename,pub_typename,pub_nums,pub_add_date,pub_export_date from pub_config";
+                string sql = @"select id,pub_name,co_typename,pub_typename,pub_nums,published_nums,pub_add_date,pub_export_date from pub_config";
                 if (filter != "")
                 {
                     sql += filter;
@@ -562,6 +562,10 @@ namespace ArcDB
                 {
                     MessageBox.Show(string.Format("加载数据出错!：{0}", sResult));
                 }
+            }
+            else
+            {
+                MessageBox.Show("请正确填写采集数据库和发布数据库配置信息！");
             }
         }
         //点击加载发布规则按钮
@@ -725,10 +729,35 @@ namespace ArcDB
             tboxPubFilterPub_typename.Text = "";
             loadPubConfig();
         }
+
         //点击开始发布按钮
         private void btnPubArticles_Click(object sender, EventArgs e)
         {
+            ListView.CheckedListViewItemCollection checkedItems = listViewPublish.CheckedItems;
+            if (checkedItems.Count > 0)
+            {
+                List<string> listPubID = new List<string>();
+                foreach (ListViewItem item in checkedItems)
+                {
+                    string pubID = item.SubItems[0].Text;
+                    listPubID.Add(pubID);
+                }
+                PubArticleForm pubArticleForm = new PubArticleForm(listPubID,_coConnString,_pubConnString,_pubTablePrename);
+                pubArticleForm.Show();
+                pubArticleForm.StartPubTask();
+                this.Enabled = false;
+                pubArticleForm.FormClosed += PubArticleForm_FormClosed;
+            }
+            else
+            {
+                MessageBox.Show("未选中任何采集项，请至少选择一项采集规则！");
+            }
+        }
 
+        private void PubArticleForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Enabled = true;
+            loadPubConfig();
         }
 
 

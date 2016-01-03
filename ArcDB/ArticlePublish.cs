@@ -55,6 +55,13 @@ namespace ArcDB
         #endregion Constructors
 
         #region Properties
+
+        //当前发布ID
+        public int PubID
+        {
+            get { return _pubID; }
+        }
+
         //获取或修改是否保存错误异常
         public bool IsRecordError
         {
@@ -315,6 +322,7 @@ namespace ArcDB
                         }
                         _lastExportedCoid = aid;
                         _lastExportedCmsid = cmsAid;
+                        _exportedArticleNums += 1;
                     }
                     else
                     {

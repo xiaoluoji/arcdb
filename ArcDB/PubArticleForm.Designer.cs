@@ -157,8 +157,11 @@
             this.Controls.Add(this.lblErrorOutput);
             this.Controls.Add(this.tboxErrorOutput);
             this.Controls.Add(this.listViewPubArticles);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "PubArticleForm";
             this.Text = "发布文章";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PubArticleForm_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.PubArticleForm_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
 

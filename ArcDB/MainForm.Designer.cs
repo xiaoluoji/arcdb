@@ -127,6 +127,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.tboxCoPassword = new System.Windows.Forms.TextBox();
             this.cboxCoCharset = new System.Windows.Forms.ComboBox();
+            this.published_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabctrMainform.SuspendLayout();
             this.tabPageCollect.SuspendLayout();
             this.gboxCoFilter.SuspendLayout();
@@ -765,6 +766,7 @@
             this.co_typename,
             this.pub_typename,
             this.pub_nums,
+            this.published_nums,
             this.pub_add_date,
             this.pub_export_date});
             this.listViewPublish.FullRowSelect = true;
@@ -1098,6 +1100,11 @@
             this.cboxCoCharset.TabIndex = 28;
             this.cboxCoCharset.Text = "utf8";
             // 
+            // published_nums
+            // 
+            this.published_nums.Text = "已发布文章数";
+            this.published_nums.Width = 120;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
@@ -1241,6 +1248,7 @@
         private System.Windows.Forms.Button btnPubArticles;
         private System.Windows.Forms.Button btnCopyPubConfig;
         private System.Windows.Forms.Button btnDelPubConfig;
+        private System.Windows.Forms.ColumnHeader published_nums;
     }
 }
 

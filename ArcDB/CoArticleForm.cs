@@ -22,7 +22,7 @@ namespace ArcDB
     public partial class CoArticleForm : Form
     {
         //private List<Dictionary<string, object>> _articleCollections;                           
-        private ConcurrentDictionary<long, Dictionary<string, object>> _articleCollections; //采集对象集合，每一个集合中包括一个ArticleCollectOffline采集对象， 一个监控耗时的stopwatch对象
+        private ConcurrentDictionary<long, Dictionary<string, object>> _articleCoCollections; //采集对象集合，每一个集合中包括一个ArticleCollectOffline采集对象， 一个监控耗时的stopwatch对象
         private Dictionary<long, string> _dicCids;                                                       //采集规则ID和采集名称集合，
         private string _connString;                                                                               //数据库连接字符串
         System.Threading.Timer _timerUpdateForm;                                                  //listViewCoArticles状态更新定时器
@@ -37,7 +37,7 @@ namespace ArcDB
         {
             CheckForIllegalCrossThreadCalls = false;
             InitializeComponent();
-            _articleCollections = new ConcurrentDictionary<long, Dictionary<string, object>>();
+            _articleCoCollections = new ConcurrentDictionary<long, Dictionary<string, object>>();
             _dicCids = dicCids;
             _connString = connString;
         }
@@ -63,7 +63,7 @@ namespace ArcDB
         //用来监控当前并行采集中的各个进程的进度状态
         private void updateForm(object state)
         {
-            foreach (var collectItem in _articleCollections)
+            foreach (var collectItem in _articleCoCollections)
             {
                 try
                 {
@@ -92,7 +92,7 @@ namespace ArcDB
                     {
                         tboxErrorOutput.AppendText(string.Format("ID: {0} NULL \n", currentCid));
                     }
-                    if (_articleCollections.Count > 0)
+                    if (_articleCoCollections.Count > 0)
                     {
                         labTime.Text = string.Format("总共耗时： {0}\n", swGlobal.Elapsed.ToString());
                     }
@@ -112,7 +112,7 @@ namespace ArcDB
         private void cancelAllTask()
         {
             _queueCids.Clear();
-            foreach (var collectItem in _articleCollections)
+            foreach (var collectItem in _articleCoCollections)
             {
                 try
                 {
@@ -133,7 +133,7 @@ namespace ArcDB
         //取消当前采集任务
         private void cancelCurrentTask()
         {
-            foreach (var collectItem in _articleCollections)
+            foreach (var collectItem in _articleCoCollections)
             {
                 try
                 {
@@ -222,7 +222,7 @@ namespace ArcDB
             bool removed = false;
             do
             {
-                removed = _articleCollections.TryRemove(cid, out oneCollection);
+                removed = _articleCoCollections.TryRemove(cid, out oneCollection);
             } while (!removed);
         }
 
@@ -875,7 +875,7 @@ namespace ArcDB
                         bool addResult = false;
                         do
                         {
-                            addResult=_articleCollections.TryAdd(cid, oneCollect);
+                            addResult=_articleCoCollections.TryAdd(cid, oneCollect);
                         } while (!addResult);
                     }
                 }
