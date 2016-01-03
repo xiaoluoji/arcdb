@@ -318,6 +318,7 @@ namespace ArcDB
                     sql = sql + ", pub_nums = '" + _pubNums + "'";
                     sql = sql + ", random_date_start = '" + _randomDateStart + "'";
                     sql = sql + ", random_date_stop = '" + _randomDateStop + "'";
+                    sql = sql + ",pub_add_time=current_timestamp";
                     sql = sql + " where id = '" + _pubID.ToString() + "'";
                     try
                     {

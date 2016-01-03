@@ -210,6 +210,7 @@ namespace ArcDB
                     sql = sql + ", xpath_arcurl_node = '" + mySqlDB.EscapeString(_xpathArcurlNode) + "'";
                     sql = sql + ", xpath_title_node = '" + mySqlDB.EscapeString(_xpathTitleNode) + "'";
                     sql = sql + ", xpath_content_node = '" + mySqlDB.EscapeString(_xpathContentNode) + "'";
+                    sql = sql + ",up_time=current_timestamp";
                     if (_arcSubPageSymbol != "")
                     {
                         sql = sql + ", arc_subpage_symbol = '" + mySqlDB.EscapeString(_arcSubPageSymbol) + "'";
