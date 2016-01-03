@@ -475,8 +475,10 @@ namespace ArcDB
             }
             else
             {
-                int listStartPageNum = int.Parse(_startPageNumber);
-                int listStopPageNum = int.Parse(_stopPageNumber);
+                //int listStartPageNum = int.Parse(_startPageNumber);
+                //int listStopPageNum = int.Parse(_stopPageNumber);
+                int listStartPageNum = 2;               
+                int listStopPageNum = 10;            //因为这里是测试，所以默认只采集到第10页，提升测试速度
                 int arcSubPageStartNum = int.Parse(_arcSubPageStartNum);
                 List<string> moreListPages=new List<string>();
                 List<string> subNodeParams=new List<string>();
