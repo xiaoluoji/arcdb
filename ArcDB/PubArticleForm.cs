@@ -182,6 +182,7 @@ namespace ArcDB
             return true;
         }
 
+        //输出发布过程中的错误信息
         private void printErrors(ArticlePublish articlePublish)
         {
             //输出错误信息
@@ -218,11 +219,15 @@ namespace ArcDB
         private void updatePublishState(ArticlePublish articlePublish)
         {
             int pubID = articlePublish.PubID;
+            int coTypeID = articlePublish.CoTypeID;
             int publishedNums = articlePublish.CurrentExportedArticles;
             mySqlDB coMyDB = new mySqlDB(_coConnString);
             string sResult = "";
             int counts = 0;
-            string sql = "update pub_config set published_nums=published_nums+'" + publishedNums.ToString() + "' where id='" + pubID.ToString() + "'";
+            //更新发布配置表中的信息
+            string sql = "update pub_config set published_nums=published_nums+'" + publishedNums.ToString() + "'";
+            sql = sql + ",pub_export_date = CURRENT_TIMESTAMP where id = '" + pubID.ToString() + "'";
+            sql =sql+" where id = '" + pubID.ToString() + "'";
             counts = coMyDB.executeDMLSQL(sql, ref sResult);
             if (sResult != mySqlDB.SUCCESS)
             {
@@ -230,7 +235,9 @@ namespace ArcDB
                 Exception mysqlError = new Exception(sResult);
                 pubException.Add(mysqlError);
             }
-            sql = "update pub_config set pub_export_date=CURRENT_TIMESTAMP where id='" + pubID.ToString() + "'";
+            //更新分类表中的统计信息，发不完以后对应的分类中的可发布数量应该减去当前的数量
+            sql = "update arc_type set unused_nums=unused_nums-'" + publishedNums.ToString() + "'";
+            sql = sql + " where tid='" + coTypeID.ToString() + "'";
             counts = coMyDB.executeDMLSQL(sql, ref sResult);
             if (sResult != mySqlDB.SUCCESS)
             {

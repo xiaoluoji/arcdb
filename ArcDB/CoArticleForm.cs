@@ -405,30 +405,37 @@ namespace ArcDB
             return true;
         }
 
-        //更新采集规则项的最后采集时间以及采集数量
+        //更新采集规则项的最后采集配置表和分类表中的统计信息
         private void updateCoState(ArticleCollectOffline collectOffline)
         {
             long cid = collectOffline.Cid;
+            long typeID = collectOffline.TypeID;
             mySqlDB myDB = new mySqlDB(_connString);
             string sResult = "";
             int counts = 0;
             int coNums = collectOffline.CurrentSavedArticles;
-            string sql = "update co_config set co_nums=co_nums+'" + coNums.ToString()+ "' where cid='"+cid.ToString()+"'";
-            counts=myDB.executeDMLSQL(sql, ref sResult);
+            //更新采集配置表中的信息
+            string sql = "update co_config set co_nums=co_nums+'" + coNums.ToString() + "'";
+            sql = sql + ",co_time = CURRENT_TIMESTAMP";
+            sql =sql+ " where cid='" + cid.ToString() + "'"; 
+            counts =myDB.executeDMLSQL(sql, ref sResult);
             if (sResult!=mySqlDB.SUCCESS)
             {
                 List<Exception> coException = collectOffline.CoException;
                 Exception mysqlError = new Exception(sResult);
                 coException.Add(mysqlError);
             }
-            sql = "update co_config set co_time=CURRENT_TIMESTAMP where cid='" + cid.ToString() + "'";
-            counts = myDB.executeDMLSQL(sql, ref sResult);
+            //更新分类表中的统计信息
+            sql = "update arc_type set total_nums=total_nums+'" + coNums.ToString() + "'";
+            sql = sql + ",unused_nums=unused_nums+'" + coNums.ToString() + "'";
+            sql = sql + " where tid='" + typeID.ToString() + "'"; counts = myDB.executeDMLSQL(sql, ref sResult);
             if (sResult != mySqlDB.SUCCESS)
             {
                 List<Exception> coException = collectOffline.CoException;
                 Exception mysqlError = new Exception(sResult);
                 coException.Add(mysqlError);
             }
+
         }
 
         //输出采集过程中的异常信息
@@ -462,8 +469,8 @@ namespace ArcDB
             {
                 string typeName = collectOffline.TypeName;
                 string sourceSite = collectOffline.SourceSite;
-                int typeNameID = 0;  //采集分类ID
-                int sourceSiteID = 0;  //来源网址ID
+                long typeID = 0;  //采集分类ID
+                long sourceSiteID = 0;  //来源网址ID
                 mySqlDB myDB = new mySqlDB(_connString);
                 string sResult = "";
                 int counts = 0;
@@ -473,7 +480,7 @@ namespace ArcDB
                 dbResult = myDB.GetRecords(sql, ref sResult, ref counts);
                 if (sResult == mySqlDB.SUCCESS && counts > 0)
                 {
-                    typeNameID = int.Parse(dbResult[0]["tid"].ToString());
+                    typeID = long.Parse(dbResult[0]["tid"].ToString());
                 }
                 else
                 {
@@ -481,7 +488,7 @@ namespace ArcDB
                     counts = myDB.executeDMLSQL(sql, ref sResult);
                     if (sResult == mySqlDB.SUCCESS && counts > 0)
                     {
-                        typeNameID = (int)myDB.LastInsertedId;
+                        typeID = myDB.LastInsertedId;
                     }
                 }
                 sResult = "";
@@ -491,7 +498,7 @@ namespace ArcDB
                 dbResult = myDB.GetRecords(sql, ref sResult, ref counts);
                 if (sResult == mySqlDB.SUCCESS && counts > 0)
                 {
-                    sourceSiteID = int.Parse(dbResult[0]["id"].ToString());
+                    sourceSiteID = long.Parse(dbResult[0]["id"].ToString());
                 }
                 else
                 {
@@ -499,11 +506,12 @@ namespace ArcDB
                     counts = myDB.executeDMLSQL(sql, ref sResult);
                     if (sResult == mySqlDB.SUCCESS && counts > 0)
                     {
-                        sourceSiteID = (int)myDB.LastInsertedId;
+                        sourceSiteID = myDB.LastInsertedId;
                     }
                 }
-                if (typeNameID != 0 && sourceSiteID != 0)  //必须要正确获得 typeNameID 和 sourceSiteID后才进行下一步的文章和图片的处理
+                if (typeID != 0 && sourceSiteID != 0)  //必须要正确获得 typeNameID 和 sourceSiteID后才进行下一步的文章和图片的处理
                 {
+                    collectOffline.TypeID = typeID;
                     List<Dictionary<string, string>> articles = collectOffline.Articles;
                     var arcList = from d in articles
                                   orderby d["title"]
@@ -518,7 +526,7 @@ namespace ArcDB
                         string arcContent = article["content"];
                         string hash = GetHashAsString(arcTitle);
                         long aid = 0;
-                        sql = "insert into arc_contents (type_id,cid,title,source_site,content,url,hash) values ('" + typeNameID.ToString() + "'";
+                        sql = "insert into arc_contents (type_id,cid,title,source_site,content,url,hash) values ('" + typeID.ToString() + "'";
                         sql = sql + ",'" + cid.ToString() + "'";
                         sql = sql + ",'" + arcTitle + "'";
                         sql = sql + ",'" + sourceSite + "'";

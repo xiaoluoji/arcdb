@@ -272,7 +272,7 @@ namespace ArcDB
             mySqlDB myDB = new mySqlDB(_coConnString);
             string sResult = "";
             int counts = 0;
-            string sql = @"select * from pub_config where id = '" + _pubID.ToString() + "'";
+            string sql = @"select * from pub_config where id='" + _pubID.ToString() + "'";
             List<Dictionary<string, object>> pubConfigRecords = myDB.GetRecords(sql, ref sResult, ref counts);
             if (sResult == mySqlDB.SUCCESS)
             {
@@ -361,6 +361,73 @@ namespace ArcDB
             }
         }
 
+        //完成发布任务后更新发布表中对应发布规则的已发布数量
+        private void updatePublishState(ArticlePublish articlePublish)
+        {
+            int pubID = articlePublish.PubID;
+            int coTypeID = articlePublish.CoTypeID;
+            int publishedNums = articlePublish.CurrentExportedArticles;
+            mySqlDB coMyDB = new mySqlDB(_coConnString);
+            string sResult = "";
+            int counts = 0;
+            //更新发布配置表中的信息
+            string sql = "update pub_config set published_nums=published_nums+'" + publishedNums.ToString() + "'";
+            sql = sql + ",pub_export_date = CURRENT_TIMESTAMP";
+            sql = sql + " where id = '" + pubID.ToString() + "'";
+            counts = coMyDB.executeDMLSQL(sql, ref sResult);
+            if (sResult != mySqlDB.SUCCESS)
+            {
+                List<Exception> pubException = articlePublish.PubException;
+                Exception mysqlError = new Exception(sResult);
+                pubException.Add(mysqlError);
+            }
+            //更新分类表中的统计信息，发不完以后对应的分类中的可发布数量应该减去当前的数量
+            sql = "update arc_type set unused_nums=unused_nums-'" + publishedNums.ToString() + "'";
+            sql = sql + " where tid='" + coTypeID.ToString() + "'";
+            counts = coMyDB.executeDMLSQL(sql, ref sResult);
+            if (sResult != mySqlDB.SUCCESS)
+            {
+                List<Exception> pubException = articlePublish.PubException;
+                Exception mysqlError = new Exception(sResult);
+                pubException.Add(mysqlError);
+            }
+        }
+
+        //输出发布过程中的错误信息
+        private void printErrors(ArticlePublish articlePublish)
+        {
+            //输出错误信息
+            Exception cancelException = articlePublish.CancelException;
+            if (cancelException != null)
+            {
+                tboxPubTestResult.AppendText(cancelException.Message + "\n");
+                if (cancelException.Data != null)
+                {
+                    foreach (DictionaryEntry de in cancelException.Data)
+                    {
+                        tboxPubTestResult.AppendText(string.Format("{0} :  {1} \n", de.Key, de.Value));
+                    }
+                }
+            }
+            List<Exception> listException = articlePublish.PubException;
+            if (listException.Count > 0)
+            {
+                foreach (Exception item in listException)
+                {
+                    tboxPubTestResult.AppendText(item.Message + "\n");
+                    if (item.Data != null)
+                    {
+                        foreach (DictionaryEntry de in item.Data)
+                        {
+                            tboxPubTestResult.AppendText(string.Format("{0} :  {1} \n", de.Key, de.Value));
+                        }
+                    }
+                }
+            }
+        }
+
+
+
         //点击 保存按钮后的操作
         private void btnSavePubConfig_Click(object sender, EventArgs e)
         {
@@ -439,6 +506,8 @@ namespace ArcDB
                 {
                     tboxPubTestResult.AppendText(string.Format("发布文章成功！ 采集文章ID是：{0}  CMS文章ID是：{1} \n",aid,cmsAid));
                     tboxPubTestResult.AppendText(string.Format("此次发布数量：{0}\n", exportedNums));
+                    updatePublishState(articlePublishTest);
+                    printErrors(articlePublishTest);
                 }
             }
         }

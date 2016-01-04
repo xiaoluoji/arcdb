@@ -61,6 +61,11 @@ namespace ArcDB
         {
             get { return _pubID; }
         }
+        //采集分类ID
+        public int CoTypeID
+        {
+            get { return _coTypeid; }
+        }
 
         //获取或修改是否保存错误异常
         public bool IsRecordError

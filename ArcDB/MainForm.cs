@@ -551,7 +551,7 @@ namespace ArcDB
                 string sResult = "";
                 int counts = 0;
                 string filter = getPubFilter();
-                string sql = @"select id,pub_name,co_typename,pub_typename,pub_nums,published_nums,pub_add_date,pub_export_date from pub_config";
+                string sql = @"select id,pub_name,co_typename,arc_type.unused_nums,pub_typename,pub_nums,published_nums,pub_add_date,pub_export_date from pub_config left join arc_type on pub_config.co_typeid=arc_type.tid";
                 if (filter != "")
                 {
                     sql += filter;
@@ -582,7 +582,17 @@ namespace ArcDB
                             }
                             else
                             {
-                                subItems.Add(kvp.Value.ToString());
+                                if (kvp.Key== "unused_nums")
+                                {
+                                    string unUsedNums = kvp.Value.ToString();
+                                    if (unUsedNums == "")
+                                        unUsedNums = "0";
+                                    subItems.Add(unUsedNums);
+                                }
+                                else
+                                {
+                                    subItems.Add(kvp.Value.ToString());
+                                }
                             }
                         }
                         ListViewItem listItem = new ListViewItem(subItems.ToArray());

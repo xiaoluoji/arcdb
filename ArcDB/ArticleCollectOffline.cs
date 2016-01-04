@@ -17,6 +17,7 @@ namespace ArticleCollect
         #region Fields
         private long _cid;                                                                              //采集规则ID
         private string _typeName;                                                                //采集所属分类
+        private long _typeID;                                                                        //采集所属分类ID
         private string _sourceSite;                                                                //采集来源网址
         private string _listPath;                                                                     //列表页本地路径
         private int _listStartPageNumber;                                                    //列表页起始页面编号
@@ -74,6 +75,12 @@ namespace ArticleCollect
         {
             get { return _typeName; }
             set { _typeName = value; }
+        }
+        //返回采集文章保存分类ID
+        public long TypeID
+        {
+            get { return _typeID; }
+            set { _typeID = value; }
         }
         //返回采集来源网址
         public string SourceSite

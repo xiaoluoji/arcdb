@@ -93,6 +93,7 @@
             this.pub_id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.pub_name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.co_typename = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.unused_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.pub_typename = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.pub_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.published_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -764,6 +765,7 @@
             this.pub_id,
             this.pub_name,
             this.co_typename,
+            this.unused_nums,
             this.pub_typename,
             this.pub_nums,
             this.published_nums,
@@ -792,6 +794,11 @@
             // 
             this.co_typename.Text = "采集分类";
             this.co_typename.Width = 120;
+            // 
+            // unused_nums
+            // 
+            this.unused_nums.Text = "可用文章数";
+            this.unused_nums.Width = 120;
             // 
             // pub_typename
             // 
@@ -1249,6 +1256,7 @@
         private System.Windows.Forms.Button btnCopyPubConfig;
         private System.Windows.Forms.Button btnDelPubConfig;
         private System.Windows.Forms.ColumnHeader published_nums;
+        private System.Windows.Forms.ColumnHeader unused_nums;
     }
 }
 
