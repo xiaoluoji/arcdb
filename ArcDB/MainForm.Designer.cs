@@ -95,6 +95,7 @@
             this.co_typename = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.pub_typename = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.pub_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.published_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.pub_add_date = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.pub_export_date = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPageConfig = new System.Windows.Forms.TabPage();
@@ -127,7 +128,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.tboxCoPassword = new System.Windows.Forms.TextBox();
             this.cboxCoCharset = new System.Windows.Forms.ComboBox();
-            this.published_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabctrMainform.SuspendLayout();
             this.tabPageCollect.SuspendLayout();
             this.gboxCoFilter.SuspendLayout();
@@ -803,14 +803,19 @@
             this.pub_nums.Text = "单次发布数量";
             this.pub_nums.Width = 120;
             // 
+            // published_nums
+            // 
+            this.published_nums.Text = "已发布数量";
+            this.published_nums.Width = 120;
+            // 
             // pub_add_date
             // 
-            this.pub_add_date.Text = "添加时间";
+            this.pub_add_date.Text = "添加日期";
             this.pub_add_date.Width = 120;
             // 
             // pub_export_date
             // 
-            this.pub_export_date.Text = "最后发布时间";
+            this.pub_export_date.Text = "发布日期";
             this.pub_export_date.Width = 120;
             // 
             // tabPageConfig
@@ -1099,11 +1104,6 @@
             this.cboxCoCharset.Size = new System.Drawing.Size(166, 26);
             this.cboxCoCharset.TabIndex = 28;
             this.cboxCoCharset.Text = "utf8";
-            // 
-            // published_nums
-            // 
-            this.published_nums.Text = "已发布文章数";
-            this.published_nums.Width = 120;
             // 
             // MainForm
             // 

@@ -253,7 +253,24 @@ namespace ArcDB
                         List<string> subItems = new List<string>();
                         foreach (KeyValuePair<string, object> kvp in item)
                         {
-                            subItems.Add(kvp.Value.ToString());
+                            if (kvp.Key == "up_time" || kvp.Key == "co_time")
+                            {
+                                string fullDate = kvp.Value.ToString();
+                                try  //尝试将完整时间格式转换成短日期格式
+                                {
+                                    DateTime dt = DateTime.Parse(fullDate);
+                                    string shortDate = dt.ToShortDateString();
+                                    subItems.Add(shortDate);
+                                }
+                                catch (Exception)   //如果转换失败，则继续用完整日期格式
+                                {
+                                    subItems.Add(fullDate);
+                                }
+                            }
+                            else
+                            {
+                                subItems.Add(kvp.Value.ToString());
+                            }
                         }
                         ListViewItem listItem = new ListViewItem(subItems.ToArray());
                         listViewCollect.Items.Add(listItem);
@@ -549,7 +566,24 @@ namespace ArcDB
                         List<string> subItems = new List<string>();
                         foreach (KeyValuePair<string, object> kvp in item)
                         {
-                            subItems.Add(kvp.Value.ToString());
+                            if (kvp.Key=="pub_add_date" || kvp.Key=="pub_export_date")
+                            {
+                                string fullDate = kvp.Value.ToString();
+                                try  //尝试将完整时间格式转换成短日期格式
+                                {
+                                    DateTime dt = DateTime.Parse(fullDate);
+                                    string shortDate = dt.ToShortDateString();
+                                    subItems.Add(shortDate);
+                                }
+                                catch (Exception)   //如果转换失败，则继续用完整日期格式
+                                {
+                                    subItems.Add(fullDate);
+                                }
+                            }
+                            else
+                            {
+                                subItems.Add(kvp.Value.ToString());
+                            }
                         }
                         ListViewItem listItem = new ListViewItem(subItems.ToArray());
                         listViewPublish.Items.Add(listItem);
