@@ -355,9 +355,9 @@ namespace ArticleCollect
         }
 
         //检查匹配文章标题和内容的Xpath标签是否能正确匹配到内容
-        public bool CheckArticleOffline(string articlePath, string xpathTitleNode, string xpathContentNode)
+        public bool CheckArticleOffline(string articlePath, string xpathTitleNode, string xpathContentNode,ref string arcTitle)
         {
-            string arcTitle = "";
+            arcTitle = "";
             string arcContent = "";
             HtmlAgilityPack.HtmlDocument arcDoc = new HtmlAgilityPack.HtmlDocument();
             try
@@ -394,13 +394,14 @@ namespace ArticleCollect
         private object correctAddLock=new object();
         private object wrongAddLock=new object();
         private object exceptionAddLock=new object();
-        public Dictionary<string, List<string>> GetArticlePagesOffline(List<string> listPages, string xpathArcurlNode, string xpathTitleNode, string xpathContentNode)
+        public Dictionary<string, List<Dictionary<string, string>>> GetArticlePagesOffline(List<string> listPages, string xpathArcurlNode, string xpathTitleNode, string xpathContentNode)
         {
             _currentProcessedListPages = 0;
             _currentGetArticlePages = 0;
-            Dictionary<string, List<string>> dicArticles = new Dictionary<string, List<string>>();
-            List<string> correctListArticles = new List<string>();
-            List<string> wrongListArticles = new List<string>();
+            Dictionary<string, List<Dictionary<string, string>>> dicArticles = new Dictionary<string, List<Dictionary<string, string>>>();
+            List<Dictionary<string, string>> correctListArticles = new List<Dictionary<string, string>>();
+            List<Dictionary<string, string>> wrongListArticles = new List<Dictionary<string, string>>();
+
             ParallelOptions po = new ParallelOptions();
             po.CancellationToken = CancelToken.Token;
             try
@@ -419,16 +420,23 @@ namespace ArticleCollect
                             string arcPath = GetFullPathOffline(listSinglePage, arcUrl);
                             if (File.Exists(arcPath))
                             {
-                                if (CheckArticleOffline(arcPath, xpathTitleNode, xpathContentNode))
+                                string arcTitle = "";
+                                if (CheckArticleOffline(arcPath, xpathTitleNode, xpathContentNode,ref arcTitle))
                                     lock (correctAddLock)
                                     {
-                                        correctListArticles.Add(arcPath);
+                                        Dictionary<string, string> oneArticleInfo = new Dictionary<string, string>();
+                                        oneArticleInfo["arcpath"] = arcPath;
+                                        oneArticleInfo["arctitle"] = arcTitle;
+                                        correctListArticles.Add(oneArticleInfo);
                                         _currentGetArticlePages = correctListArticles.Count();
                                     }
                                 else
                                     lock (wrongAddLock)
                                     {
-                                        wrongListArticles.Add(arcPath);
+                                        Dictionary<string, string> oneArticleInfo = new Dictionary<string, string>();
+                                        oneArticleInfo["arcpath"] = arcPath;
+                                        oneArticleInfo["arctitle"] = arcTitle;
+                                        wrongListArticles.Add(oneArticleInfo);
                                     }
                             }
                         }

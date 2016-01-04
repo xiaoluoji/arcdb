@@ -246,8 +246,8 @@ namespace ArcDB
         private object hashLock = new object();
         private void removeDumpArcpages(ArticleCollectOffline collectOffline)
         {
-            List<string> articleNeedCoPages = new List<string>();
-            List<string> currentGetArcPages = collectOffline.CorrectArticlePages;
+            List<Dictionary<string,string>> articleNeedCoPages = new List<Dictionary<string, string>>() ;
+            List<Dictionary<string, string>> currentGetArcPages = collectOffline.CorrectArticlePages;
             if (_hashList == null)
             {
                 mySqlDB myDB = new mySqlDB(_connString);
@@ -270,11 +270,11 @@ namespace ArcDB
             }
             if (_hashList != null)
             {
-                foreach (var arcUrl in currentGetArcPages)
+                foreach (Dictionary<string,string> arcInfo in currentGetArcPages)
                 {
-                    if (!_hashList.Contains(GetHashAsString(arcUrl)))
+                    if (!_hashList.Contains(GetHashAsString(arcInfo["arctitle"])))
                     {
-                        articleNeedCoPages.Add(arcUrl);
+                        articleNeedCoPages.Add(arcInfo);
                     }
                 }
                 collectOffline.CorrectArticlePages = articleNeedCoPages;
@@ -516,7 +516,7 @@ namespace ArcDB
                         string arcTitle = article["title"];
                         string arcUrl = article["url"];
                         string arcContent = article["content"];
-                        string hash = GetHashAsString(arcUrl);
+                        string hash = GetHashAsString(arcTitle);
                         long aid = 0;
                         sql = "insert into arc_contents (type_id,cid,title,source_site,content,url,hash) values ('" + typeNameID.ToString() + "'";
                         sql = sql + ",'" + cid.ToString() + "'";

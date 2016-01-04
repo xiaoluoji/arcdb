@@ -377,8 +377,16 @@ namespace ArcDB
                 tboxStatistics.AppendText(string.Format("当前处理文章链接数：{0}\n", collectOffline.CurrentGetArticlePages));
             }
             //输出URL集合信息
-            List<string> correctListArticles = collectOffline.CorrectArticlePages;
-            List<string> wrongListArticles = collectOffline.WrongArticlePages;
+            List<string> correctListArticles = new List<string>();
+            foreach (Dictionary<string,string> item in collectOffline.CorrectArticlePages)
+            {
+                correctListArticles.Add(item["arcpath"]);
+            }
+            List<string> wrongListArticles = new List<string>();
+            foreach (Dictionary<string,string> item in collectOffline.WrongArticlePages)
+            {
+                wrongListArticles.Add(item["arcpath"]);
+            }
             tboxStatistics.AppendText(string.Format("获取文章URL集合所花时间： {0}\n", swGlobal.ElapsedMilliseconds));
             tboxArticlesPages.AppendText("待采集文章链接：\n");
             foreach (string item in correctListArticles)

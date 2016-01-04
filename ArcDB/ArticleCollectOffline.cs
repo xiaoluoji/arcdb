@@ -15,28 +15,28 @@ namespace ArticleCollect
     class ArticleCollectOffline
     {
         #region Fields
-        private long _cid;                                                               //采集规则ID
-        private string _typeName;                                                 //采集所属分类
-        private string _sourceSite;                                                 //采集来源网址
-        private string _listPath;                                                      //列表页本地路径
-        private int _listStartPageNumber;                                     //列表页起始页面编号
-        private int _listStopPageNumber;                                     //列表页起始页面编号
-        private string _xpathArcurlNode;                                      //列表页文章URL Xpath表达式
-        private string _xpathTitleNode;                                        //文章页文章标题 Xpath表达式
-        private string _xpathContentNode;                                  //文章页文章内容 Xpath表达式
-        private string _arcSubpageSymbol;                                  //文章页分页所使用的分页表达式， 默认是"_"
-        private int _arcSubpageStartNum;                                   //文章页分页默认的起始编号，使用webdup离线下载的内容默认都是起始为2，海报的在线URL中默认的起始为1，后续在线采集的时候需要传入对应参数。
-        private List<string> _subNodeParams;                            //文章内容中需要清理的 子节点Xpath表达式集合
-        private List<string> _regexParams;                                  //文章内容中需要清理的 正则表达式集合
-        private ArticleCollectCore _collectOffline;                        //类型为 ArticleCollectCore的对象，所有采集处理工作都是通过此核心类来完成
-        private List<string> _correctArticlePages;                       //能正确获取 _xpathTitleNode 和 _xpathContentNode 表达式内容的文章URL集合
-        private List<string> _wrongArticlePages;                        //不能正确获取 _xpathTitleNode 和 _xpathContentNode 表达式内容的文章URL集合
-        private List<string> _listPages;                                        //所有列表页URL的结合
-        private List<Dictionary<string, string>> _articles;          //采集完成后，所有文章内容的集合。包括：文章标题：“title”，文章本地路径：“url”，文章内容：“content”
-        private bool _isRecordError;                                             //是否开启错误记录
-        private CancellationTokenSource _cancelToken;             //用来获取取消事件的对象
-        private string _coState = "";                                            //保存当前采集状态
-        private int _savedArticleNums=0;                                   //保存当前已经储存到数据库的采集文章数
+        private long _cid;                                                                              //采集规则ID
+        private string _typeName;                                                                //采集所属分类
+        private string _sourceSite;                                                                //采集来源网址
+        private string _listPath;                                                                     //列表页本地路径
+        private int _listStartPageNumber;                                                    //列表页起始页面编号
+        private int _listStopPageNumber;                                                    //列表页起始页面编号
+        private string _xpathArcurlNode;                                                     //列表页文章URL Xpath表达式
+        private string _xpathTitleNode;                                                         //文章页文章标题 Xpath表达式
+        private string _xpathContentNode;                                                  //文章页文章内容 Xpath表达式
+        private string _arcSubpageSymbol;                                                  //文章页分页所使用的分页表达式， 默认是"_"
+        private int _arcSubpageStartNum;                                                   //文章页分页默认的起始编号，使用webdup离线下载的内容默认都是起始为2，海报的在线URL中默认的起始为1，后续在线采集的时候需要传入对应参数。
+        private List<string> _subNodeParams;                                            //文章内容中需要清理的 子节点Xpath表达式集合
+        private List<string> _regexParams;                                                 //文章内容中需要清理的 正则表达式集合
+        private ArticleCollectCore _collectOffline;                                       //类型为 ArticleCollectCore的对象，所有采集处理工作都是通过此核心类来完成
+        private List<Dictionary<string, string>> _correctArticlePages;     //能正确获取 _xpathTitleNode 和 _xpathContentNode 表达式内容的文章URL和标题集合
+        private List<Dictionary<string, string>> _wrongArticlePages;      //不能正确获取 _xpathTitleNode 和 _xpathContentNode 表达式内容的文章URL和标题集合
+        private List<string> _listPages;                                                        //所有列表页URL的结合
+        private List<Dictionary<string, string>> _articles;                         //采集完成后，所有文章内容的集合。包括：文章标题：“title”，文章本地路径：“url”，文章内容：“content”
+        private bool _isRecordError;                                                            //是否开启错误记录
+        private CancellationTokenSource _cancelToken;                           //用来获取取消事件的对象
+        private string _coState = "";                                                           //保存当前采集状态
+        private int _savedArticleNums=0;                                                //保存当前已经储存到数据库的采集文章数
 
 
         #endregion
@@ -162,14 +162,14 @@ namespace ArticleCollect
             get { return _collectOffline.CancelException; }
         }
         //返回正确匹配文章URL集合，一般修改是在采集前判断数据库中是否有重复采集记录，需要剔除重复采集记录
-        public List<string> CorrectArticlePages
+        public List<Dictionary<string, string>> CorrectArticlePages
         {
             get { return _correctArticlePages; }
             set { _correctArticlePages = value; }
 
         }
         //返回错误匹配文章URL集合
-        public List<string> WrongArticlePages
+        public List<Dictionary<string, string>> WrongArticlePages
         {
             get { return _wrongArticlePages; }
         }
@@ -268,7 +268,7 @@ namespace ArticleCollect
         public void ProcessArticlePages()
         {
             _coState = "获取文章页";
-            Dictionary<string, List<string>> dicListArticles = _collectOffline.GetArticlePagesOffline(_listPages,_xpathArcurlNode,_xpathTitleNode,_xpathContentNode);
+            Dictionary<string, List<Dictionary<string, string>>> dicListArticles = _collectOffline.GetArticlePagesOffline(_listPages,_xpathArcurlNode,_xpathTitleNode,_xpathContentNode);
             _correctArticlePages = dicListArticles["correct"];
             _wrongArticlePages = dicListArticles["wrong"];
         }
@@ -280,7 +280,12 @@ namespace ArticleCollect
         {
             _coState = "采集文章";
             //创建用来返回最终文章的List
-            _articles = _collectOffline.CoArticlesOffline(_correctArticlePages, _xpathArcurlNode, _xpathTitleNode, _xpathContentNode, _subNodeParams, _regexParams,_arcSubpageSymbol,_arcSubpageStartNum);
+            List<string> articleUrls = new List<string>();
+            foreach (Dictionary<string,string> item in _correctArticlePages)
+            {
+                articleUrls.Add(item["arcpath"]);
+            }
+            _articles = _collectOffline.CoArticlesOffline(articleUrls, _xpathArcurlNode, _xpathTitleNode, _xpathContentNode, _subNodeParams, _regexParams,_arcSubpageSymbol,_arcSubpageStartNum);
             //_coState = "采集结束";
         }
 
