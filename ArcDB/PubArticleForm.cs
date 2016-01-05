@@ -73,25 +73,71 @@ namespace ArcDB
             listViewPubArticles.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
             listViewPubArticles.GridLines = true;
         }
+        //点击窗口关闭按钮时
         private void PubArticleForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-
+            if (MessageBox.Show("关闭当前窗口将取消所有正在运行中的发布，是否继续？", "询问", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                e.Cancel = false;
+            }
+            else
+            {
+                cancelAllTask();
+                e.Cancel = true;
+            }
         }
-
+        //关闭当前窗口后的处理
         private void PubArticleForm_FormClosed(object sender, FormClosedEventArgs e)
         {
+            cancelAllTask();
+        }
+        //取消所有采集任务
+        private void cancelAllTask()
+        {
+            _queuePubID.Clear();
+            foreach (var pubItem in _articlePubCollections)
+            {
+                try
+                {
+                    Dictionary<string, object> dic = pubItem.Value;
+                    long currentPubID = pubItem.Key;
+                    ArticlePublish currentPublishWork = (ArticlePublish)dic["publish"];
+                    currentPublishWork.CancelTokenSource.Cancel();
+                }
+                catch (Exception)
+                {
 
+                }
+            }
+        }
+        //取消当前采集任务
+        private void cancelCurrentTask()
+        {
+            foreach (var pubItem in _articlePubCollections)
+            {
+                try
+                {
+                    Dictionary<string, object> dic = pubItem.Value;
+                    long currentPubID = pubItem.Key;
+                    ArticlePublish currentPublishWork = (ArticlePublish)dic["publish"];
+                    currentPublishWork.CancelTokenSource.Cancel();
+                }
+                catch (Exception)
+                {
+
+                }
+            }
         }
 
         //用来监控当前并行采集中的各个进程的进度状态
         private void updateForm(object state)
         {
-            foreach (var collectItem in _articlePubCollections)
+            foreach (var pubItem in _articlePubCollections)
             {
                 try
                 {
-                    Dictionary<string, object> dic = collectItem.Value;
-                    int currentPubID = collectItem.Key;
+                    Dictionary<string, object> dic = pubItem.Value;
+                    int currentPubID = pubItem.Key;
                     ArticlePublish currentCollectWork = (ArticlePublish)dic["publish"];
                     if (currentCollectWork.PubState != "发布完毕"  && dic != null)
                     {
@@ -362,6 +408,17 @@ namespace ArcDB
                     tboxErrorOutput.AppendText(string.Format("发布规则(ID:{0}) 读取数据库采集配置错误！：{1} \n", pubID, sResult));
                 }
             }
+        }
+
+        private void btnCancelAll_Click(object sender, EventArgs e)
+        {
+            cancelAllTask();
+
+        }
+
+        private void btnCancelCurrent_Click(object sender, EventArgs e)
+        {
+            cancelCurrentTask();
         }
     }
 }

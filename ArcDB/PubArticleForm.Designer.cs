@@ -119,6 +119,7 @@
             this.btnCancelAll.TabIndex = 14;
             this.btnCancelAll.Text = "取消所有发布";
             this.btnCancelAll.UseVisualStyleBackColor = true;
+            this.btnCancelAll.Click += new System.EventHandler(this.btnCancelAll_Click);
             // 
             // btnCancelCurrent
             // 
@@ -128,6 +129,7 @@
             this.btnCancelCurrent.TabIndex = 13;
             this.btnCancelCurrent.Text = "取消当前发布";
             this.btnCancelCurrent.UseVisualStyleBackColor = true;
+            this.btnCancelCurrent.Click += new System.EventHandler(this.btnCancelCurrent_Click);
             // 
             // lblErrorOutput
             // 
