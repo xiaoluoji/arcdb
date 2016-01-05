@@ -512,12 +512,15 @@ namespace ArcDB
                 if (typeID != 0 && sourceSiteID != 0)  //必须要正确获得 typeNameID 和 sourceSiteID后才进行下一步的文章和图片的处理
                 {
                     collectOffline.TypeID = typeID;
+                    
                     List<Dictionary<string, string>> articles = collectOffline.Articles;
+                    /*
                     var arcList = from d in articles
                                   orderby d["title"]
                                   ascending
                                   select d;
-                    foreach (Dictionary<string, string> article in arcList)
+                                  */
+                    foreach (Dictionary<string, string> article in articles)
                     {
                         sResult = "";
                         counts = 0;
@@ -528,9 +531,9 @@ namespace ArcDB
                         long aid = 0;
                         sql = "insert into arc_contents (type_id,cid,title,source_site,content,url,hash) values ('" + typeID.ToString() + "'";
                         sql = sql + ",'" + cid.ToString() + "'";
-                        sql = sql + ",'" + arcTitle + "'";
-                        sql = sql + ",'" + sourceSite + "'";
-                        sql = sql + ",'" + arcContent + "'";
+                        sql = sql + ",'" + mySqlDB.EscapeString(arcTitle) + "'";
+                        sql = sql + ",'" + mySqlDB.EscapeString(sourceSite) + "'";
+                        sql = sql + ",'" + mySqlDB.EscapeString(arcContent) + "'";
                         sql = sql + ",'" + mySqlDB.EscapeString(arcUrl) + "'";
                         sql = sql + ",'" + hash + "')";
                         counts = myDB.executeDMLSQL(sql, ref sResult);

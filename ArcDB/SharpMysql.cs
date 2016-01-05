@@ -64,7 +64,7 @@ namespace SharpMysql
             }
             catch (Exception ex)
             {
-                sResult = SERROR + ": " + ex.Message;
+                sResult = "sql: " + sSql + SERROR + ": " + ex.Message;
                 if (_conn.State == ConnectionState.Open)
                 {
                     _conn.Close();
@@ -94,7 +94,7 @@ namespace SharpMysql
             }
             catch (Exception ex)
             {
-                sResult = SERROR + ": " + ex.Message;
+                sResult = "sql: "+sSql+SERROR + ": " + ex.Message;
                 if (_conn.State == ConnectionState.Open)
                 {
                     _conn.Close();
@@ -124,7 +124,7 @@ namespace SharpMysql
             }
             catch (Exception ex)
             {
-                sResult = SERROR + ": " + ex.Message;
+                sResult = "sql: " + sSql + SERROR + ": " + ex.Message;
                 if (_conn.State == ConnectionState.Open)
                 {
                     _conn.Close();
