@@ -226,7 +226,7 @@ namespace ArcDB
             int counts = 0;
             //更新发布配置表中的信息
             string sql = "update pub_config set published_nums=published_nums+'" + publishedNums.ToString() + "'";
-            sql = sql + ",pub_export_date = CURRENT_TIMESTAMP where id = '" + pubID.ToString() + "'";
+            sql = sql + ",pub_export_date = CURRENT_TIMESTAMP";
             sql =sql+" where id = '" + pubID.ToString() + "'";
             counts = coMyDB.executeDMLSQL(sql, ref sResult);
             if (sResult != mySqlDB.SUCCESS)

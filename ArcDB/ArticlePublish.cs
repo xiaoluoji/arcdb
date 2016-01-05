@@ -175,7 +175,7 @@ namespace ArcDB
             mySqlDB myDB = new mySqlDB(_coConnString);
             string sResult = "";
             int counts = 0;
-            string sql = "select aid,litpic,title,source_site,content from arc_contents where type_id='" + _coTypeid.ToString() + "' and usedby_pc='no' limit 1";
+            string sql = "select aid,litpic,title,source_site,content from arc_contents where type_id='" + _coTypeid.ToString() + "' and usedby_pc='no'  order by aid limit 1";
             dbResult = myDB.GetRecords(sql, ref sResult, ref counts);
             if (sResult==mySqlDB.SUCCESS && counts>0)
             {
@@ -220,9 +220,9 @@ namespace ArcDB
             int counts = 0;
             string sql = "insert into " + _pubTablePrename + "_news(catid,title,thumb,description,status,sysadd,username,inputtime,updatetime)";
             sql = sql + " values ('" + _pubTypeid + "'";
-            sql = sql + ",'" + title + "'";
+            sql = sql + ",'" + mySqlDB.EscapeString(title) + "'";
             sql = sql + ",'" + litpic + "'";
-            sql = sql + ",'" + description + "'";
+            sql = sql + ",'" + mySqlDB.EscapeString(description) + "'";
             sql = sql + ",'" + status + "'";
             sql = sql + ",'" + sysadd + "'";
             sql = sql + ",'" + username + "'";
@@ -245,10 +245,10 @@ namespace ArcDB
             string paginationtype = "1";           //表示文章自动分页
             sql = "insert into " + _pubTablePrename + "_news_data(id,content,paginationtype,maxcharperpage,copyfrom)";
             sql = sql + " values ('" + cmsAid.ToString() + "'";
-            sql = sql + ",'" + content + "'";
+            sql = sql + ",'" + mySqlDB.EscapeString(content) + "'";
             sql = sql + ",'" + paginationtype + "'";
             sql = sql + ",'" + maxcharperpage + "'";
-            sql = sql + ",'" + sourceSite + "')";
+            sql = sql + ",'" + mySqlDB.EscapeString(sourceSite) + "')";
             counts = pubMyDB.executeDMLSQL(sql, ref sResult);
             if (sResult == mySqlDB.SUCCESS && counts > 0)
             {
