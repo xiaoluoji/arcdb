@@ -245,7 +245,7 @@ namespace ArcDB
                 return false;
             }
             //将相应的文章数据插入到news_data表中
-            string maxcharperpage = "3000";  //文章按多少字分页
+            string maxcharperpage = "2500";  //文章按多少字分页
             string paginationtype = "1";           //表示文章自动分页
             string groupids_view = "";
             string template = "";
