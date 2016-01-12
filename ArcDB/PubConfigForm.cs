@@ -205,7 +205,7 @@ namespace ArcDB
                     listViewPubTypeinfo.Items.Add(listItem);
                 }
                 listViewPubTypeinfo.EndUpdate();
-                listViewCoTypeinfo.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+                listViewPubTypeinfo.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
             }
             else
             {
