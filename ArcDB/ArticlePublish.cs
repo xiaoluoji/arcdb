@@ -205,11 +205,13 @@ namespace ArcDB
         private bool exportOneRecord(Dictionary<string, object> coArticle,ref long cmsAid)
         {
             cmsAid = -1;                            //news表中插入记录后的ID值
+            string typeid = "0";
             string title = coArticle["title"].ToString();
             string litpic = coArticle["litpic"].ToString();
             string sourceSite = coArticle["source_site"].ToString();
             string content = coArticle["content"].ToString();
             string description = "";
+            string url = "";
             string status = "99";
             string sysadd = "1";
             string username = "妖妖";
@@ -218,11 +220,13 @@ namespace ArcDB
             mySqlDB pubMyDB = new mySqlDB(_pubConnString);
             string sResult = "";
             int counts = 0;
-            string sql = "insert into " + _pubTablePrename + "_news(catid,title,thumb,description,status,sysadd,username,inputtime,updatetime)";
+            string sql = "insert into " + _pubTablePrename + "_news(catid,typeid,title,thumb,description,url,status,sysadd,username,inputtime,updatetime)";
             sql = sql + " values ('" + _pubTypeid + "'";
+            sql = sql + ",'" + typeid + "'";
             sql = sql + ",'" + mySqlDB.EscapeString(title) + "'";
             sql = sql + ",'" + litpic + "'";
             sql = sql + ",'" + mySqlDB.EscapeString(description) + "'";
+            sql = sql + ",'" + url + "'";
             sql = sql + ",'" + status + "'";
             sql = sql + ",'" + sysadd + "'";
             sql = sql + ",'" + username + "'";
@@ -243,11 +247,15 @@ namespace ArcDB
             //将相应的文章数据插入到news_data表中
             string maxcharperpage = "3000";  //文章按多少字分页
             string paginationtype = "1";           //表示文章自动分页
-            sql = "insert into " + _pubTablePrename + "_news_data(id,content,paginationtype,maxcharperpage,copyfrom)";
+            string groupids_view = "";
+            string template = "";
+            sql = "insert into " + _pubTablePrename + "_news_data(id,content,groupids_view,paginationtype,maxcharperpage,template,copyfrom)";
             sql = sql + " values ('" + cmsAid.ToString() + "'";
             sql = sql + ",'" + mySqlDB.EscapeString(content) + "'";
+            sql = sql + ",'" + groupids_view + "'";
             sql = sql + ",'" + paginationtype + "'";
             sql = sql + ",'" + maxcharperpage + "'";
+            sql = sql + ",'" + template + "'";
             sql = sql + ",'" + mySqlDB.EscapeString(sourceSite) + "')";
             counts = pubMyDB.executeDMLSQL(sql, ref sResult);
             if (sResult == mySqlDB.SUCCESS && counts > 0)
