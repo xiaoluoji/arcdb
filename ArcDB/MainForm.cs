@@ -804,10 +804,95 @@ namespace ArcDB
             loadPubConfig();
         }
 
-
-
         #endregion   发布规则功能块结束
 
+        #region 文章相关工具模块
 
+        private void btnGetCoArcDesc_Click(object sender, EventArgs e)
+        {
+            ThreadPool.QueueUserWorkItem(getCoArticleDescription,null);
+        }
+        private void getCoArticleDescription(object state)
+        {
+            _coConnString = GetCoConnString();
+            int descriptionLength=120;
+            int finishedArticles = 0;
+            if (int.TryParse(tboxCoArcDescLength.Text,out descriptionLength))
+            {
+                descriptionLength = int.Parse(tboxCoArcDescLength.Text);
+            }
+            else
+            {
+                MessageBox.Show("文章概要长度值不是整数，使用默认长度120！");
+            }
+            if (_coConnString!="")
+            {
+                System.Threading.Timer timer = new System.Threading.Timer(
+                    //timeCB,
+                    //PrintTime,      //TimerCallBack委托对象
+                    delegate {
+                        this.Invoke((Action)delegate { lblFinishedGetCoArcDescCounts.Text = string.Format("{0}", finishedArticles); });
+                    },
+                    //(object state)=>labTime.Text = string.Format("Time is {0}\n", DateTime.Now.ToLongTimeString()),
+                    null,           //想传入的参数 （null表示没有参数）
+                    0,              //在开始之前，等待多长时间（以毫秒为单位）
+                    1000);       //每次调用的间隔时间（以毫秒为单位）
+                mySqlDB coMyDB = new mySqlDB(_coConnString);
+                string sResult = "";
+                int counts = 0;
+                string sql = "select aid,title,content from arc_contents where description is null limit 1";
+                List<Dictionary<string, object>> articleRecord=new List<Dictionary<string, object>>();
+                articleRecord = coMyDB.GetRecords(sql, ref sResult, ref counts);
+                while (sResult==mySqlDB.SUCCESS && counts>0)
+                {
+                    string aid = articleRecord[0]["aid"].ToString();
+                    string title= articleRecord[0]["title"].ToString();
+                    string arcContent = articleRecord[0]["content"].ToString();
+                    HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+                    try
+                    {
+                        doc.LoadHtml(arcContent);
+                        string arcContentPiece = doc.DocumentNode.InnerText;
+                        arcContentPiece = arcContentPiece.Replace("\r\n\t", "");
+                        arcContentPiece = arcContentPiece.Replace("\r\n", "");
+                        arcContentPiece = arcContentPiece.Replace("\r", "");
+                        arcContentPiece = arcContentPiece.Replace("\n", "");
+                        arcContentPiece = arcContentPiece.Replace("\t", "");
+                        arcContentPiece = arcContentPiece.Replace("&nbsp;", "");
+                        arcContentPiece = arcContentPiece.Replace("amp;", "");
+                        arcContentPiece = arcContentPiece.Replace(" ", "");
+                        if (arcContentPiece.Length>300)
+                        {
+                            arcContentPiece = arcContentPiece.Substring(0, 300);
+                        }
+                        string description = ArcTool.GetDescription(arcContentPiece, descriptionLength);
+                        string updateSql = "update arc_contents set description='" + description + "' where aid='" + aid+"'";
+                        counts=coMyDB.executeDMLSQL(updateSql,ref sResult);
+                        if (sResult==mySqlDB.SUCCESS && counts>0)
+                        {
+                            finishedArticles += 1;
+                        }
+                        else
+                        {
+                            tboxArctoolOutput.AppendText(string.Format("错误信息：{0}\n", sResult));
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        tboxArctoolOutput.AppendText(string.Format("错误信息：{0}: {1} : {2} \n", aid,title,ex.Message));
+                    }
+                    //再次从数据里获取一篇文章
+                    articleRecord = coMyDB.GetRecords(sql, ref sResult, ref counts);
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("请正确配置采集数据库配置！");
+            }
+
+        }
+
+        #endregion 文章相关工具模块结束
     }
 }

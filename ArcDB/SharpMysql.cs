@@ -138,6 +138,7 @@ namespace SharpMysql
         {
             return MySqlHelper.EscapeString(stringVar);
         }
+
     }
 
 }

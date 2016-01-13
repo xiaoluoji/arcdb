@@ -73,6 +73,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArcTool.cs" />
     <Compile Include="ArticleCollectCore.cs" />
     <Compile Include="ArticleCollectOffline.cs" />
     <Compile Include="ArticlePublish.cs" />
