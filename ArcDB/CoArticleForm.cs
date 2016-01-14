@@ -100,6 +100,7 @@ namespace ArcDB
                     }
                     else
                     {
+                        tboxErrorOutput.AppendText("所有采集任务采集完成！");
                         swGlobal.Stop();
                     }
                 }
