@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using SharpMysql;
 using Murmur;
+using HtmlAgilityPack;
 using System.IO;
 using ArticleCollect;
 using System.Diagnostics;
@@ -32,6 +33,7 @@ namespace ArcDB
         private int _cfgPicNum=0;                                                                               //保存数据库图片总数，用来判断图片子域名
         private string _cfgBasePath="";                                                                       //图片保存根目录
         private string _cfgImgBaseurl="";                                                                   //图片网址所使用的域名
+        private int _cfgDescriptionLength = 0;                                                           //生成文章概要时候生成概要的长度，默认为120
 
         public CoArticleForm(string connString, Dictionary<long, string> dicCids)
         {
@@ -325,6 +327,23 @@ namespace ArcDB
                 else
                     return false;
             }
+            //读取文章概要长度变量
+            if (_cfgDescriptionLength == 0)
+            {
+                sql = "select value from sys_config where varname='cfg_description_dength'";
+                dbResult = myDB.GetRecords(sql, ref sResult, ref counts);
+                if (sResult == mySqlDB.SUCCESS && counts > 0)
+                {
+                    string temp = dbResult[0]["value"].ToString();
+                    if (int.TryParse(temp,out _cfgDescriptionLength))
+                    {
+                        _cfgDescriptionLength = int.Parse(temp);
+                    }else
+                        _cfgDescriptionLength = 120;
+                }
+                else
+                    _cfgDescriptionLength = 120;
+            }
             if (_cfgBasePath==""||_cfgImgBaseurl=="")
             {
                 return false;
@@ -352,6 +371,38 @@ namespace ArcDB
                 coException.Add(ex);
             }
             return imgPathList;
+        }
+
+        //根据文章内容获取文章概要
+        private string getArticleDescription(string arcContent,ArticleCollectOffline collectOffline)
+        {
+            string description = "";
+            HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+            try
+            {
+                doc.LoadHtml(arcContent);
+                string arcContentPiece = doc.DocumentNode.InnerText;
+                arcContentPiece = arcContentPiece.Replace("\r\n\t", "");
+                arcContentPiece = arcContentPiece.Replace("\r\n", "");
+                arcContentPiece = arcContentPiece.Replace("\r", "");
+                arcContentPiece = arcContentPiece.Replace("\n", "");
+                arcContentPiece = arcContentPiece.Replace("\t", "");
+                arcContentPiece = arcContentPiece.Replace("&nbsp;", "");
+                arcContentPiece = arcContentPiece.Replace("amp;", "");
+                arcContentPiece = arcContentPiece.Replace(" ", "");
+                if (arcContentPiece.Length > 200)
+                {
+                    arcContentPiece = arcContentPiece.Substring(0, 200);
+                }
+                description = ArcTool.GetDescription(arcContentPiece, _cfgDescriptionLength);
+            }
+            catch (Exception ex)
+            {
+                List<Exception> coException = collectOffline.CoException;
+                ex.Data.Add("出错信息", "生成文章概要出错！");
+                coException.Add(ex);
+            }
+            return description;
         }
 
         //更新数据系统配置表中的图片总数参数
@@ -459,6 +510,7 @@ namespace ArcDB
         }
 
         //将文章保存进数据库,以及对文章内容中的图片做相关处理，复制到新的路径，以及生成最终的网络访问URL
+        //保存文章过程中，有任何错误都将会中断文章保存，并输出相关错误提示
         //private object picNumLock = new object();
         private void saveArticles(ArticleCollectOffline collectOffline)
         {
@@ -525,11 +577,13 @@ namespace ArcDB
                         string arcUrl = article["url"];
                         string arcContent = article["content"];
                         string hash = GetHashAsString(arcTitle);
+                        string description = getArticleDescription(arcContent,collectOffline);
                         long aid = 0;
-                        sql = "insert into arc_contents (type_id,cid,title,source_site,content,url,hash) values ('" + typeID.ToString() + "'";
+                        sql = "insert into arc_contents (type_id,cid,title,source_site,description,content,url,hash) values ('" + typeID.ToString() + "'";
                         sql = sql + ",'" + cid.ToString() + "'";
                         sql = sql + ",'" + mySqlDB.EscapeString(arcTitle) + "'";
                         sql = sql + ",'" + mySqlDB.EscapeString(sourceSite) + "'";
+                        sql = sql + ",'" + mySqlDB.EscapeString(description) + "'";
                         sql = sql + ",'" + mySqlDB.EscapeString(arcContent) + "'";
                         sql = sql + ",'" + mySqlDB.EscapeString(arcUrl) + "'";
                         sql = sql + ",'" + hash + "')";

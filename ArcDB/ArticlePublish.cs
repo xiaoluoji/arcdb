@@ -175,7 +175,7 @@ namespace ArcDB
             mySqlDB myDB = new mySqlDB(_coConnString);
             string sResult = "";
             int counts = 0;
-            string sql = "select aid,litpic,title,source_site,content from arc_contents where type_id='" + _coTypeid.ToString() + "' and usedby_pc='no'  order by aid limit 1";
+            string sql = "select aid,litpic,title,source_site,description,content from arc_contents where type_id='" + _coTypeid.ToString() + "' and usedby_pc='no'  order by aid limit 1";
             dbResult = myDB.GetRecords(sql, ref sResult, ref counts);
             if (sResult==mySqlDB.SUCCESS && counts>0)
             {
@@ -210,7 +210,7 @@ namespace ArcDB
             string litpic = coArticle["litpic"].ToString();
             string sourceSite = coArticle["source_site"].ToString();
             string content = coArticle["content"].ToString();
-            string description = "";
+            string description = coArticle["description"].ToString();
             string url = "";
             string status = "99";
             string sysadd = "1";
