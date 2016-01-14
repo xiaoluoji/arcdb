@@ -376,12 +376,12 @@ namespace ArcDB
         }
 
         //更新文章内容，这里是更新将文章内容中的本地路径替换成图片服务器访问的URL链接后的内容，包括增加文章缩略图
-        private bool updateArcContent(ArticleCollectOffline collectOffline, long aid,string arcContent,string litpicUrl)
+        private bool updateArcContent(ArticleCollectOffline collectOffline, long aid,string arcContent,string litpicUrl,string isAllpicCopied)
         {
             mySqlDB myDB = new mySqlDB(_connString);
             string sResult = "";
             int counts = 0;
-            string sql = "update arc_contents set content='" + arcContent + "' where aid='" + aid.ToString() + "'";
+            string sql = "update arc_contents set content='" + arcContent + "',is_allpic_copied='"+isAllpicCopied+"' where aid='" + aid.ToString() + "'";
             counts = myDB.executeDMLSQL(sql, ref sResult);
             if (sResult != mySqlDB.SUCCESS)
             {
@@ -514,12 +514,9 @@ namespace ArcDB
                     collectOffline.TypeID = typeID;
                     
                     List<Dictionary<string, string>> articles = collectOffline.Articles;
-                    /*
-                    var arcList = from d in articles
-                                  orderby d["title"]
-                                  ascending
-                                  select d;
-                                  */
+
+                    //遍历采集到的文章列表，对将文章插入到数据库表中,
+                    //并将内容中的图片复制到新的系统配置的图片目录，生成图片的ULR，将文章内容中图片的本地链接为生成的带图片域名的URL
                     foreach (Dictionary<string, string> article in articles)
                     {
                         sResult = "";
@@ -541,15 +538,21 @@ namespace ArcDB
                         {
                             aid = myDB.LastInsertedId;
                         }
-                        else   //如果插入文章内容出错，则将错误信息记录下来到当前采集对象中
+                        else   //如果插入文章内容出错，则将错误信息记录下来到当前采集对象中，并且中断当前采集过程，提示检查数据库
                         {
                             List<Exception> coException = collectOffline.CoException;
                             Exception mysqlError = new Exception(sResult);
                             coException.Add(mysqlError);
+                            tboxErrorOutput.AppendText(string.Format("插入文章内容出错,中断采集过程！请检查数据库连接是否正常！错误信息：{0}\n", mysqlError.Message));
+                            collectOffline.CoState = "采集错误";
+                            cancelAllTask();
+                            updateCoState(collectOffline);
+                            return;
                         }
                         if (aid != 0)  //判断文章是否正确插入到数据库中，正确插入文章后返回的ID不会是0
                         {
                             collectOffline.CurrentSavedArticles++;
+                            string isAllpicCopied = "yes";     //对应文章表中的is_allpic_copied字段，用来判断文章内容中的图片是否都正确处理了。初始为都能正确处理，如果处理过程中出错则设置为 "no"
                             List<string> imgPathList = getImgPath(arcContent, collectOffline); //获取文章中的所有图片路径
                             string litpicUrl = "";
                             foreach (string imgPath in imgPathList)  //循环处理文章中包含的图片，将图片复制到新的路径，用于图片服务器访问，生成图片最终用于网络访问的URL
@@ -590,8 +593,20 @@ namespace ArcDB
                                     if (sResult==mySqlDB.SUCCESS && counts>0)
                                     {
                                         _cfgPicNum++;
-                                        if (!updateCfgPicnum(collectOffline))   //如果更新数据系统配置表中的图片总数参数失败的话，就退出当前处理过程，不然的话会导致图片总数出问题。
+                                        if (!updateCfgPicnum(collectOffline))   //如果更新数据系统配置表中的图片总数参数失败的话，就退出当前图片处理过程，不然的话会导致图片总数出问题。
                                         {
+                                            List<Exception> coException = collectOffline.CoException;
+                                            Exception ex = new Exception("更新数据系统配置表中的图片总数参数失败！中断保存采集文章！请检查数据库连接是否正常！");
+                                            ex.Data.Add("文章ID", aid);
+                                            ex.Data.Add("文章标题", arcTitle);
+                                            ex.Data.Add("文章路径", arcUrl);
+                                            ex.Data.Add("图片源路径", imgPath);
+                                            ex.Data.Add("图片新路径", picFileName);
+                                            coException.Add(ex);
+                                            tboxErrorOutput.AppendText(string.Format("处理文章图片出错！文章ID：{0} 图片源路径：{1} 图片新路径：{2} 错误信息：{3}\n", aid, imgPath, picFileName, ex.Message));
+                                            collectOffline.CoState = "采集错误";
+                                            cancelAllTask();
+                                            updateCoState(collectOffline);
                                             return;
                                         }
                                         arcContent = arcContent.Replace(imgPath, imgUrl);
@@ -604,20 +619,60 @@ namespace ArcDB
                                 catch (Exception ex) //如果复制图片过程中出错的话，保存出错异常，退出当前处理过程
                                 {
                                     List<Exception> coException = collectOffline.CoException;
+                                    ex.Data.Add("文章ID", aid);
+                                    ex.Data.Add("文章标题", arcTitle);
+                                    ex.Data.Add("文章路径", arcUrl);
+                                    ex.Data.Add("图片源路径", imgPath);
+                                    ex.Data.Add("图片新路径", picFileName);
                                     coException.Add(ex);
+                                    tboxErrorOutput.AppendText(string.Format("处理文章图片出错！请检查磁盘访问是否正常！文章ID：{0} 图片源路径：{1} 图片新路径：{2} 错误信息：{3}\n", aid,imgPath,picFileName, ex.Message));
+                                    collectOffline.CoState = "采集错误";
+                                    cancelAllTask();
+                                    updateCoState(collectOffline);
                                     return;
                                 }
                             } //循环处理文章中的图片结束
-                            bool isArcContentUpdated = updateArcContent(collectOffline, aid, arcContent, litpicUrl); //更新处理完毕后的文章内容和缩略图
+                            bool isArcContentUpdated = updateArcContent(collectOffline, aid, arcContent, litpicUrl,isAllpicCopied); //更新处理完毕后的文章内容和缩略图
                             if (!isArcContentUpdated)  //如果文章更新失败退出当前处理过程
                             {
+                                List<Exception> coException = collectOffline.CoException;
+                                Exception ex = new Exception("保存文章过程中，处理完文章内容中图片和缩略图后，更新文章内容出错！中断保存采集文章！");
+                                ex.Data.Add("文章ID", aid);
+                                ex.Data.Add("文章标题", arcTitle);
+                                ex.Data.Add("文章路径", arcUrl);
+                                coException.Add(ex);
+                                tboxErrorOutput.AppendText(string.Format("保存文章出错,请检查数据库连接是否正常！文章ID：{0} 文章标题：{1}  错误信息：{2}\n", aid,  arcTitle, ex.Message));
+                                collectOffline.CoState = "采集错误";
+                                cancelAllTask();
+                                updateCoState(collectOffline);
                                 return;
                             }
 
                         }  //判断文章是否正确插入到数据库结束
-
                     }  //循环处理文章结束
+                }//判断是否正确获取栏目ID和来源网站ID
+                else
+                {
+                    List<Exception> coException = collectOffline.CoException;
+                    Exception ex = new Exception("保存文章-获取采集分类ID（tid）来源网址ID错误！请检查数据库连接是否正常！");
+                    ex.Data.Add("分类名称", typeName);
+                    ex.Data.Add("来源网址", sourceSite);
+                    coException.Add(ex);
+                    tboxErrorOutput.AppendText(string.Format("获取采集分类ID（tid）来源网址ID错误！请检查数据库连接是否正常！分类名称: {0} 来源网址: {1}",typeName,sourceSite));
+                    collectOffline.CoState = "采集错误";
+                    cancelAllTask();
+                    return;
                 }
+            }
+            else
+            {
+                Exception ex = new Exception("获取系统设置参数失败，请确认sys_config表中对应的cfg_basepath，cfg_pic_num，cfg_img_baseurl变量初始值是否正确设置！");
+                List<Exception> coException = collectOffline.CoException;
+                coException.Add(ex);
+                tboxErrorOutput.AppendText(string.Format("错误信息：{0} 中断保存采集文章！", ex.Message));
+                collectOffline.CoState = "采集错误";
+                cancelAllTask();
+                return;
             }
             updateCoState(collectOffline);
             printErrors(collectOffline.CoException);

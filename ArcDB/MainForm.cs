@@ -812,6 +812,11 @@ namespace ArcDB
         {
             ThreadPool.QueueUserWorkItem(getCoArticleDescription,null);
         }
+        private void btnGetPubArcDesc_Click(object sender, EventArgs e)
+        {
+            ThreadPool.QueueUserWorkItem(setPubArticleDescription, null);
+        }
+
         private void getCoArticleDescription(object state)
         {
             _coConnString = GetCoConnString();
@@ -861,9 +866,9 @@ namespace ArcDB
                         arcContentPiece = arcContentPiece.Replace("&nbsp;", "");
                         arcContentPiece = arcContentPiece.Replace("amp;", "");
                         arcContentPiece = arcContentPiece.Replace(" ", "");
-                        if (arcContentPiece.Length>300)
+                        if (arcContentPiece.Length>200)
                         {
-                            arcContentPiece = arcContentPiece.Substring(0, 300);
+                            arcContentPiece = arcContentPiece.Substring(0, 200);
                         }
                         string description = ArcTool.GetDescription(arcContentPiece, descriptionLength);
                         string updateSql = "update arc_contents set description='" + description + "' where aid='" + aid+"'";
@@ -888,11 +893,60 @@ namespace ArcDB
             }
             else
             {
-                MessageBox.Show("请正确配置采集数据库配置！");
+                MessageBox.Show("请正确配置采集数据库参数！");
             }
 
         }
+        private void setPubArticleDescription(object state)
+        {
+            _coConnString = GetCoConnString();
+            _pubConnString = GetPubConnString();
+            int finishedArticles = 0;
+            if (_pubConnString != "" && _coConnString != "")
+            {
+                System.Threading.Timer timer = new System.Threading.Timer(
+                    //timeCB,
+                    //PrintTime,      //TimerCallBack委托对象
+                    delegate {
+                        this.Invoke((Action)delegate { lblFinishedGetPubArcDescCount.Text = string.Format("{0}", finishedArticles); });
+                    },
+                    //(object state)=>labTime.Text = string.Format("Time is {0}\n", DateTime.Now.ToLongTimeString()),
+                    null,           //想传入的参数 （null表示没有参数）
+                    0,              //在开始之前，等待多长时间（以毫秒为单位）
+                    1000);       //每次调用的间隔时间（以毫秒为单位）
 
+                mySqlDB coMyDB = new mySqlDB(_coConnString);
+                string sResult = "";
+                int counts = 0;
+                string sql = "select aid,cms_aid,description from arc_contents where description is not null and cms_aid is not null";
+                List<Dictionary<string, object>> coRecords = coMyDB.GetRecords(sql, ref sResult, ref counts);
+                if (sResult == mySqlDB.SUCCESS && counts > 0)
+                {
+                    foreach (Dictionary<string, object> item in coRecords)
+                    {
+                        string cms_aid = item["cms_aid"].ToString();
+                        string description = item["description"].ToString();
+                        mySqlDB pubMyDB = new mySqlDB(_pubConnString);
+                        sql = "update " + _pubTablePrename + "_news set description='" + description + "' where id='" + cms_aid + "'";
+                        counts = pubMyDB.executeDMLSQL(sql, ref sResult);
+                        if (counts > 0 && sResult == mySqlDB.SUCCESS)
+                        {
+                            finishedArticles += 1;
+                        }
+                        else
+                        {
+                            tboxArctoolOutput.AppendText(string.Format("错误信息：{0}\n", sResult));
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("请正确配置发布数据库参数！");
+            }
+        }
         #endregion 文章相关工具模块结束
+
+
     }
 }

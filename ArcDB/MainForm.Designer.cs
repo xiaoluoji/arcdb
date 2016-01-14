@@ -117,7 +117,7 @@
             this.tboxArctoolOutput = new System.Windows.Forms.TextBox();
             this.lblArctoolOutput = new System.Windows.Forms.Label();
             this.btnGetCoArcDesc = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnGetPubArcDesc = new System.Windows.Forms.Button();
             this.lblFinishedGetCoArcDescCounts = new System.Windows.Forms.Label();
             this.lblFinishedGetCoArcDesc = new System.Windows.Forms.Label();
             this.lblFinishedGetPubArcDesc = new System.Windows.Forms.Label();
@@ -1021,7 +1021,7 @@
             this.gboxGetCoArcDesc.Controls.Add(this.label14);
             this.gboxGetCoArcDesc.Controls.Add(this.lblFinishedGetCoArcDesc);
             this.gboxGetCoArcDesc.Controls.Add(this.lblFinishedGetCoArcDescCounts);
-            this.gboxGetCoArcDesc.Controls.Add(this.button1);
+            this.gboxGetCoArcDesc.Controls.Add(this.btnGetPubArcDesc);
             this.gboxGetCoArcDesc.Controls.Add(this.btnGetCoArcDesc);
             this.gboxGetCoArcDesc.Controls.Add(this.lblCoArcDescLength);
             this.gboxGetCoArcDesc.Controls.Add(this.tboxCoArcDescLength);
@@ -1068,22 +1068,23 @@
             // 
             // btnGetCoArcDesc
             // 
-            this.btnGetCoArcDesc.Location = new System.Drawing.Point(128, 75);
+            this.btnGetCoArcDesc.Location = new System.Drawing.Point(128, 71);
             this.btnGetCoArcDesc.Name = "btnGetCoArcDesc";
-            this.btnGetCoArcDesc.Size = new System.Drawing.Size(170, 28);
+            this.btnGetCoArcDesc.Size = new System.Drawing.Size(170, 37);
             this.btnGetCoArcDesc.TabIndex = 30;
             this.btnGetCoArcDesc.Text = "生成采集文章概要";
             this.btnGetCoArcDesc.UseVisualStyleBackColor = true;
             this.btnGetCoArcDesc.Click += new System.EventHandler(this.btnGetCoArcDesc_Click);
             // 
-            // button1
+            // btnGetPubArcDesc
             // 
-            this.button1.Location = new System.Drawing.Point(544, 75);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(170, 28);
-            this.button1.TabIndex = 31;
-            this.button1.Text = "生成发布文章概要";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnGetPubArcDesc.Location = new System.Drawing.Point(544, 71);
+            this.btnGetPubArcDesc.Name = "btnGetPubArcDesc";
+            this.btnGetPubArcDesc.Size = new System.Drawing.Size(170, 37);
+            this.btnGetPubArcDesc.TabIndex = 31;
+            this.btnGetPubArcDesc.Text = "生成发布文章概要";
+            this.btnGetPubArcDesc.UseVisualStyleBackColor = true;
+            this.btnGetPubArcDesc.Click += new System.EventHandler(this.btnGetPubArcDesc_Click);
             // 
             // lblFinishedGetCoArcDescCounts
             // 
@@ -1424,7 +1425,7 @@
         private System.Windows.Forms.Label lblCoArcDescLength;
         private System.Windows.Forms.TextBox tboxCoArcDescLength;
         private System.Windows.Forms.Button btnGetCoArcDesc;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnGetPubArcDesc;
         private System.Windows.Forms.Label lblFinishedGetCoArcDesc;
         private System.Windows.Forms.Label lblFinishedGetCoArcDescCounts;
         private System.Windows.Forms.Label lblFinishedGetPubArcDesc;

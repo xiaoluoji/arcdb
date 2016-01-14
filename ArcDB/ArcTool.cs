@@ -10,7 +10,7 @@ namespace ArcDB
     {
         public static string GetDescription(string article,int descriptionLength)
         {
-            char[] splitChars = { '!', '.', '?', '！', '。', '？' };
+            char[] splitChars = { '!', '.', '?','~', '！', '。', '？'};
             string[] sentenceArr = article.Split(splitChars);
             string description = "";
             string nextSentence = "";
