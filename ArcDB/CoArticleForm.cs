@@ -432,7 +432,7 @@ namespace ArcDB
             mySqlDB myDB = new mySqlDB(_connString);
             string sResult = "";
             int counts = 0;
-            string sql = "update arc_contents set content='" + arcContent + "',is_allpic_copied='"+isAllpicCopied+"' where aid='" + aid.ToString() + "'";
+            string sql = "update arc_contents set content='" + mySqlDB.EscapeString(arcContent) + "',is_allpic_copied='"+isAllpicCopied+"' where aid='" + aid.ToString() + "'";
             counts = myDB.executeDMLSQL(sql, ref sResult);
             if (sResult != mySqlDB.SUCCESS)
             {
@@ -443,7 +443,7 @@ namespace ArcDB
             }
             if (litpicUrl!="")
             {
-                sql = "update arc_contents set litpic='" + litpicUrl + "' where aid='" + aid.ToString() + "'";
+                sql = "update arc_contents set litpic='" + mySqlDB.EscapeString(litpicUrl) + "' where aid='" + aid.ToString() + "'";
                 counts = myDB.executeDMLSQL(sql, ref sResult);
                 if (sResult != mySqlDB.SUCCESS) //如果更新文章内容出错，则将错误信息记录下来到当前采集对象中
                 {
