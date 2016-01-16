@@ -497,7 +497,7 @@ namespace ArcDB
             }
             if (thumbPicID!=0)
             {
-                sql = "update arc_pics set is_thum='yes' where pid='" + thumbPicID.ToString() + "'";
+                sql = "update arc_pics set is_thumb='yes' where pid='" + thumbPicID.ToString() + "'";
                 counts = myDB.executeDMLSQL(sql, ref sResult);
                 if (sResult != mySqlDB.SUCCESS) //如果更新文章内容出错，则将错误信息记录下来到当前采集对象中
                 {
