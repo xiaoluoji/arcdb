@@ -427,6 +427,20 @@ namespace ArcDB
             return imgPathList;
         }
 
+        //测试图片能否正确打开
+        private bool testPicFile(string filePath)
+        {
+            try
+            {
+                Image testPic = Image.FromFile(filePath);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
         //根据文章内容获取文章概要
         private string getArticleDescription(string arcContent,ArticleCollectOffline collectOffline)
         {
@@ -679,7 +693,7 @@ namespace ArcDB
                             long thumbPicID = 0;
                             foreach (string imgPath in imgPathList)  //循环处理文章中包含的图片，将图片复制到新的路径，用于图片服务器访问，生成图片最终用于网络访问的URL
                             {
-                                if (File.Exists(imgPath))
+                                if (File.Exists(imgPath) && testPicFile(imgPath))
                                 {
                                     string fileExtenstion = Path.GetExtension(imgPath);
                                     sResult = "";
