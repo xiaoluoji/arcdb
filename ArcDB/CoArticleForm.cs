@@ -33,7 +33,9 @@ namespace ArcDB
         private int _cfgPicNum=0;                                                                               //保存数据库图片总数，用来判断图片子域名
         private string _cfgBasePath="";                                                                       //图片保存根目录
         private string _cfgImgBaseurl="";                                                                   //图片网址所使用的域名
-        private int _cfgDescriptionLength = 0;                                                           //生成文章概要时候生成概要的长度，默认为120
+        private int _cfgDescriptionLength = 0;                                                           //生成文章概要时候生成概要的长度，此数据从数据库sys_config表中获取，如果数据没有配置则默认为120
+        private int _cfgThumbWidth = 0;                                                                     //生成缩略图时设置的缩略图宽度，此数据从数据库sys_config表中获取，如果数据没有配置则默认是300
+        private int _cfgThumbHeight = 0;                                                                     //生成缩略图时设置的缩略图高度，此数据从数据库sys_config表中获取，如果数据没有配置则默认是300
 
         public CoArticleForm(string connString, Dictionary<long, string> dicCids)
         {
@@ -345,6 +347,44 @@ namespace ArcDB
                 else
                     _cfgDescriptionLength = 120;
             }
+            //读取缩略图宽度参数
+            if (_cfgThumbWidth == 0)
+            {
+                sql = "select value from sys_config where varname='cfg_thumb_width'";
+                dbResult = myDB.GetRecords(sql, ref sResult, ref counts);
+                if (sResult == mySqlDB.SUCCESS && counts > 0)
+                {
+                    string temp = dbResult[0]["value"].ToString();
+                    if (int.TryParse(temp, out _cfgThumbWidth))
+                    {
+                        _cfgThumbWidth = int.Parse(temp);
+                    }
+                    else
+                        _cfgThumbWidth = 300;
+                }
+                else
+                    _cfgThumbWidth = 300;
+            }
+            //读取缩略图高度参数
+            if (_cfgThumbHeight == 0)
+            {
+                sql = "select value from sys_config where varname='cfg_thumb_height'";
+                dbResult = myDB.GetRecords(sql, ref sResult, ref counts);
+                if (sResult == mySqlDB.SUCCESS && counts > 0)
+                {
+                    string temp = dbResult[0]["value"].ToString();
+                    if (int.TryParse(temp, out _cfgThumbHeight))
+                    {
+                        _cfgThumbHeight = int.Parse(temp);
+                    }
+                    else
+                        _cfgThumbHeight = 300;
+                }
+                else
+                    _cfgThumbHeight = 300;
+            }
+
+            //如果未能正确获取到图片根目录或者图片域名参数，则返回失败
             if (_cfgBasePath==""||_cfgImgBaseurl=="")
             {
                 return false;
@@ -428,11 +468,12 @@ namespace ArcDB
         }
 
         //更新文章内容，这里是更新将文章内容中的本地路径替换成图片服务器访问的URL链接后的内容，包括增加文章缩略图
-        private bool updateArcContent(ArticleCollectOffline collectOffline, long aid,string arcContent,string litpicUrl,string isAllpicCopied)
+        private bool updateArcContent(ArticleCollectOffline collectOffline, long aid,string arcContent,string litpicUrl,string isAllpicCopied,long thumbPicID)
         {
             mySqlDB myDB = new mySqlDB(_connString);
             string sResult = "";
             int counts = 0;
+            //更新文章表
             string sql = "update arc_contents set content='" + mySqlDB.EscapeString(arcContent) + "',is_allpic_copied='"+isAllpicCopied+"' where aid='" + aid.ToString() + "'";
             counts = myDB.executeDMLSQL(sql, ref sResult);
             if (sResult != mySqlDB.SUCCESS)
@@ -445,6 +486,18 @@ namespace ArcDB
             if (litpicUrl!="")
             {
                 sql = "update arc_contents set litpic='" + mySqlDB.EscapeString(litpicUrl) + "' where aid='" + aid.ToString() + "'";
+                counts = myDB.executeDMLSQL(sql, ref sResult);
+                if (sResult != mySqlDB.SUCCESS) //如果更新文章内容出错，则将错误信息记录下来到当前采集对象中
+                {
+                    List<Exception> coException = collectOffline.CoException;
+                    Exception mysqlError = new Exception(sResult);
+                    coException.Add(mysqlError);
+                    return false;
+                }
+            }
+            if (thumbPicID!=0)
+            {
+                sql = "update arc_pics set is_thum='yes' where pid='" + thumbPicID.ToString() + "'";
                 counts = myDB.executeDMLSQL(sql, ref sResult);
                 if (sResult != mySqlDB.SUCCESS) //如果更新文章内容出错，则将错误信息记录下来到当前采集对象中
                 {
@@ -610,30 +663,46 @@ namespace ArcDB
                             string isAllpicCopied = "yes";     //对应文章表中的is_allpic_copied字段，用来判断文章内容中的图片是否都正确处理了。初始为都能正确处理，如果处理过程中出错则设置为 "no"
                             List<string> imgPathList = getImgPath(arcContent, collectOffline); //获取文章中的所有图片路径
                             string litpicUrl = "";
+                            long thumbPicID = 0;
                             foreach (string imgPath in imgPathList)  //循环处理文章中包含的图片，将图片复制到新的路径，用于图片服务器访问，生成图片最终用于网络访问的URL
                             {
                                 string fileExtenstion = Path.GetExtension(imgPath);
                                 sResult = "";
                                 counts = 0;
                                 string picFilePath = _cfgBasePath + @"src\"; //用来保存采集的图片要存储在采集服务器上的路径；
+                                string thumbFilePath = _cfgBasePath + @"thumb\"; //用来保存缩略图要存储在采集服务器上的路径；
                                 int firstSubDirNum = 0;  //一级子目录编号，同时也是图片域名的子域名编号
                                 int secondSubDirNum = 0;  //二级子目录编号
                                 firstSubDirNum = _cfgPicNum / 100000;
                                 secondSubDirNum = _cfgPicNum % 100000 / 10000;
                                 picFilePath = picFilePath + firstSubDirNum.ToString() + @"\" + secondSubDirNum;
+                                thumbFilePath = thumbFilePath + firstSubDirNum.ToString() + @"\" + secondSubDirNum;
+                                //建立图片目录
                                 if (!Directory.Exists(picFilePath))
                                 {
                                     Directory.CreateDirectory(picFilePath);
                                 }
+                                //建立缩略图目录
+                                if (!Directory.Exists(thumbFilePath))
+                                {
+                                    Directory.CreateDirectory(thumbFilePath);
+                                }
+                                //生成图片和缩略图完整路径
                                 string randomFileName = Path.GetRandomFileName();
                                 string picFileName = picFilePath + @"\" + randomFileName + fileExtenstion;
+                                string thumbFileName = thumbFilePath + @"\" + randomFileName + fileExtenstion;
+                                //生成图片和缩略图完整URL
                                 string imgUrlPath = @"http://img" + firstSubDirNum.ToString() + @"." + _cfgImgBaseurl + @"/" + secondSubDirNum.ToString() + @"/";
                                 string imgUrl = imgUrlPath + randomFileName + fileExtenstion;
+                                string thumbUrlPath = @"http://thumb" + firstSubDirNum.ToString() + @"." + _cfgImgBaseurl + @"/" + secondSubDirNum.ToString() + @"/";
+                                string thumbUrl = thumbUrlPath + randomFileName + fileExtenstion;
                                 while (File.Exists(picFileName))  //随机生成新的图片文件名，如果随机文件名重复则要反复生成，直到不重复为止
                                 {
                                     randomFileName = Path.GetRandomFileName();
                                     picFileName= picFilePath + @"\" + randomFileName + fileExtenstion;
                                     imgUrl= imgUrlPath + randomFileName + fileExtenstion;
+                                    thumbFileName = thumbFilePath + @"\" + randomFileName + fileExtenstion;
+                                    thumbUrl = thumbUrlPath + randomFileName + fileExtenstion;
                                 }
                                 try
                                 {
@@ -667,7 +736,18 @@ namespace ArcDB
                                         arcContent = arcContent.Replace(imgPath, imgUrl);
                                         if (litpicUrl=="")
                                         {
-                                            litpicUrl = imgUrl;
+                                            Image sourcePic = Image.FromFile(picFileName);
+                                            thumbPicID = myDB.LastInsertedId;
+                                            bool isThumbGenerated = ArcTool.GenThumbnail(sourcePic, thumbFileName, _cfgThumbWidth, _cfgThumbHeight);
+                                            //如果正确生成图片缩略图，则将缩略图设置为缩略图URL，否则使用图片url作为缩略图
+                                            if (isThumbGenerated)
+                                            {
+                                                litpicUrl = thumbUrl;
+                                            }
+                                            else
+                                            {
+                                                litpicUrl = imgUrl;
+                                            }
                                         }
                                     }
                                 }
@@ -687,7 +767,7 @@ namespace ArcDB
                                     return;
                                 }
                             } //循环处理文章中的图片结束
-                            bool isArcContentUpdated = updateArcContent(collectOffline, aid, arcContent, litpicUrl,isAllpicCopied); //更新处理完毕后的文章内容和缩略图
+                            bool isArcContentUpdated = updateArcContent(collectOffline, aid, arcContent, litpicUrl,isAllpicCopied,thumbPicID); //更新处理完毕后的文章内容和缩略图
                             if (!isArcContentUpdated)  //如果文章更新失败退出当前处理过程
                             {
                                 List<Exception> coException = collectOffline.CoException;
