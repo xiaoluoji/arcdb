@@ -377,7 +377,12 @@ namespace ArcDB
                         int pubNums = int.Parse(dicConfig["pub_nums"].ToString());
                         string randomDateStart = dicConfig["random_date_start"].ToString();
                         string randomDateStop = dicConfig["random_date_stop"].ToString();
-                        ArticlePublish articlePublish = new ArticlePublish(pubID, _coConnString, _pubConnString, _pubTablePrename, coTypeid, pubTypeid, pubNums, randomDateStart, randomDateStop);
+                        string[] pubFilterKeywords = new string[0];
+                        if (dicConfig["pub_filter_keywords"].ToString()!="")
+                        {
+                            pubFilterKeywords = dicConfig["pub_filter_keywords"].ToString().Split('|');
+                        }
+                        ArticlePublish articlePublish = new ArticlePublish(pubID, _coConnString, _pubConnString, _pubTablePrename, coTypeid, pubTypeid, pubNums, pubFilterKeywords, randomDateStart, randomDateStop);
                         CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
                         articlePublish.CancelTokenSource = cancelTokenSource;
                         //articlePublish.ProcessPublishArticles();

@@ -68,6 +68,9 @@
             this.tboxPubTestResult = new System.Windows.Forms.TextBox();
             this.btnSavePubConfig = new System.Windows.Forms.Button();
             this.btnPubTest = new System.Windows.Forms.Button();
+            this.lblPubFilterKeywords = new System.Windows.Forms.Label();
+            this.tboxPubFilterKeywords = new System.Windows.Forms.TextBox();
+            this.lblPubFilterKeywordsInfo = new System.Windows.Forms.Label();
             this.tabctrPubform.SuspendLayout();
             this.tabPubConfig.SuspendLayout();
             this.gboxPubTypename.SuspendLayout();
@@ -304,6 +307,9 @@
             // 
             // gboxCoBasicinfo
             // 
+            this.gboxCoBasicinfo.Controls.Add(this.lblPubFilterKeywordsInfo);
+            this.gboxCoBasicinfo.Controls.Add(this.tboxPubFilterKeywords);
+            this.gboxCoBasicinfo.Controls.Add(this.lblPubFilterKeywords);
             this.gboxCoBasicinfo.Controls.Add(this.lblRandomDateStop);
             this.gboxCoBasicinfo.Controls.Add(this.tboxRandomDateStop);
             this.gboxCoBasicinfo.Controls.Add(this.dtpRandomDateStop);
@@ -316,7 +322,7 @@
             this.gboxCoBasicinfo.Controls.Add(this.lblPubNums);
             this.gboxCoBasicinfo.Location = new System.Drawing.Point(3, 10);
             this.gboxCoBasicinfo.Name = "gboxCoBasicinfo";
-            this.gboxCoBasicinfo.Size = new System.Drawing.Size(964, 148);
+            this.gboxCoBasicinfo.Size = new System.Drawing.Size(964, 149);
             this.gboxCoBasicinfo.TabIndex = 9;
             this.gboxCoBasicinfo.TabStop = false;
             this.gboxCoBasicinfo.Text = "基本信息";
@@ -324,7 +330,7 @@
             // lblRandomDateStop
             // 
             this.lblRandomDateStop.AutoSize = true;
-            this.lblRandomDateStop.Location = new System.Drawing.Point(366, 81);
+            this.lblRandomDateStop.Location = new System.Drawing.Point(366, 70);
             this.lblRandomDateStop.Name = "lblRandomDateStop";
             this.lblRandomDateStop.Size = new System.Drawing.Size(170, 18);
             this.lblRandomDateStop.TabIndex = 19;
@@ -332,14 +338,14 @@
             // 
             // tboxRandomDateStop
             // 
-            this.tboxRandomDateStop.Location = new System.Drawing.Point(543, 76);
+            this.tboxRandomDateStop.Location = new System.Drawing.Point(543, 65);
             this.tboxRandomDateStop.Name = "tboxRandomDateStop";
             this.tboxRandomDateStop.Size = new System.Drawing.Size(200, 28);
             this.tboxRandomDateStop.TabIndex = 20;
             // 
             // dtpRandomDateStop
             // 
-            this.dtpRandomDateStop.Location = new System.Drawing.Point(745, 76);
+            this.dtpRandomDateStop.Location = new System.Drawing.Point(745, 65);
             this.dtpRandomDateStop.Name = "dtpRandomDateStop";
             this.dtpRandomDateStop.Size = new System.Drawing.Size(200, 28);
             this.dtpRandomDateStop.TabIndex = 18;
@@ -348,7 +354,7 @@
             // lblRandomDateStart
             // 
             this.lblRandomDateStart.AutoSize = true;
-            this.lblRandomDateStart.Location = new System.Drawing.Point(366, 34);
+            this.lblRandomDateStart.Location = new System.Drawing.Point(366, 27);
             this.lblRandomDateStart.Name = "lblRandomDateStart";
             this.lblRandomDateStart.Size = new System.Drawing.Size(170, 18);
             this.lblRandomDateStart.TabIndex = 16;
@@ -356,14 +362,14 @@
             // 
             // tboxRandomDateStart
             // 
-            this.tboxRandomDateStart.Location = new System.Drawing.Point(543, 28);
+            this.tboxRandomDateStart.Location = new System.Drawing.Point(543, 21);
             this.tboxRandomDateStart.Name = "tboxRandomDateStart";
             this.tboxRandomDateStart.Size = new System.Drawing.Size(200, 28);
             this.tboxRandomDateStart.TabIndex = 17;
             // 
             // dtpRandomDateStart
             // 
-            this.dtpRandomDateStart.Location = new System.Drawing.Point(745, 28);
+            this.dtpRandomDateStart.Location = new System.Drawing.Point(745, 21);
             this.dtpRandomDateStart.Name = "dtpRandomDateStart";
             this.dtpRandomDateStart.Size = new System.Drawing.Size(200, 28);
             this.dtpRandomDateStart.TabIndex = 15;
@@ -371,7 +377,7 @@
             // 
             // tboxPubNums
             // 
-            this.tboxPubNums.Location = new System.Drawing.Point(122, 76);
+            this.tboxPubNums.Location = new System.Drawing.Point(137, 65);
             this.tboxPubNums.Name = "tboxPubNums";
             this.tboxPubNums.Size = new System.Drawing.Size(220, 28);
             this.tboxPubNums.TabIndex = 11;
@@ -380,7 +386,7 @@
             // lblPubName
             // 
             this.lblPubName.AutoSize = true;
-            this.lblPubName.Location = new System.Drawing.Point(15, 37);
+            this.lblPubName.Location = new System.Drawing.Point(15, 30);
             this.lblPubName.Name = "lblPubName";
             this.lblPubName.Size = new System.Drawing.Size(98, 18);
             this.lblPubName.TabIndex = 1;
@@ -388,7 +394,7 @@
             // 
             // tboxPubName
             // 
-            this.tboxPubName.Location = new System.Drawing.Point(122, 31);
+            this.tboxPubName.Location = new System.Drawing.Point(137, 24);
             this.tboxPubName.Name = "tboxPubName";
             this.tboxPubName.Size = new System.Drawing.Size(220, 28);
             this.tboxPubName.TabIndex = 2;
@@ -396,7 +402,7 @@
             // lblPubNums
             // 
             this.lblPubNums.AutoSize = true;
-            this.lblPubNums.Location = new System.Drawing.Point(15, 82);
+            this.lblPubNums.Location = new System.Drawing.Point(15, 71);
             this.lblPubNums.Name = "lblPubNums";
             this.lblPubNums.Size = new System.Drawing.Size(98, 18);
             this.lblPubNums.TabIndex = 3;
@@ -451,6 +457,31 @@
             this.btnPubTest.Text = "测试发布";
             this.btnPubTest.UseVisualStyleBackColor = true;
             this.btnPubTest.Click += new System.EventHandler(this.btnPubTest_Click);
+            // 
+            // lblPubFilterKeywords
+            // 
+            this.lblPubFilterKeywords.AutoSize = true;
+            this.lblPubFilterKeywords.Location = new System.Drawing.Point(15, 111);
+            this.lblPubFilterKeywords.Name = "lblPubFilterKeywords";
+            this.lblPubFilterKeywords.Size = new System.Drawing.Size(116, 18);
+            this.lblPubFilterKeywords.TabIndex = 21;
+            this.lblPubFilterKeywords.Text = "过滤关键词: ";
+            // 
+            // tboxPubFilterKeywords
+            // 
+            this.tboxPubFilterKeywords.Location = new System.Drawing.Point(137, 106);
+            this.tboxPubFilterKeywords.Name = "tboxPubFilterKeywords";
+            this.tboxPubFilterKeywords.Size = new System.Drawing.Size(220, 28);
+            this.tboxPubFilterKeywords.TabIndex = 22;
+            // 
+            // lblPubFilterKeywordsInfo
+            // 
+            this.lblPubFilterKeywordsInfo.AutoSize = true;
+            this.lblPubFilterKeywordsInfo.Location = new System.Drawing.Point(363, 111);
+            this.lblPubFilterKeywordsInfo.Name = "lblPubFilterKeywordsInfo";
+            this.lblPubFilterKeywordsInfo.Size = new System.Drawing.Size(260, 18);
+            this.lblPubFilterKeywordsInfo.TabIndex = 23;
+            this.lblPubFilterKeywordsInfo.Text = "(关键词如有多个，用\"|\"分开) ";
             // 
             // PubConfigForm
             // 
@@ -521,5 +552,8 @@
         private System.Windows.Forms.ColumnHeader co_typename;
         private System.Windows.Forms.ColumnHeader pub_typeid;
         private System.Windows.Forms.ColumnHeader pub_typename;
+        private System.Windows.Forms.TextBox tboxPubFilterKeywords;
+        private System.Windows.Forms.Label lblPubFilterKeywords;
+        private System.Windows.Forms.Label lblPubFilterKeywordsInfo;
     }
 }

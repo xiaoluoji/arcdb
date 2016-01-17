@@ -30,6 +30,7 @@ namespace ArcDB
         private string _coTypename;
         private string _pubTypeid;
         private string _pubTypename;
+        private string _pubFilterKeywords;
         private string _pubNums;
         private string _randomDateStart;
         private string _randomDateStop;
@@ -262,6 +263,7 @@ namespace ArcDB
             _pubNums = tboxPubNums.Text;
             _pubTypeid = tboxPubTypeid.Text;
             _pubTypename = tboxPubTypename.Text;
+            _pubFilterKeywords = tboxPubFilterKeywords.Text;
             _randomDateStart = tboxRandomDateStart.Text;
             _randomDateStop = tboxRandomDateStop.Text;
         }
@@ -283,6 +285,7 @@ namespace ArcDB
                 tboxCoTypename.Text = pubConfig["co_typename"].ToString();
                 tboxPubTypeid.Text = pubConfig["pub_typeid"].ToString();
                 tboxPubTypename.Text = pubConfig["pub_typename"].ToString();
+                tboxPubFilterKeywords.Text = pubConfig["pub_filter_keywords"].ToString();
                 tboxRandomDateStart.Text = pubConfig["random_date_start"].ToString();
                 tboxRandomDateStop.Text = pubConfig["random_date_stop"].ToString();
                 setVarValue();  //将控件中的值同步到对应的变量中
@@ -315,6 +318,7 @@ namespace ArcDB
                     sql = sql + ", co_typename = '" + _coTypename + "'";
                     sql = sql + ", pub_typeid = '" + _pubTypeid + "'";
                     sql = sql + ", pub_typename = '" + _pubTypename + "'";
+                    sql = sql + ", pub_filter_keywords = '" + _pubFilterKeywords + "'";
                     sql = sql + ", pub_nums = '" + _pubNums + "'";
                     sql = sql + ", random_date_start = '" + _randomDateStart + "'";
                     sql = sql + ", random_date_stop = '" + _randomDateStop + "'";
@@ -335,12 +339,13 @@ namespace ArcDB
                 }
                 else
                 {
-                    sql = "insert into pub_config(pub_name,co_typeid,co_typename,pub_typeid,pub_typename,pub_nums,random_date_start,random_date_stop)";
+                    sql = "insert into pub_config(pub_name,co_typeid,co_typename,pub_typeid,pub_typename,pub_filter_keywords,pub_nums,random_date_start,random_date_stop)";
                     sql = sql + " values ('" + _pubName + "'";
                     sql = sql + ",'" + _coTypeid + "'";
                     sql = sql + ",'" + _coTypename + "'";
                     sql = sql + ",'" + _pubTypeid + "'";
                     sql = sql + ",'" + _pubTypename + "'";
+                    sql = sql + ",'" + _pubFilterKeywords + "'";
                     sql = sql + ",'" + _pubNums + "'";
                     sql = sql + ",'" + _randomDateStart + "'";
                     sql = sql + ",'" + _randomDateStop + "')";
@@ -464,8 +469,13 @@ namespace ArcDB
             {
                 int coTypeid = int.Parse(_coTypeid);
                 int pubTypeid = int.Parse(_pubTypeid);
+                string[] pubFilterKeywords = new string[0];
+                if (_pubFilterKeywords!="")
+                {
+                    pubFilterKeywords = _pubFilterKeywords.Split('|');
+                }
                 //测试发布一篇文章
-                ArticlePublish articlePublishTest = new ArticlePublish(_pubID, _coConnString, _pubConnString, _pubTablePrename, coTypeid,pubTypeid,1, _randomDateStart, _randomDateStop);
+                ArticlePublish articlePublishTest = new ArticlePublish(_pubID, _coConnString, _pubConnString, _pubTablePrename, coTypeid,pubTypeid,1,pubFilterKeywords, _randomDateStart, _randomDateStop);
                 cancelTokenSource = new CancellationTokenSource();
                 articlePublishTest.CancelTokenSource = cancelTokenSource;
                 articlePublishTest.ProcessPublishArticles();

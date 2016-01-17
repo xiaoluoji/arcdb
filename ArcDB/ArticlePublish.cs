@@ -20,6 +20,7 @@ namespace ArcDB
         private string _pubTablePrename;                                   //发布数据库表前缀
         private int _coTypeid;                                                      //采集文章分类
         private int _pubTypeid;                                                    //发布文章分类
+        private string[] _pubFilterKeywords;                                //发布过滤关键词
         private int _pubNums;                                                     //发布数量
         private string _randomDateStart;                                    //随机发布时间的随机区间开始
         private string _randomDateStop;                                    //随机发布时间的随机区间结束
@@ -36,7 +37,7 @@ namespace ArcDB
         #endregion
 
         #region Constructors
-        public ArticlePublish(int pubID,string coConnString,string pubConnString,string pubTablePrename,int coTypeid,int pubTypeid,int pubNums,string randomDateStart,string randomDateStop)
+        public ArticlePublish(int pubID,string coConnString,string pubConnString,string pubTablePrename,int coTypeid,int pubTypeid,int pubNums,string[]pubFilterKeywords,string randomDateStart,string randomDateStop)
         {
             _pubID = pubID;
             _coConnString = coConnString;
@@ -44,6 +45,7 @@ namespace ArcDB
             _pubTablePrename = pubTablePrename;
             _coTypeid = coTypeid;
             _pubTypeid = pubTypeid;
+            _pubFilterKeywords = pubFilterKeywords;
             _pubNums = pubNums;
             _randomDateStart = randomDateStart;
             _randomDateStop = randomDateStop;
@@ -175,7 +177,17 @@ namespace ArcDB
             mySqlDB myDB = new mySqlDB(_coConnString);
             string sResult = "";
             int counts = 0;
-            string sql = "select aid,litpic,title,source_site,description,content from arc_contents where type_id='" + _coTypeid.ToString() + "' and usedby_pc='no'  order by aid limit 1";
+            string sql = "select aid,litpic,title,source_site,description,content from arc_contents where type_id='" + _coTypeid.ToString() + "' and usedby_pc='no'";
+            if (_pubFilterKeywords.Length>0)
+            {
+                sql = sql + " and (title like '%" + _pubFilterKeywords[0] + "%'";
+                for (int i = 1; i < _pubFilterKeywords.Length; i++)
+                {
+                    sql = sql + " or title like '%" + _pubFilterKeywords[i] + "%'";
+                }
+                sql = sql + ")";
+            }
+            sql = sql + " order by aid limit 1";
             dbResult = myDB.GetRecords(sql, ref sResult, ref counts);
             if (sResult==mySqlDB.SUCCESS && counts>0)
             {
