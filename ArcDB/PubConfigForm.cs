@@ -142,7 +142,7 @@ namespace ArcDB
             mySqlDB myDB = new mySqlDB(_coConnString);
             string sResult = "";
             int counts = 0;
-            string sql = "select tid,type_name from arc_type";
+            string sql = "select tid,type_name,unused_nums from arc_type";
             if (searchCondition!="")
             {
                 sql = sql + " where type_name like '%" + searchCondition + "%'";
@@ -186,7 +186,7 @@ namespace ArcDB
             mySqlDB myDB = new mySqlDB(_pubConnString);
             string sResult = "";
             int counts = 0;
-            string sql = "select catid,catname from "+_pubTablePrename+"_category where parentid <> 0 and modelid=1";
+            string sql = "select catid,catname,items from " + _pubTablePrename+"_category where parentid <> 0 and modelid=1";
             if (searchCondition!="")
             {
                 sql = sql + " and catname like '%" + searchCondition + "%'";

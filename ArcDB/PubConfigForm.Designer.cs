@@ -53,6 +53,9 @@
             this.lblCoTypeName = new System.Windows.Forms.Label();
             this.tboxCoTypename = new System.Windows.Forms.TextBox();
             this.gboxCoBasicinfo = new System.Windows.Forms.GroupBox();
+            this.lblPubFilterKeywordsInfo = new System.Windows.Forms.Label();
+            this.tboxPubFilterKeywords = new System.Windows.Forms.TextBox();
+            this.lblPubFilterKeywords = new System.Windows.Forms.Label();
             this.lblRandomDateStop = new System.Windows.Forms.Label();
             this.tboxRandomDateStop = new System.Windows.Forms.TextBox();
             this.dtpRandomDateStop = new System.Windows.Forms.DateTimePicker();
@@ -68,9 +71,8 @@
             this.tboxPubTestResult = new System.Windows.Forms.TextBox();
             this.btnSavePubConfig = new System.Windows.Forms.Button();
             this.btnPubTest = new System.Windows.Forms.Button();
-            this.lblPubFilterKeywords = new System.Windows.Forms.Label();
-            this.tboxPubFilterKeywords = new System.Windows.Forms.TextBox();
-            this.lblPubFilterKeywordsInfo = new System.Windows.Forms.Label();
+            this.co_type_unused_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.pub_type_items = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabctrPubform.SuspendLayout();
             this.tabPubConfig.SuspendLayout();
             this.gboxPubTypename.SuspendLayout();
@@ -124,7 +126,8 @@
             // 
             this.listViewPubTypeinfo.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.pub_typeid,
-            this.pub_typename});
+            this.pub_typename,
+            this.pub_type_items});
             this.listViewPubTypeinfo.FullRowSelect = true;
             this.listViewPubTypeinfo.GridLines = true;
             this.listViewPubTypeinfo.Location = new System.Drawing.Point(9, 103);
@@ -139,12 +142,12 @@
             // pub_typeid
             // 
             this.pub_typeid.Text = "发布分类ID";
-            this.pub_typeid.Width = 200;
+            this.pub_typeid.Width = 120;
             // 
             // pub_typename
             // 
             this.pub_typename.Text = "发布分类名称";
-            this.pub_typename.Width = 200;
+            this.pub_typename.Width = 130;
             // 
             // btnSearchPubTypename
             // 
@@ -225,7 +228,8 @@
             // 
             this.listViewCoTypeinfo.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.co_typeid,
-            this.co_typename});
+            this.co_typename,
+            this.co_type_unused_nums});
             this.listViewCoTypeinfo.FullRowSelect = true;
             this.listViewCoTypeinfo.GridLines = true;
             this.listViewCoTypeinfo.Location = new System.Drawing.Point(9, 103);
@@ -240,12 +244,12 @@
             // co_typeid
             // 
             this.co_typeid.Text = "采集分类ID";
-            this.co_typeid.Width = 200;
+            this.co_typeid.Width = 120;
             // 
             // co_typename
             // 
             this.co_typename.Text = "采集分类名称";
-            this.co_typename.Width = 200;
+            this.co_typename.Width = 130;
             // 
             // btnSearchCoTypename
             // 
@@ -326,6 +330,31 @@
             this.gboxCoBasicinfo.TabIndex = 9;
             this.gboxCoBasicinfo.TabStop = false;
             this.gboxCoBasicinfo.Text = "基本信息";
+            // 
+            // lblPubFilterKeywordsInfo
+            // 
+            this.lblPubFilterKeywordsInfo.AutoSize = true;
+            this.lblPubFilterKeywordsInfo.Location = new System.Drawing.Point(363, 111);
+            this.lblPubFilterKeywordsInfo.Name = "lblPubFilterKeywordsInfo";
+            this.lblPubFilterKeywordsInfo.Size = new System.Drawing.Size(260, 18);
+            this.lblPubFilterKeywordsInfo.TabIndex = 23;
+            this.lblPubFilterKeywordsInfo.Text = "(关键词如有多个，用\"|\"分开) ";
+            // 
+            // tboxPubFilterKeywords
+            // 
+            this.tboxPubFilterKeywords.Location = new System.Drawing.Point(137, 106);
+            this.tboxPubFilterKeywords.Name = "tboxPubFilterKeywords";
+            this.tboxPubFilterKeywords.Size = new System.Drawing.Size(220, 28);
+            this.tboxPubFilterKeywords.TabIndex = 22;
+            // 
+            // lblPubFilterKeywords
+            // 
+            this.lblPubFilterKeywords.AutoSize = true;
+            this.lblPubFilterKeywords.Location = new System.Drawing.Point(15, 111);
+            this.lblPubFilterKeywords.Name = "lblPubFilterKeywords";
+            this.lblPubFilterKeywords.Size = new System.Drawing.Size(116, 18);
+            this.lblPubFilterKeywords.TabIndex = 21;
+            this.lblPubFilterKeywords.Text = "过滤关键词: ";
             // 
             // lblRandomDateStop
             // 
@@ -458,30 +487,15 @@
             this.btnPubTest.UseVisualStyleBackColor = true;
             this.btnPubTest.Click += new System.EventHandler(this.btnPubTest_Click);
             // 
-            // lblPubFilterKeywords
+            // co_type_unused_nums
             // 
-            this.lblPubFilterKeywords.AutoSize = true;
-            this.lblPubFilterKeywords.Location = new System.Drawing.Point(15, 111);
-            this.lblPubFilterKeywords.Name = "lblPubFilterKeywords";
-            this.lblPubFilterKeywords.Size = new System.Drawing.Size(116, 18);
-            this.lblPubFilterKeywords.TabIndex = 21;
-            this.lblPubFilterKeywords.Text = "过滤关键词: ";
+            this.co_type_unused_nums.Text = "未使用文章数";
+            this.co_type_unused_nums.Width = 130;
             // 
-            // tboxPubFilterKeywords
+            // pub_type_items
             // 
-            this.tboxPubFilterKeywords.Location = new System.Drawing.Point(137, 106);
-            this.tboxPubFilterKeywords.Name = "tboxPubFilterKeywords";
-            this.tboxPubFilterKeywords.Size = new System.Drawing.Size(220, 28);
-            this.tboxPubFilterKeywords.TabIndex = 22;
-            // 
-            // lblPubFilterKeywordsInfo
-            // 
-            this.lblPubFilterKeywordsInfo.AutoSize = true;
-            this.lblPubFilterKeywordsInfo.Location = new System.Drawing.Point(363, 111);
-            this.lblPubFilterKeywordsInfo.Name = "lblPubFilterKeywordsInfo";
-            this.lblPubFilterKeywordsInfo.Size = new System.Drawing.Size(260, 18);
-            this.lblPubFilterKeywordsInfo.TabIndex = 23;
-            this.lblPubFilterKeywordsInfo.Text = "(关键词如有多个，用\"|\"分开) ";
+            this.pub_type_items.Text = "栏目文章数";
+            this.pub_type_items.Width = 130;
             // 
             // PubConfigForm
             // 
@@ -555,5 +569,7 @@
         private System.Windows.Forms.TextBox tboxPubFilterKeywords;
         private System.Windows.Forms.Label lblPubFilterKeywords;
         private System.Windows.Forms.Label lblPubFilterKeywordsInfo;
+        private System.Windows.Forms.ColumnHeader pub_type_items;
+        private System.Windows.Forms.ColumnHeader co_type_unused_nums;
     }
 }
