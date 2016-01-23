@@ -55,6 +55,15 @@
             this.lblCoFileterCo_name = new System.Windows.Forms.Label();
             this.cboxCoFilterCo_name = new System.Windows.Forms.ComboBox();
             this.btnModifyCoconfig = new System.Windows.Forms.Button();
+            this.listViewCollect = new ArcDB.ListViewNF();
+            this.cid = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.co_name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.type_name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.source_lang = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.source_site = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.up_time = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.co_time = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.co_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnLoadCoconfig = new System.Windows.Forms.Button();
             this.tabPageDelWatermark = new System.Windows.Forms.TabPage();
             this.tabPageDistribute = new System.Windows.Forms.TabPage();
@@ -80,6 +89,30 @@
             this.tboxPubFilterPub_name = new System.Windows.Forms.TextBox();
             this.lblPubFilterPub_name = new System.Windows.Forms.Label();
             this.cboxPubFilterPub_name = new System.Windows.Forms.ComboBox();
+            this.listViewPublish = new ArcDB.ListViewNF();
+            this.pub_id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.pub_name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.co_typename = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.unused_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.pub_typename = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.pub_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.published_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.pub_add_date = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.pub_export_date = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tabPageArctool = new System.Windows.Forms.TabPage();
+            this.lblArctoolOutput = new System.Windows.Forms.Label();
+            this.tboxArctoolOutput = new System.Windows.Forms.TextBox();
+            this.gboxGetCoArcDesc = new System.Windows.Forms.GroupBox();
+            this.lblFinishedGetPubArcDesc = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.lblFinishedGetPubArcDescCount = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.lblFinishedGetCoArcDesc = new System.Windows.Forms.Label();
+            this.lblFinishedGetCoArcDescCounts = new System.Windows.Forms.Label();
+            this.btnGetPubArcDesc = new System.Windows.Forms.Button();
+            this.btnGetCoArcDesc = new System.Windows.Forms.Button();
+            this.lblCoArcDescLength = new System.Windows.Forms.Label();
+            this.tboxCoArcDescLength = new System.Windows.Forms.TextBox();
             this.tabPageConfig = new System.Windows.Forms.TabPage();
             this.gbxPubDatabaseSet = new System.Windows.Forms.GroupBox();
             this.label13 = new System.Windows.Forms.Label();
@@ -110,39 +143,10 @@
             this.label4 = new System.Windows.Forms.Label();
             this.tboxCoPassword = new System.Windows.Forms.TextBox();
             this.cboxCoCharset = new System.Windows.Forms.ComboBox();
-            this.tabPageArctool = new System.Windows.Forms.TabPage();
-            this.gboxGetCoArcDesc = new System.Windows.Forms.GroupBox();
-            this.lblCoArcDescLength = new System.Windows.Forms.Label();
-            this.tboxCoArcDescLength = new System.Windows.Forms.TextBox();
-            this.tboxArctoolOutput = new System.Windows.Forms.TextBox();
-            this.lblArctoolOutput = new System.Windows.Forms.Label();
-            this.btnGetCoArcDesc = new System.Windows.Forms.Button();
-            this.btnGetPubArcDesc = new System.Windows.Forms.Button();
-            this.lblFinishedGetCoArcDescCounts = new System.Windows.Forms.Label();
-            this.lblFinishedGetCoArcDesc = new System.Windows.Forms.Label();
-            this.lblFinishedGetPubArcDesc = new System.Windows.Forms.Label();
-            this.lblFinishedGetPubArcDescCount = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.listViewCollect = new ArcDB.ListViewNF();
-            this.cid = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.co_name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.type_name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.source_lang = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.source_site = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.up_time = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.co_time = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.co_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.listViewPublish = new ArcDB.ListViewNF();
-            this.pub_id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.pub_name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.co_typename = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.unused_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.pub_typename = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.pub_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.published_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.pub_add_date = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.pub_export_date = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.gboxCreateHitsRecords = new System.Windows.Forms.GroupBox();
+            this.btnCreateHitsRecords = new System.Windows.Forms.Button();
+            this.lblFinishedCreateHitsRecords = new System.Windows.Forms.Label();
+            this.lblFinishedCreateHitsRecordsCount = new System.Windows.Forms.Label();
             this.tabctrMainform.SuspendLayout();
             this.tabPageCollect.SuspendLayout();
             this.gboxCoFilter.SuspendLayout();
@@ -155,11 +159,12 @@
             this.panel5.SuspendLayout();
             this.panel6.SuspendLayout();
             this.panel7.SuspendLayout();
+            this.tabPageArctool.SuspendLayout();
+            this.gboxGetCoArcDesc.SuspendLayout();
             this.tabPageConfig.SuspendLayout();
             this.gbxPubDatabaseSet.SuspendLayout();
             this.gbxCoDatabaseSet.SuspendLayout();
-            this.tabPageArctool.SuspendLayout();
-            this.gboxGetCoArcDesc.SuspendLayout();
+            this.gboxCreateHitsRecords.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabctrMainform
@@ -451,6 +456,68 @@
             this.btnModifyCoconfig.UseVisualStyleBackColor = true;
             this.btnModifyCoconfig.Click += new System.EventHandler(this.btnModifyCoconfig_Click);
             // 
+            // listViewCollect
+            // 
+            this.listViewCollect.CheckBoxes = true;
+            this.listViewCollect.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.cid,
+            this.co_name,
+            this.type_name,
+            this.source_lang,
+            this.source_site,
+            this.up_time,
+            this.co_time,
+            this.co_nums});
+            this.listViewCollect.FullRowSelect = true;
+            this.listViewCollect.GridLines = true;
+            this.listViewCollect.Location = new System.Drawing.Point(3, 162);
+            this.listViewCollect.MultiSelect = false;
+            this.listViewCollect.Name = "listViewCollect";
+            this.listViewCollect.Size = new System.Drawing.Size(999, 390);
+            this.listViewCollect.TabIndex = 2;
+            this.listViewCollect.UseCompatibleStateImageBehavior = false;
+            this.listViewCollect.View = System.Windows.Forms.View.Details;
+            // 
+            // cid
+            // 
+            this.cid.Text = "ID";
+            this.cid.Width = 50;
+            // 
+            // co_name
+            // 
+            this.co_name.Text = "采集名称";
+            this.co_name.Width = 120;
+            // 
+            // type_name
+            // 
+            this.type_name.Text = "文章分类";
+            this.type_name.Width = 120;
+            // 
+            // source_lang
+            // 
+            this.source_lang.Text = "编码";
+            this.source_lang.Width = 70;
+            // 
+            // source_site
+            // 
+            this.source_site.Text = "采集来源";
+            this.source_site.Width = 120;
+            // 
+            // up_time
+            // 
+            this.up_time.Text = "加入/修改日期";
+            this.up_time.Width = 95;
+            // 
+            // co_time
+            // 
+            this.co_time.Text = "最后采集日期";
+            this.co_time.Width = 95;
+            // 
+            // co_nums
+            // 
+            this.co_nums.Text = "采集数量";
+            this.co_nums.Width = 90;
+            // 
             // btnLoadCoconfig
             // 
             this.btnLoadCoconfig.Location = new System.Drawing.Point(3, 571);
@@ -712,6 +779,214 @@
             this.cboxPubFilterPub_name.Name = "cboxPubFilterPub_name";
             this.cboxPubFilterPub_name.Size = new System.Drawing.Size(72, 26);
             this.cboxPubFilterPub_name.TabIndex = 0;
+            // 
+            // listViewPublish
+            // 
+            this.listViewPublish.CheckBoxes = true;
+            this.listViewPublish.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.pub_id,
+            this.pub_name,
+            this.co_typename,
+            this.unused_nums,
+            this.pub_typename,
+            this.pub_nums,
+            this.published_nums,
+            this.pub_add_date,
+            this.pub_export_date});
+            this.listViewPublish.FullRowSelect = true;
+            this.listViewPublish.GridLines = true;
+            this.listViewPublish.Location = new System.Drawing.Point(3, 162);
+            this.listViewPublish.MultiSelect = false;
+            this.listViewPublish.Name = "listViewPublish";
+            this.listViewPublish.Size = new System.Drawing.Size(999, 390);
+            this.listViewPublish.TabIndex = 0;
+            this.listViewPublish.UseCompatibleStateImageBehavior = false;
+            this.listViewPublish.View = System.Windows.Forms.View.Details;
+            // 
+            // pub_id
+            // 
+            this.pub_id.Text = "ID";
+            // 
+            // pub_name
+            // 
+            this.pub_name.Text = "发布规则名称";
+            this.pub_name.Width = 120;
+            // 
+            // co_typename
+            // 
+            this.co_typename.Text = "采集分类";
+            this.co_typename.Width = 120;
+            // 
+            // unused_nums
+            // 
+            this.unused_nums.Text = "可用文章数";
+            this.unused_nums.Width = 120;
+            // 
+            // pub_typename
+            // 
+            this.pub_typename.Text = "发布分类";
+            this.pub_typename.Width = 120;
+            // 
+            // pub_nums
+            // 
+            this.pub_nums.Text = "单次发布数量";
+            this.pub_nums.Width = 120;
+            // 
+            // published_nums
+            // 
+            this.published_nums.Text = "已发布数量";
+            this.published_nums.Width = 120;
+            // 
+            // pub_add_date
+            // 
+            this.pub_add_date.Text = "添加日期";
+            this.pub_add_date.Width = 120;
+            // 
+            // pub_export_date
+            // 
+            this.pub_export_date.Text = "发布日期";
+            this.pub_export_date.Width = 120;
+            // 
+            // tabPageArctool
+            // 
+            this.tabPageArctool.Controls.Add(this.gboxCreateHitsRecords);
+            this.tabPageArctool.Controls.Add(this.lblArctoolOutput);
+            this.tabPageArctool.Controls.Add(this.tboxArctoolOutput);
+            this.tabPageArctool.Controls.Add(this.gboxGetCoArcDesc);
+            this.tabPageArctool.Location = new System.Drawing.Point(4, 28);
+            this.tabPageArctool.Name = "tabPageArctool";
+            this.tabPageArctool.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageArctool.Size = new System.Drawing.Size(1007, 627);
+            this.tabPageArctool.TabIndex = 4;
+            this.tabPageArctool.Text = "文章工具";
+            this.tabPageArctool.UseVisualStyleBackColor = true;
+            // 
+            // lblArctoolOutput
+            // 
+            this.lblArctoolOutput.AutoSize = true;
+            this.lblArctoolOutput.Location = new System.Drawing.Point(6, 351);
+            this.lblArctoolOutput.Name = "lblArctoolOutput";
+            this.lblArctoolOutput.Size = new System.Drawing.Size(89, 18);
+            this.lblArctoolOutput.TabIndex = 38;
+            this.lblArctoolOutput.Text = "输出窗口:";
+            // 
+            // tboxArctoolOutput
+            // 
+            this.tboxArctoolOutput.Location = new System.Drawing.Point(8, 381);
+            this.tboxArctoolOutput.Multiline = true;
+            this.tboxArctoolOutput.Name = "tboxArctoolOutput";
+            this.tboxArctoolOutput.Size = new System.Drawing.Size(991, 221);
+            this.tboxArctoolOutput.TabIndex = 39;
+            // 
+            // gboxGetCoArcDesc
+            // 
+            this.gboxGetCoArcDesc.Controls.Add(this.lblFinishedGetPubArcDesc);
+            this.gboxGetCoArcDesc.Controls.Add(this.label15);
+            this.gboxGetCoArcDesc.Controls.Add(this.lblFinishedGetPubArcDescCount);
+            this.gboxGetCoArcDesc.Controls.Add(this.label14);
+            this.gboxGetCoArcDesc.Controls.Add(this.lblFinishedGetCoArcDesc);
+            this.gboxGetCoArcDesc.Controls.Add(this.lblFinishedGetCoArcDescCounts);
+            this.gboxGetCoArcDesc.Controls.Add(this.btnGetPubArcDesc);
+            this.gboxGetCoArcDesc.Controls.Add(this.btnGetCoArcDesc);
+            this.gboxGetCoArcDesc.Controls.Add(this.lblCoArcDescLength);
+            this.gboxGetCoArcDesc.Controls.Add(this.tboxCoArcDescLength);
+            this.gboxGetCoArcDesc.Location = new System.Drawing.Point(8, 6);
+            this.gboxGetCoArcDesc.Name = "gboxGetCoArcDesc";
+            this.gboxGetCoArcDesc.Size = new System.Drawing.Size(991, 162);
+            this.gboxGetCoArcDesc.TabIndex = 38;
+            this.gboxGetCoArcDesc.TabStop = false;
+            this.gboxGetCoArcDesc.Text = "生成文章概要";
+            // 
+            // lblFinishedGetPubArcDesc
+            // 
+            this.lblFinishedGetPubArcDesc.AutoSize = true;
+            this.lblFinishedGetPubArcDesc.Location = new System.Drawing.Point(422, 130);
+            this.lblFinishedGetPubArcDesc.Name = "lblFinishedGetPubArcDesc";
+            this.lblFinishedGetPubArcDesc.Size = new System.Drawing.Size(233, 18);
+            this.lblFinishedGetPubArcDesc.TabIndex = 43;
+            this.lblFinishedGetPubArcDesc.Text = "已生成发布文章概要文章数:";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(422, 80);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(116, 18);
+            this.label15.TabIndex = 45;
+            this.label15.Text = "第二步 --->:";
+            // 
+            // lblFinishedGetPubArcDescCount
+            // 
+            this.lblFinishedGetPubArcDescCount.AutoSize = true;
+            this.lblFinishedGetPubArcDescCount.Location = new System.Drawing.Point(667, 130);
+            this.lblFinishedGetPubArcDescCount.Name = "lblFinishedGetPubArcDescCount";
+            this.lblFinishedGetPubArcDescCount.Size = new System.Drawing.Size(17, 18);
+            this.lblFinishedGetPubArcDescCount.TabIndex = 42;
+            this.lblFinishedGetPubArcDescCount.Text = "0";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(6, 80);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(116, 18);
+            this.label14.TabIndex = 44;
+            this.label14.Text = "第一步 --->:";
+            // 
+            // lblFinishedGetCoArcDesc
+            // 
+            this.lblFinishedGetCoArcDesc.AutoSize = true;
+            this.lblFinishedGetCoArcDesc.Location = new System.Drawing.Point(6, 130);
+            this.lblFinishedGetCoArcDesc.Name = "lblFinishedGetCoArcDesc";
+            this.lblFinishedGetCoArcDesc.Size = new System.Drawing.Size(233, 18);
+            this.lblFinishedGetCoArcDesc.TabIndex = 41;
+            this.lblFinishedGetCoArcDesc.Text = "已生成采集文章概要文章数:";
+            // 
+            // lblFinishedGetCoArcDescCounts
+            // 
+            this.lblFinishedGetCoArcDescCounts.AutoSize = true;
+            this.lblFinishedGetCoArcDescCounts.Location = new System.Drawing.Point(243, 130);
+            this.lblFinishedGetCoArcDescCounts.Name = "lblFinishedGetCoArcDescCounts";
+            this.lblFinishedGetCoArcDescCounts.Size = new System.Drawing.Size(17, 18);
+            this.lblFinishedGetCoArcDescCounts.TabIndex = 40;
+            this.lblFinishedGetCoArcDescCounts.Text = "0";
+            // 
+            // btnGetPubArcDesc
+            // 
+            this.btnGetPubArcDesc.Location = new System.Drawing.Point(544, 71);
+            this.btnGetPubArcDesc.Name = "btnGetPubArcDesc";
+            this.btnGetPubArcDesc.Size = new System.Drawing.Size(170, 37);
+            this.btnGetPubArcDesc.TabIndex = 31;
+            this.btnGetPubArcDesc.Text = "生成发布文章概要";
+            this.btnGetPubArcDesc.UseVisualStyleBackColor = true;
+            this.btnGetPubArcDesc.Click += new System.EventHandler(this.btnGetPubArcDesc_Click);
+            // 
+            // btnGetCoArcDesc
+            // 
+            this.btnGetCoArcDesc.Location = new System.Drawing.Point(128, 71);
+            this.btnGetCoArcDesc.Name = "btnGetCoArcDesc";
+            this.btnGetCoArcDesc.Size = new System.Drawing.Size(170, 37);
+            this.btnGetCoArcDesc.TabIndex = 30;
+            this.btnGetCoArcDesc.Text = "生成采集文章概要";
+            this.btnGetCoArcDesc.UseVisualStyleBackColor = true;
+            this.btnGetCoArcDesc.Click += new System.EventHandler(this.btnGetCoArcDesc_Click);
+            // 
+            // lblCoArcDescLength
+            // 
+            this.lblCoArcDescLength.AutoSize = true;
+            this.lblCoArcDescLength.Location = new System.Drawing.Point(6, 32);
+            this.lblCoArcDescLength.Name = "lblCoArcDescLength";
+            this.lblCoArcDescLength.Size = new System.Drawing.Size(116, 18);
+            this.lblCoArcDescLength.TabIndex = 23;
+            this.lblCoArcDescLength.Text = "文章概要长度";
+            // 
+            // tboxCoArcDescLength
+            // 
+            this.tboxCoArcDescLength.Location = new System.Drawing.Point(130, 27);
+            this.tboxCoArcDescLength.Name = "tboxCoArcDescLength";
+            this.tboxCoArcDescLength.Size = new System.Drawing.Size(218, 28);
+            this.tboxCoArcDescLength.TabIndex = 22;
+            this.tboxCoArcDescLength.Text = "120";
             // 
             // tabPageConfig
             // 
@@ -1000,274 +1275,45 @@
             this.cboxCoCharset.TabIndex = 28;
             this.cboxCoCharset.Text = "utf8";
             // 
-            // tabPageArctool
-            // 
-            this.tabPageArctool.Controls.Add(this.lblArctoolOutput);
-            this.tabPageArctool.Controls.Add(this.tboxArctoolOutput);
-            this.tabPageArctool.Controls.Add(this.gboxGetCoArcDesc);
-            this.tabPageArctool.Location = new System.Drawing.Point(4, 28);
-            this.tabPageArctool.Name = "tabPageArctool";
-            this.tabPageArctool.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageArctool.Size = new System.Drawing.Size(1007, 627);
-            this.tabPageArctool.TabIndex = 4;
-            this.tabPageArctool.Text = "文章工具";
-            this.tabPageArctool.UseVisualStyleBackColor = true;
-            // 
-            // gboxGetCoArcDesc
-            // 
-            this.gboxGetCoArcDesc.Controls.Add(this.lblFinishedGetPubArcDesc);
-            this.gboxGetCoArcDesc.Controls.Add(this.label15);
-            this.gboxGetCoArcDesc.Controls.Add(this.lblFinishedGetPubArcDescCount);
-            this.gboxGetCoArcDesc.Controls.Add(this.label14);
-            this.gboxGetCoArcDesc.Controls.Add(this.lblFinishedGetCoArcDesc);
-            this.gboxGetCoArcDesc.Controls.Add(this.lblFinishedGetCoArcDescCounts);
-            this.gboxGetCoArcDesc.Controls.Add(this.btnGetPubArcDesc);
-            this.gboxGetCoArcDesc.Controls.Add(this.btnGetCoArcDesc);
-            this.gboxGetCoArcDesc.Controls.Add(this.lblCoArcDescLength);
-            this.gboxGetCoArcDesc.Controls.Add(this.tboxCoArcDescLength);
-            this.gboxGetCoArcDesc.Location = new System.Drawing.Point(8, 6);
-            this.gboxGetCoArcDesc.Name = "gboxGetCoArcDesc";
-            this.gboxGetCoArcDesc.Size = new System.Drawing.Size(991, 162);
-            this.gboxGetCoArcDesc.TabIndex = 38;
-            this.gboxGetCoArcDesc.TabStop = false;
-            this.gboxGetCoArcDesc.Text = "生成文章概要";
-            // 
-            // lblCoArcDescLength
-            // 
-            this.lblCoArcDescLength.AutoSize = true;
-            this.lblCoArcDescLength.Location = new System.Drawing.Point(6, 32);
-            this.lblCoArcDescLength.Name = "lblCoArcDescLength";
-            this.lblCoArcDescLength.Size = new System.Drawing.Size(116, 18);
-            this.lblCoArcDescLength.TabIndex = 23;
-            this.lblCoArcDescLength.Text = "文章概要长度";
-            // 
-            // tboxCoArcDescLength
-            // 
-            this.tboxCoArcDescLength.Location = new System.Drawing.Point(130, 27);
-            this.tboxCoArcDescLength.Name = "tboxCoArcDescLength";
-            this.tboxCoArcDescLength.Size = new System.Drawing.Size(218, 28);
-            this.tboxCoArcDescLength.TabIndex = 22;
-            this.tboxCoArcDescLength.Text = "120";
-            // 
-            // tboxArctoolOutput
-            // 
-            this.tboxArctoolOutput.Location = new System.Drawing.Point(8, 240);
-            this.tboxArctoolOutput.Multiline = true;
-            this.tboxArctoolOutput.Name = "tboxArctoolOutput";
-            this.tboxArctoolOutput.Size = new System.Drawing.Size(991, 362);
-            this.tboxArctoolOutput.TabIndex = 39;
-            // 
-            // lblArctoolOutput
-            // 
-            this.lblArctoolOutput.AutoSize = true;
-            this.lblArctoolOutput.Location = new System.Drawing.Point(5, 204);
-            this.lblArctoolOutput.Name = "lblArctoolOutput";
-            this.lblArctoolOutput.Size = new System.Drawing.Size(89, 18);
-            this.lblArctoolOutput.TabIndex = 38;
-            this.lblArctoolOutput.Text = "输出窗口:";
-            // 
-            // btnGetCoArcDesc
-            // 
-            this.btnGetCoArcDesc.Location = new System.Drawing.Point(128, 71);
-            this.btnGetCoArcDesc.Name = "btnGetCoArcDesc";
-            this.btnGetCoArcDesc.Size = new System.Drawing.Size(170, 37);
-            this.btnGetCoArcDesc.TabIndex = 30;
-            this.btnGetCoArcDesc.Text = "生成采集文章概要";
-            this.btnGetCoArcDesc.UseVisualStyleBackColor = true;
-            this.btnGetCoArcDesc.Click += new System.EventHandler(this.btnGetCoArcDesc_Click);
-            // 
-            // btnGetPubArcDesc
-            // 
-            this.btnGetPubArcDesc.Location = new System.Drawing.Point(544, 71);
-            this.btnGetPubArcDesc.Name = "btnGetPubArcDesc";
-            this.btnGetPubArcDesc.Size = new System.Drawing.Size(170, 37);
-            this.btnGetPubArcDesc.TabIndex = 31;
-            this.btnGetPubArcDesc.Text = "生成发布文章概要";
-            this.btnGetPubArcDesc.UseVisualStyleBackColor = true;
-            this.btnGetPubArcDesc.Click += new System.EventHandler(this.btnGetPubArcDesc_Click);
-            // 
-            // lblFinishedGetCoArcDescCounts
-            // 
-            this.lblFinishedGetCoArcDescCounts.AutoSize = true;
-            this.lblFinishedGetCoArcDescCounts.Location = new System.Drawing.Point(243, 130);
-            this.lblFinishedGetCoArcDescCounts.Name = "lblFinishedGetCoArcDescCounts";
-            this.lblFinishedGetCoArcDescCounts.Size = new System.Drawing.Size(17, 18);
-            this.lblFinishedGetCoArcDescCounts.TabIndex = 40;
-            this.lblFinishedGetCoArcDescCounts.Text = "0";
-            // 
-            // lblFinishedGetCoArcDesc
-            // 
-            this.lblFinishedGetCoArcDesc.AutoSize = true;
-            this.lblFinishedGetCoArcDesc.Location = new System.Drawing.Point(6, 130);
-            this.lblFinishedGetCoArcDesc.Name = "lblFinishedGetCoArcDesc";
-            this.lblFinishedGetCoArcDesc.Size = new System.Drawing.Size(233, 18);
-            this.lblFinishedGetCoArcDesc.TabIndex = 41;
-            this.lblFinishedGetCoArcDesc.Text = "已生成采集文章概要文章数:";
-            // 
-            // lblFinishedGetPubArcDesc
-            // 
-            this.lblFinishedGetPubArcDesc.AutoSize = true;
-            this.lblFinishedGetPubArcDesc.Location = new System.Drawing.Point(422, 130);
-            this.lblFinishedGetPubArcDesc.Name = "lblFinishedGetPubArcDesc";
-            this.lblFinishedGetPubArcDesc.Size = new System.Drawing.Size(233, 18);
-            this.lblFinishedGetPubArcDesc.TabIndex = 43;
-            this.lblFinishedGetPubArcDesc.Text = "已生成发布文章概要文章数:";
-            // 
-            // lblFinishedGetPubArcDescCount
-            // 
-            this.lblFinishedGetPubArcDescCount.AutoSize = true;
-            this.lblFinishedGetPubArcDescCount.Location = new System.Drawing.Point(667, 130);
-            this.lblFinishedGetPubArcDescCount.Name = "lblFinishedGetPubArcDescCount";
-            this.lblFinishedGetPubArcDescCount.Size = new System.Drawing.Size(17, 18);
-            this.lblFinishedGetPubArcDescCount.TabIndex = 42;
-            this.lblFinishedGetPubArcDescCount.Text = "0";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(6, 80);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(116, 18);
-            this.label14.TabIndex = 44;
-            this.label14.Text = "第一步 --->:";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(422, 80);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(116, 18);
-            this.label15.TabIndex = 45;
-            this.label15.Text = "第二步 --->:";
-            // 
-            // listViewCollect
-            // 
-            this.listViewCollect.CheckBoxes = true;
-            this.listViewCollect.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.cid,
-            this.co_name,
-            this.type_name,
-            this.source_lang,
-            this.source_site,
-            this.up_time,
-            this.co_time,
-            this.co_nums});
-            this.listViewCollect.FullRowSelect = true;
-            this.listViewCollect.GridLines = true;
-            this.listViewCollect.Location = new System.Drawing.Point(3, 162);
-            this.listViewCollect.MultiSelect = false;
-            this.listViewCollect.Name = "listViewCollect";
-            this.listViewCollect.Size = new System.Drawing.Size(999, 390);
-            this.listViewCollect.TabIndex = 2;
-            this.listViewCollect.UseCompatibleStateImageBehavior = false;
-            this.listViewCollect.View = System.Windows.Forms.View.Details;
-            // 
-            // cid
-            // 
-            this.cid.Text = "ID";
-            this.cid.Width = 50;
-            // 
-            // co_name
-            // 
-            this.co_name.Text = "采集名称";
-            this.co_name.Width = 120;
-            // 
-            // type_name
-            // 
-            this.type_name.Text = "文章分类";
-            this.type_name.Width = 120;
-            // 
-            // source_lang
-            // 
-            this.source_lang.Text = "编码";
-            this.source_lang.Width = 70;
-            // 
-            // source_site
-            // 
-            this.source_site.Text = "采集来源";
-            this.source_site.Width = 120;
-            // 
-            // up_time
-            // 
-            this.up_time.Text = "加入/修改日期";
-            this.up_time.Width = 95;
-            // 
-            // co_time
-            // 
-            this.co_time.Text = "最后采集日期";
-            this.co_time.Width = 95;
-            // 
-            // co_nums
-            // 
-            this.co_nums.Text = "采集数量";
-            this.co_nums.Width = 90;
-            // 
-            // listViewPublish
-            // 
-            this.listViewPublish.CheckBoxes = true;
-            this.listViewPublish.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.pub_id,
-            this.pub_name,
-            this.co_typename,
-            this.unused_nums,
-            this.pub_typename,
-            this.pub_nums,
-            this.published_nums,
-            this.pub_add_date,
-            this.pub_export_date});
-            this.listViewPublish.FullRowSelect = true;
-            this.listViewPublish.GridLines = true;
-            this.listViewPublish.Location = new System.Drawing.Point(3, 162);
-            this.listViewPublish.MultiSelect = false;
-            this.listViewPublish.Name = "listViewPublish";
-            this.listViewPublish.Size = new System.Drawing.Size(999, 390);
-            this.listViewPublish.TabIndex = 0;
-            this.listViewPublish.UseCompatibleStateImageBehavior = false;
-            this.listViewPublish.View = System.Windows.Forms.View.Details;
-            // 
-            // pub_id
-            // 
-            this.pub_id.Text = "ID";
-            // 
-            // pub_name
-            // 
-            this.pub_name.Text = "发布规则名称";
-            this.pub_name.Width = 120;
-            // 
-            // co_typename
-            // 
-            this.co_typename.Text = "采集分类";
-            this.co_typename.Width = 120;
-            // 
-            // unused_nums
-            // 
-            this.unused_nums.Text = "可用文章数";
-            this.unused_nums.Width = 120;
-            // 
-            // pub_typename
-            // 
-            this.pub_typename.Text = "发布分类";
-            this.pub_typename.Width = 120;
-            // 
-            // pub_nums
-            // 
-            this.pub_nums.Text = "单次发布数量";
-            this.pub_nums.Width = 120;
-            // 
-            // published_nums
-            // 
-            this.published_nums.Text = "已发布数量";
-            this.published_nums.Width = 120;
-            // 
-            // pub_add_date
-            // 
-            this.pub_add_date.Text = "添加日期";
-            this.pub_add_date.Width = 120;
-            // 
-            // pub_export_date
-            // 
-            this.pub_export_date.Text = "发布日期";
-            this.pub_export_date.Width = 120;
+            // gboxCreateHitsRecords
+            // 
+            this.gboxCreateHitsRecords.Controls.Add(this.lblFinishedCreateHitsRecords);
+            this.gboxCreateHitsRecords.Controls.Add(this.lblFinishedCreateHitsRecordsCount);
+            this.gboxCreateHitsRecords.Controls.Add(this.btnCreateHitsRecords);
+            this.gboxCreateHitsRecords.Location = new System.Drawing.Point(9, 175);
+            this.gboxCreateHitsRecords.Name = "gboxCreateHitsRecords";
+            this.gboxCreateHitsRecords.Size = new System.Drawing.Size(990, 100);
+            this.gboxCreateHitsRecords.TabIndex = 40;
+            this.gboxCreateHitsRecords.TabStop = false;
+            this.gboxCreateHitsRecords.Text = "生成文章点击数";
+            // 
+            // btnCreateHitsRecords
+            // 
+            this.btnCreateHitsRecords.Location = new System.Drawing.Point(8, 37);
+            this.btnCreateHitsRecords.Name = "btnCreateHitsRecords";
+            this.btnCreateHitsRecords.Size = new System.Drawing.Size(170, 37);
+            this.btnCreateHitsRecords.TabIndex = 46;
+            this.btnCreateHitsRecords.Text = "生成CMS文章点击数";
+            this.btnCreateHitsRecords.UseVisualStyleBackColor = true;
+            this.btnCreateHitsRecords.Click += new System.EventHandler(this.btnCreateHitsRecords_Click);
+            // 
+            // lblFinishedCreateHitsRecords
+            // 
+            this.lblFinishedCreateHitsRecords.AutoSize = true;
+            this.lblFinishedCreateHitsRecords.Location = new System.Drawing.Point(209, 46);
+            this.lblFinishedCreateHitsRecords.Name = "lblFinishedCreateHitsRecords";
+            this.lblFinishedCreateHitsRecords.Size = new System.Drawing.Size(278, 18);
+            this.lblFinishedCreateHitsRecords.TabIndex = 48;
+            this.lblFinishedCreateHitsRecords.Text = "已生成CMS文章点击数数据文章数:";
+            // 
+            // lblFinishedCreateHitsRecordsCount
+            // 
+            this.lblFinishedCreateHitsRecordsCount.AutoSize = true;
+            this.lblFinishedCreateHitsRecordsCount.Location = new System.Drawing.Point(502, 46);
+            this.lblFinishedCreateHitsRecordsCount.Name = "lblFinishedCreateHitsRecordsCount";
+            this.lblFinishedCreateHitsRecordsCount.Size = new System.Drawing.Size(17, 18);
+            this.lblFinishedCreateHitsRecordsCount.TabIndex = 47;
+            this.lblFinishedCreateHitsRecordsCount.Text = "0";
             // 
             // MainForm
             // 
@@ -1302,15 +1348,17 @@
             this.panel6.PerformLayout();
             this.panel7.ResumeLayout(false);
             this.panel7.PerformLayout();
+            this.tabPageArctool.ResumeLayout(false);
+            this.tabPageArctool.PerformLayout();
+            this.gboxGetCoArcDesc.ResumeLayout(false);
+            this.gboxGetCoArcDesc.PerformLayout();
             this.tabPageConfig.ResumeLayout(false);
             this.gbxPubDatabaseSet.ResumeLayout(false);
             this.gbxPubDatabaseSet.PerformLayout();
             this.gbxCoDatabaseSet.ResumeLayout(false);
             this.gbxCoDatabaseSet.PerformLayout();
-            this.tabPageArctool.ResumeLayout(false);
-            this.tabPageArctool.PerformLayout();
-            this.gboxGetCoArcDesc.ResumeLayout(false);
-            this.gboxGetCoArcDesc.PerformLayout();
+            this.gboxCreateHitsRecords.ResumeLayout(false);
+            this.gboxCreateHitsRecords.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1432,6 +1480,10 @@
         private System.Windows.Forms.Label lblFinishedGetPubArcDescCount;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.GroupBox gboxCreateHitsRecords;
+        private System.Windows.Forms.Button btnCreateHitsRecords;
+        private System.Windows.Forms.Label lblFinishedCreateHitsRecords;
+        private System.Windows.Forms.Label lblFinishedCreateHitsRecordsCount;
     }
 }
 

@@ -816,6 +816,11 @@ namespace ArcDB
         {
             ThreadPool.QueueUserWorkItem(setPubArticleDescription, null);
         }
+        //生成文章点击数数据
+        private void btnCreateHitsRecords_Click(object sender, EventArgs e)
+        {
+            ThreadPool.QueueUserWorkItem(createHitsRecords, null);
+        }
 
         private void getCoArticleDescription(object state)
         {
@@ -945,6 +950,74 @@ namespace ArcDB
                 MessageBox.Show("请正确配置发布数据库参数！");
             }
         }
+        //生成文章点击数数据
+        private void createHitsRecords(object state)
+        {
+            _pubConnString = GetPubConnString();
+            int finishedArticles = 0;
+            if (_pubConnString != "")
+            {
+                System.Threading.Timer timer = new System.Threading.Timer(
+                    //timeCB,
+                    //PrintTime,      //TimerCallBack委托对象
+                    delegate
+                    {
+                        this.Invoke((Action)delegate { lblFinishedCreateHitsRecordsCount.Text = string.Format("{0}", finishedArticles); });
+                    },
+                    //(object state)=>labTime.Text = string.Format("Time is {0}\n", DateTime.Now.ToLongTimeString()),
+                    null,           //想传入的参数 （null表示没有参数）
+                    0,              //在开始之前，等待多长时间（以毫秒为单位）
+                    1000);       //每次调用的间隔时间（以毫秒为单位）            }
+                mySqlDB pubMydb = new mySqlDB(_pubConnString);
+                string sResult = "";
+                int counts = 0;
+                string sql = "select count(id) from " + _pubTablePrename + "_news";
+                List<Dictionary<string, object>> dbResult = new List<Dictionary<string, object>>();
+                dbResult=pubMydb.GetRecords(sql, ref sResult, ref counts);
+                if (sResult==mySqlDB.SUCCESS && counts>0)
+                {
+                    int articleCounts = int.Parse(dbResult[0]["count(id)"].ToString());
+                    tboxArctoolOutput.AppendText(string.Format("文章总数：{0}\n", articleCounts));
+                    int startPosition = 0;
+                    int onceNums = 1000;
+                    if (articleCounts>0)
+                    {
+                        while (startPosition<articleCounts)
+                        {
+                            sql="select id,catid from " + _pubTablePrename + "_news limit "+startPosition.ToString()+","+onceNums.ToString();
+                            dbResult = pubMydb.GetRecords(sql, ref sResult, ref counts);
+                            if (sResult==mySqlDB.SUCCESS && counts>0)
+                            {
+                                foreach (Dictionary<string,object> item in dbResult)
+                                {
+                                    string id = item["id"].ToString();
+                                    string catid = item["catid"].ToString();
+                                    string hitsid = "c-1-" + id.ToString();
+                                    sql = "INSERT IGNORE INTO " + _pubTablePrename + "_hits(hitsid,catid) Values('" + hitsid + "','" + catid + "')";
+                                    counts = pubMydb.executeDMLSQL(sql, ref sResult);
+                                    if (sResult==mySqlDB.SUCCESS && counts>0)
+                                    {
+                                        finishedArticles += 1;
+                                    }
+                                    else
+                                    {
+                                        tboxArctoolOutput.AppendText(string.Format("插入hits表数据出错或记录已存在！sql语句：{0}  错误信息：{1}\n",sql,sResult));
+                                    }
+                                }
+                                startPosition += onceNums;
+                            }
+                            else
+                            {
+                                tboxArctoolOutput.AppendText("CMS数据库获取文章ID和分类ID出错！终止\n");
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+
         #endregion 文章相关工具模块结束
 
 
