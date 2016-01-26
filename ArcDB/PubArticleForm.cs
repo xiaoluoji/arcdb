@@ -281,7 +281,7 @@ namespace ArcDB
                 Exception mysqlError = new Exception(sResult);
                 pubException.Add(mysqlError);
             }
-            //更新分类表中的统计信息，发不完以后对应的分类中的可发布数量应该减去当前的数量
+            //更新分类表中的统计信息，发布以后对应的分类中的可发布数量应该减去当前的数量
             sql = "update arc_type set unused_nums=unused_nums-'" + publishedNums.ToString() + "'";
             sql = sql + " where tid='" + coTypeID.ToString() + "'";
             counts = coMyDB.executeDMLSQL(sql, ref sResult);

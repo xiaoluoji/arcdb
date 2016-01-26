@@ -272,7 +272,6 @@ namespace ArcDB
             counts = pubMyDB.executeDMLSQL(sql, ref sResult);
             if (sResult == mySqlDB.SUCCESS && counts > 0)
             {
-                return true;
             }
             else
             {
@@ -282,6 +281,22 @@ namespace ArcDB
                 _pubExceptions.Add(ex);
                 return false;
             }
+            //将相应的文章数据插入到hits表中
+            string hitsid = "c-1-" + cmsAid.ToString();
+            sql = "INSERT IGNORE INTO " + _pubTablePrename + "_hits(hitsid,catid) Values('" + hitsid + "','" + _pubTypeid + "')";
+            counts = pubMyDB.executeDMLSQL(sql, ref sResult);
+            if (sResult==mySqlDB.SUCCESS && counts>0)
+            {
+                return true;
+            }
+            else
+            {
+                Exception ex = new Exception(sResult);
+                ex.Data.Add("错误信息", "发布文章-添加点击数记录至hits表错误");
+                ex.Data.Add("发布文章ID",cmsAid);
+                _pubExceptions.Add(ex);
+            }
+            return true;
         }
 
         //成功发布一篇文章后，更新采集文章库中对应文章的信息
