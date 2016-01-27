@@ -404,6 +404,7 @@ namespace ArcDB
             }
             return true;
         }
+
         //获取文章内容中的图片路径
         private List<string>getImgPath(string content, ArticleCollectOffline collectOffline)
         {
@@ -444,6 +445,26 @@ namespace ArcDB
             }
             else
                 return false;
+        }
+
+        //测试文章中的图片至少要有一张能正确打开，否则就返回假（如果文章中所有的图片都不能正确打开，意味着此篇文章不需要入库）
+        private bool testArcPics(List<string> imgPathList)
+        {
+            foreach (string picPath in imgPathList)
+            {
+                if (testPicFile(picPath)) //如果有一张图片能正确打开，就返回true
+                {
+                    return true;
+                }
+            }
+            if (imgPathList.Count>0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         //根据文章内容获取文章概要
@@ -650,7 +671,6 @@ namespace ArcDB
                 if (typeID != 0 && sourceSiteID != 0)  //必须要正确获得 typeNameID 和 sourceSiteID后才进行下一步的文章和图片的处理
                 {
                     collectOffline.TypeID = typeID;
-                    
                     List<Dictionary<string, string>> articles = collectOffline.Articles;
 
                     //遍历采集到的文章列表，对将文章插入到数据库表中,
@@ -659,170 +679,174 @@ namespace ArcDB
                     {
                         sResult = "";
                         counts = 0;
-                        string arcTitle = article["title"];
-                        string arcUrl = article["url"];
                         string arcContent = article["content"];
-                        string hash = GetHashAsString(arcTitle);
-                        string description = getArticleDescription(arcContent,collectOffline);
-                        long aid = 0;
-                        sql = "insert into arc_contents (type_id,cid,title,source_site,description,content,url,hash) values ('" + typeID.ToString() + "'";
-                        sql = sql + ",'" + cid.ToString() + "'";
-                        sql = sql + ",'" + mySqlDB.EscapeString(arcTitle) + "'";
-                        sql = sql + ",'" + mySqlDB.EscapeString(sourceSite) + "'";
-                        sql = sql + ",'" + mySqlDB.EscapeString(description) + "'";
-                        sql = sql + ",'" + mySqlDB.EscapeString(arcContent) + "'";
-                        sql = sql + ",'" + mySqlDB.EscapeString(arcUrl) + "'";
-                        sql = sql + ",'" + hash + "')";
-                        counts = myDB.executeDMLSQL(sql, ref sResult);
-                        if (sResult == mySqlDB.SUCCESS && counts > 0)
+                        List<string> imgPathList = getImgPath(arcContent, collectOffline); //获取文章中的所有图片路径
+                        //测试文章中的图片至少要有一张能正确打开，否则就返回假（如果文章中所有的图片都不能正确打开，意味着此篇文章不需要入库）
+                        if (testArcPics(imgPathList))
                         {
-                            aid = myDB.LastInsertedId;
-                        }
-                        else   //如果插入文章内容出错，则将错误信息记录下来到当前采集对象中，并且中断当前采集过程，提示检查数据库
-                        {
-                            List<Exception> coException = collectOffline.CoException;
-                            Exception mysqlError = new Exception(sResult);
-                            coException.Add(mysqlError);
-                            tboxErrorOutput.AppendText(string.Format("插入文章内容出错,中断采集过程！请检查数据库连接是否正常！错误信息：{0}\n", mysqlError.Message));
-                            collectOffline.CoState = "采集错误";
-                            cancelAllTask();
-                            updateCoState(collectOffline);
-                            return;
-                        }
-                        if (aid != 0)  //判断文章是否正确插入到数据库中，正确插入文章后返回的ID不会是0
-                        {
-                            collectOffline.CurrentSavedArticles++;
-                            string isAllpicCopied = "yes";     //对应文章表中的is_allpic_copied字段，用来判断文章内容中的图片是否都正确处理了。初始为都能正确处理，如果处理过程中出错则设置为 "no"
-                            List<string> imgPathList = getImgPath(arcContent, collectOffline); //获取文章中的所有图片路径
-                            string litpicUrl = "";
-                            long thumbPicID = 0;
-                            foreach (string imgPath in imgPathList)  //循环处理文章中包含的图片，将图片复制到新的路径，用于图片服务器访问，生成图片最终用于网络访问的URL
+                            string arcTitle = article["title"];
+                            string arcUrl = article["url"];
+                            string hash = GetHashAsString(arcTitle);
+                            string description = getArticleDescription(arcContent, collectOffline);
+                            long aid = 0;
+                            sql = "insert into arc_contents (type_id,cid,title,source_site,description,content,url,hash) values ('" + typeID.ToString() + "'";
+                            sql = sql + ",'" + cid.ToString() + "'";
+                            sql = sql + ",'" + mySqlDB.EscapeString(arcTitle) + "'";
+                            sql = sql + ",'" + mySqlDB.EscapeString(sourceSite) + "'";
+                            sql = sql + ",'" + mySqlDB.EscapeString(description) + "'";
+                            sql = sql + ",'" + mySqlDB.EscapeString(arcContent) + "'";
+                            sql = sql + ",'" + mySqlDB.EscapeString(arcUrl) + "'";
+                            sql = sql + ",'" + hash + "')";
+                            counts = myDB.executeDMLSQL(sql, ref sResult);
+                            if (sResult == mySqlDB.SUCCESS && counts > 0)
                             {
-                                if (testPicFile(imgPath))
-                                {
-                                    string fileExtenstion = Path.GetExtension(imgPath);
-                                    sResult = "";
-                                    counts = 0;
-                                    string picFilePath = _cfgBasePath + @"src\"; //用来保存采集的图片要存储在采集服务器上的路径；
-                                    string thumbFilePath = _cfgBasePath + @"thumb\"; //用来保存缩略图要存储在采集服务器上的路径；
-                                    int firstSubDirNum = 0;  //一级子目录编号，同时也是图片域名的子域名编号
-                                    int secondSubDirNum = 0;  //二级子目录编号
-                                    firstSubDirNum = _cfgPicNum / 100000;
-                                    secondSubDirNum = _cfgPicNum % 100000 / 10000;
-                                    picFilePath = picFilePath + firstSubDirNum.ToString() + @"\" + secondSubDirNum;
-                                    thumbFilePath = thumbFilePath + firstSubDirNum.ToString() + @"\" + secondSubDirNum;
-                                    //建立图片目录
-                                    if (!Directory.Exists(picFilePath))
-                                    {
-                                        Directory.CreateDirectory(picFilePath);
-                                    }
-                                    //建立缩略图目录
-                                    if (!Directory.Exists(thumbFilePath))
-                                    {
-                                        Directory.CreateDirectory(thumbFilePath);
-                                    }
-                                    //生成图片和缩略图完整路径
-                                    string randomFileName = Path.GetRandomFileName();
-                                    string picFileName = picFilePath + @"\" + randomFileName + fileExtenstion;
-                                    string thumbFileName = thumbFilePath + @"\" + randomFileName + fileExtenstion;
-                                    //生成图片和缩略图完整URL
-                                    string imgUrlPath = @"http://img" + firstSubDirNum.ToString() + @"." + _cfgImgBaseurl + @"/" + secondSubDirNum.ToString() + @"/";
-                                    string imgUrl = imgUrlPath + randomFileName + fileExtenstion;
-                                    string thumbUrlPath = @"http://thumb" + firstSubDirNum.ToString() + @"." + _cfgImgBaseurl + @"/" + secondSubDirNum.ToString() + @"/";
-                                    string thumbUrl = thumbUrlPath + randomFileName + fileExtenstion;
-                                    while (File.Exists(picFileName))  //随机生成新的图片文件名，如果随机文件名重复则要反复生成，直到不重复为止
-                                    {
-                                        randomFileName = Path.GetRandomFileName();
-                                        picFileName = picFilePath + @"\" + randomFileName + fileExtenstion;
-                                        imgUrl = imgUrlPath + randomFileName + fileExtenstion;
-                                        thumbFileName = thumbFilePath + @"\" + randomFileName + fileExtenstion;
-                                        thumbUrl = thumbUrlPath + randomFileName + fileExtenstion;
-                                    }
-                                    try
-                                    {
-                                        File.Copy(imgPath, picFileName);   //将源图片复制到新的路径中，用于图片服务器访问
-                                        sql = "insert into arc_pics(cid,aid,ssid,pic_path,source_path,pic_url) values ('" + cid.ToString() + "'";
-                                        sql = sql + ",'" + aid.ToString() + "'";
-                                        sql = sql + ",'" + sourceSiteID.ToString() + "'";
-                                        sql = sql + ",'" + mySqlDB.EscapeString(picFileName) + "'";
-                                        sql = sql + ",'" + mySqlDB.EscapeString(imgPath) + "'";
-                                        sql = sql + ",'" + imgUrl + "')";
-                                        counts = myDB.executeDMLSQL(sql, ref sResult);
-                                        if (sResult == mySqlDB.SUCCESS && counts > 0)
-                                        {
-                                            _cfgPicNum++;
-                                            if (!updateCfgPicnum(collectOffline))   //如果更新数据系统配置表中的图片总数参数失败的话，就退出当前图片处理过程，不然的话会导致图片总数出问题。
-                                            {
-                                                List<Exception> coException = collectOffline.CoException;
-                                                Exception ex = new Exception("更新数据系统配置表中的图片总数参数失败！中断保存采集文章！请检查数据库连接是否正常！");
-                                                ex.Data.Add("文章ID", aid);
-                                                ex.Data.Add("文章标题", arcTitle);
-                                                ex.Data.Add("文章路径", arcUrl);
-                                                ex.Data.Add("图片源路径", imgPath);
-                                                ex.Data.Add("图片新路径", picFileName);
-                                                coException.Add(ex);
-                                                tboxErrorOutput.AppendText(string.Format("处理文章图片出错！文章ID：{0} 图片源路径：{1} 图片新路径：{2} 错误信息：{3}\n", aid, imgPath, picFileName, ex.Message));
-                                                collectOffline.CoState = "采集错误";
-                                                cancelAllTask();
-                                                updateCoState(collectOffline);
-                                                return;
-                                            }
-                                            arcContent = arcContent.Replace(imgPath, imgUrl);
-                                            if (litpicUrl == "")
-                                            {
-                                                Image sourcePic = Image.FromFile(picFileName);
-                                                thumbPicID = myDB.LastInsertedId;
-                                                bool isThumbGenerated = ArcTool.GenThumbnail(sourcePic, thumbFileName, _cfgThumbWidth, _cfgThumbHeight);
-                                                //如果正确生成图片缩略图，则将缩略图设置为缩略图URL，否则使用图片url作为缩略图
-                                                if (isThumbGenerated)
-                                                {
-                                                    litpicUrl = thumbUrl;
-                                                }
-                                                else
-                                                {
-                                                    litpicUrl = imgUrl;
-                                                }
-                                            }
-                                        }
-                                    }
-                                    catch (Exception ex) //如果复制图片过程中出错的话，保存出错异常，退出当前处理过程
-                                    {
-                                        List<Exception> coException = collectOffline.CoException;
-                                        ex.Data.Add("文章ID", aid);
-                                        ex.Data.Add("文章标题", arcTitle);
-                                        ex.Data.Add("文章路径", arcUrl);
-                                        ex.Data.Add("图片源路径", imgPath);
-                                        ex.Data.Add("图片新路径", picFileName);
-                                        coException.Add(ex);
-                                        tboxErrorOutput.AppendText(string.Format("处理文章图片出错！请检查磁盘访问是否正常！文章ID：{0} 图片源路径：{1} 图片新路径：{2} 错误信息：{3}\n", aid, imgPath, picFileName, ex.Message));
-                                        collectOffline.CoState = "采集错误";
-                                        cancelAllTask();
-                                        updateCoState(collectOffline);
-                                        return;
-                                    }
-                                }
-                                else
-                                {
-                                    arcContent = arcContent.Replace(imgPath, _cfgPicNone);
-                                }
-                            } //循环处理文章中的图片结束
-                            bool isArcContentUpdated = updateArcContent(collectOffline, aid, arcContent, litpicUrl,isAllpicCopied,thumbPicID); //更新处理完毕后的文章内容和缩略图
-                            if (!isArcContentUpdated)  //如果文章更新失败退出当前处理过程
+                                aid = myDB.LastInsertedId;
+                            }
+                            else   //如果插入文章内容出错，则将错误信息记录下来到当前采集对象中，并且中断当前采集过程，提示检查数据库
                             {
                                 List<Exception> coException = collectOffline.CoException;
-                                Exception ex = new Exception("保存文章过程中，处理完文章内容中图片和缩略图后，更新文章内容出错！中断保存采集文章！");
-                                ex.Data.Add("文章ID", aid);
-                                ex.Data.Add("文章标题", arcTitle);
-                                ex.Data.Add("文章路径", arcUrl);
-                                coException.Add(ex);
-                                tboxErrorOutput.AppendText(string.Format("保存文章出错,请检查数据库连接是否正常！文章ID：{0} 文章标题：{1}  错误信息：{2}\n", aid,  arcTitle, ex.Message));
+                                Exception mysqlError = new Exception(sResult);
+                                coException.Add(mysqlError);
+                                tboxErrorOutput.AppendText(string.Format("插入文章内容出错,中断采集过程！请检查数据库连接是否正常！错误信息：{0}\n", mysqlError.Message));
                                 collectOffline.CoState = "采集错误";
                                 cancelAllTask();
                                 updateCoState(collectOffline);
                                 return;
                             }
+                            if (aid != 0)  //判断文章是否正确插入到数据库中，正确插入文章后返回的ID不会是0
+                            {
+                                collectOffline.CurrentSavedArticles++;
+                                string isAllpicCopied = "yes";     //对应文章表中的is_allpic_copied字段，用来判断文章内容中的图片是否都正确处理了。初始为都能正确处理，如果处理过程中出错则设置为 "no"
+                                string litpicUrl = "";
+                                long thumbPicID = 0;
+                                foreach (string imgPath in imgPathList)  //循环处理文章中包含的图片，将图片复制到新的路径，用于图片服务器访问，生成图片最终用于网络访问的URL
+                                {
+                                    if (testPicFile(imgPath))
+                                    {
+                                        string fileExtenstion = Path.GetExtension(imgPath);
+                                        sResult = "";
+                                        counts = 0;
+                                        string picFilePath = _cfgBasePath + @"src\"; //用来保存采集的图片要存储在采集服务器上的路径；
+                                        string thumbFilePath = _cfgBasePath + @"thumb\"; //用来保存缩略图要存储在采集服务器上的路径；
+                                        int firstSubDirNum = 0;  //一级子目录编号，同时也是图片域名的子域名编号
+                                        int secondSubDirNum = 0;  //二级子目录编号
+                                        firstSubDirNum = _cfgPicNum / 100000;
+                                        secondSubDirNum = _cfgPicNum % 100000 / 10000;
+                                        picFilePath = picFilePath + firstSubDirNum.ToString() + @"\" + secondSubDirNum;
+                                        thumbFilePath = thumbFilePath + firstSubDirNum.ToString() + @"\" + secondSubDirNum;
+                                        //建立图片目录
+                                        if (!Directory.Exists(picFilePath))
+                                        {
+                                            Directory.CreateDirectory(picFilePath);
+                                        }
+                                        //建立缩略图目录
+                                        if (!Directory.Exists(thumbFilePath))
+                                        {
+                                            Directory.CreateDirectory(thumbFilePath);
+                                        }
+                                        //生成图片和缩略图完整路径
+                                        string randomFileName = Path.GetRandomFileName();
+                                        string picFileName = picFilePath + @"\" + randomFileName + fileExtenstion;
+                                        string thumbFileName = thumbFilePath + @"\" + randomFileName + fileExtenstion;
+                                        //生成图片和缩略图完整URL
+                                        string imgUrlPath = @"http://img" + firstSubDirNum.ToString() + @"." + _cfgImgBaseurl + @"/" + secondSubDirNum.ToString() + @"/";
+                                        string imgUrl = imgUrlPath + randomFileName + fileExtenstion;
+                                        string thumbUrlPath = @"http://thumb" + firstSubDirNum.ToString() + @"." + _cfgImgBaseurl + @"/" + secondSubDirNum.ToString() + @"/";
+                                        string thumbUrl = thumbUrlPath + randomFileName + fileExtenstion;
+                                        while (File.Exists(picFileName))  //随机生成新的图片文件名，如果随机文件名重复则要反复生成，直到不重复为止
+                                        {
+                                            randomFileName = Path.GetRandomFileName();
+                                            picFileName = picFilePath + @"\" + randomFileName + fileExtenstion;
+                                            imgUrl = imgUrlPath + randomFileName + fileExtenstion;
+                                            thumbFileName = thumbFilePath + @"\" + randomFileName + fileExtenstion;
+                                            thumbUrl = thumbUrlPath + randomFileName + fileExtenstion;
+                                        }
+                                        try
+                                        {
+                                            File.Copy(imgPath, picFileName);   //将源图片复制到新的路径中，用于图片服务器访问
+                                            sql = "insert into arc_pics(cid,aid,ssid,pic_path,source_path,pic_url) values ('" + cid.ToString() + "'";
+                                            sql = sql + ",'" + aid.ToString() + "'";
+                                            sql = sql + ",'" + sourceSiteID.ToString() + "'";
+                                            sql = sql + ",'" + mySqlDB.EscapeString(picFileName) + "'";
+                                            sql = sql + ",'" + mySqlDB.EscapeString(imgPath) + "'";
+                                            sql = sql + ",'" + imgUrl + "')";
+                                            counts = myDB.executeDMLSQL(sql, ref sResult);
+                                            if (sResult == mySqlDB.SUCCESS && counts > 0)
+                                            {
+                                                _cfgPicNum++;
+                                                if (!updateCfgPicnum(collectOffline))   //如果更新数据系统配置表中的图片总数参数失败的话，就退出当前图片处理过程，不然的话会导致图片总数出问题。
+                                                {
+                                                    List<Exception> coException = collectOffline.CoException;
+                                                    Exception ex = new Exception("更新数据系统配置表中的图片总数参数失败！中断保存采集文章！请检查数据库连接是否正常！");
+                                                    ex.Data.Add("文章ID", aid);
+                                                    ex.Data.Add("文章标题", arcTitle);
+                                                    ex.Data.Add("文章路径", arcUrl);
+                                                    ex.Data.Add("图片源路径", imgPath);
+                                                    ex.Data.Add("图片新路径", picFileName);
+                                                    coException.Add(ex);
+                                                    tboxErrorOutput.AppendText(string.Format("处理文章图片出错！文章ID：{0} 图片源路径：{1} 图片新路径：{2} 错误信息：{3}\n", aid, imgPath, picFileName, ex.Message));
+                                                    collectOffline.CoState = "采集错误";
+                                                    cancelAllTask();
+                                                    updateCoState(collectOffline);
+                                                    return;
+                                                }
+                                                arcContent = arcContent.Replace(imgPath, imgUrl);
+                                                if (litpicUrl == "")
+                                                {
+                                                    Image sourcePic = Image.FromFile(picFileName);
+                                                    thumbPicID = myDB.LastInsertedId;
+                                                    bool isThumbGenerated = ArcTool.GenThumbnail(sourcePic, thumbFileName, _cfgThumbWidth, _cfgThumbHeight);
+                                                    //如果正确生成图片缩略图，则将缩略图设置为缩略图URL，否则使用图片url作为缩略图
+                                                    if (isThumbGenerated)
+                                                    {
+                                                        litpicUrl = thumbUrl;
+                                                    }
+                                                    else
+                                                    {
+                                                        litpicUrl = imgUrl;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        catch (Exception ex) //如果复制图片过程中出错的话，保存出错异常，退出当前处理过程
+                                        {
+                                            List<Exception> coException = collectOffline.CoException;
+                                            ex.Data.Add("文章ID", aid);
+                                            ex.Data.Add("文章标题", arcTitle);
+                                            ex.Data.Add("文章路径", arcUrl);
+                                            ex.Data.Add("图片源路径", imgPath);
+                                            ex.Data.Add("图片新路径", picFileName);
+                                            coException.Add(ex);
+                                            tboxErrorOutput.AppendText(string.Format("处理文章图片出错！请检查磁盘访问是否正常！文章ID：{0} 图片源路径：{1} 图片新路径：{2} 错误信息：{3}\n", aid, imgPath, picFileName, ex.Message));
+                                            collectOffline.CoState = "采集错误";
+                                            cancelAllTask();
+                                            updateCoState(collectOffline);
+                                            return;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        arcContent = arcContent.Replace(imgPath, _cfgPicNone);
+                                    }
+                                } //循环处理文章中的图片结束
+                                bool isArcContentUpdated = updateArcContent(collectOffline, aid, arcContent, litpicUrl, isAllpicCopied, thumbPicID); //更新处理完毕后的文章内容和缩略图
+                                if (!isArcContentUpdated)  //如果文章更新失败退出当前处理过程
+                                {
+                                    List<Exception> coException = collectOffline.CoException;
+                                    Exception ex = new Exception("保存文章过程中，处理完文章内容中图片和缩略图后，更新文章内容出错！中断保存采集文章！");
+                                    ex.Data.Add("文章ID", aid);
+                                    ex.Data.Add("文章标题", arcTitle);
+                                    ex.Data.Add("文章路径", arcUrl);
+                                    coException.Add(ex);
+                                    tboxErrorOutput.AppendText(string.Format("保存文章出错,请检查数据库连接是否正常！文章ID：{0} 文章标题：{1}  错误信息：{2}\n", aid, arcTitle, ex.Message));
+                                    collectOffline.CoState = "采集错误";
+                                    cancelAllTask();
+                                    updateCoState(collectOffline);
+                                    return;
+                                }
 
-                        }  //判断文章是否正确插入到数据库结束
+                            }  //判断文章是否正确插入到数据库结束
+                        }  //判断文章是否至少包含一张能正确打开的图片
                     }  //循环处理文章结束
                 }//判断是否正确获取栏目ID和来源网站ID
                 else
