@@ -295,6 +295,10 @@ namespace ArcDB
                             _cid = myDB.LastInsertedId;
                             MessageBox.Show(string.Format("成功添加新采集规则！新规则ID：{0}",_cid));
                         }
+                        else
+                        {
+                            MessageBox.Show(string.Format("添加采集规则失败！错误信息：{0}", sResult));
+                        }
                     }
                     catch (Exception ex)
                     {

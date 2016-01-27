@@ -357,6 +357,10 @@ namespace ArcDB
                             _pubID = (int)myDB.LastInsertedId;
                             MessageBox.Show(string.Format("成功添加新发布规则！新规则ID：{0}", _pubID));
                         }
+                        else
+                        {
+                            MessageBox.Show(string.Format("添加发布规则失败！错误信息：{0}", sResult));
+                        }
                     }
                     catch (Exception ex)
                     {
