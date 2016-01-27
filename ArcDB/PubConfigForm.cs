@@ -331,6 +331,10 @@ namespace ArcDB
                         {
                             MessageBox.Show("成功更新发布规则！");
                         }
+                        else
+                        {
+                            MessageBox.Show(string.Format("修改发布规则失败！错误信息：{0}", sResult));
+                        }
                     }
                     catch (Exception ex)
                     {
