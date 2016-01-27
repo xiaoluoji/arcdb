@@ -171,6 +171,28 @@ namespace ArcDB
             }
         }
 
+        //查寻符合发布条件的文章总数，根据文章总数随机一个从1到总数的数，作为获取一条记录的起始位置
+        private int getRandomStartPosition(string sql)
+        {
+            int startPosition = 0;
+            int recordCounts = 0;
+            List<Dictionary<string, object>> dbResult;
+            mySqlDB myDB = new mySqlDB(_coConnString);
+            string sResult = "";
+            int counts = 0;
+            dbResult = myDB.GetRecords(sql, ref sResult, ref counts);
+            if (sResult == mySqlDB.SUCCESS && counts > 0)
+            {
+                recordCounts=int.Parse(dbResult[0]["count(aid)"].ToString());
+                if (recordCounts!=0)
+                {
+                    Random rnd = new Random();
+                    startPosition = rnd.Next(1, recordCounts);
+                }
+            }
+            return startPosition;
+        }
+        //随机获取一条符合发布条件的文章记录
         private Dictionary<string,object> getOneRecord()
         {
             List<Dictionary<string, object>> dbResult;
@@ -178,16 +200,28 @@ namespace ArcDB
             string sResult = "";
             int counts = 0;
             string sql = "select aid,litpic,title,source_site,description,content from arc_contents where type_id='" + _coTypeid.ToString() + "' and usedby_pc='no'";
+            string countSql = "select count(aid) from arc_contents where type_id='" + _coTypeid.ToString() + "' and usedby_pc='no'";
             if (_pubFilterKeywords.Length>0)
             {
                 sql = sql + " and (title like '%" + _pubFilterKeywords[0] + "%'";
+                countSql = countSql + " and (title like '%" + _pubFilterKeywords[0] + "%'";
                 for (int i = 1; i < _pubFilterKeywords.Length; i++)
                 {
                     sql = sql + " or title like '%" + _pubFilterKeywords[i] + "%'";
+                    countSql = countSql + " or title like '%" + _pubFilterKeywords[i] + "%'";
                 }
                 sql = sql + ")";
+                countSql = countSql + ")";
             }
-            sql = sql + " order by aid limit 1";
+            int startPosition = getRandomStartPosition(countSql);
+            if (startPosition!=0)
+            {
+                sql = sql + " order by aid limit "+startPosition.ToString()+",1";
+            }
+            else
+            {
+                sql = sql + " order by aid limit 1";
+            }
             dbResult = myDB.GetRecords(sql, ref sResult, ref counts);
             if (sResult==mySqlDB.SUCCESS && counts>0)
             {
