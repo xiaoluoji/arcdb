@@ -211,6 +211,10 @@ namespace ArcDB
                     sql = sql + ", xpath_title_node = '" + mySqlDB.EscapeString(_xpathTitleNode) + "'";
                     sql = sql + ", xpath_content_node = '" + mySqlDB.EscapeString(_xpathContentNode) + "'";
                     sql = sql + ",up_time=current_timestamp";
+                    sql = sql + ", more_list_pages = '" + mySqlDB.EscapeString(_moreListPages) + "'";
+                    sql = sql + ", sub_node_params = '" + mySqlDB.EscapeString(_subNodeParams) + "'";
+                    sql = sql + ", regex_params = '" + mySqlDB.EscapeString(_regexParams) + "'";
+
                     if (_arcSubPageSymbol != "")
                     {
                         sql = sql + ", arc_subpage_symbol = '" + mySqlDB.EscapeString(_arcSubPageSymbol) + "'";
@@ -219,18 +223,7 @@ namespace ArcDB
                     {
                         sql = sql + ", arc_subpage_startnum = '" + _arcSubPageStartNum + "'";
                     }
-                    if (_moreListPages != "")
-                    {
-                        sql = sql + ", more_list_pages = '" + mySqlDB.EscapeString(_moreListPages) + "'";
-                    }
-                    if (_subNodeParams != "")
-                    {
-                        sql = sql + ", sub_node_params = '" + mySqlDB.EscapeString(_subNodeParams) + "'";
-                    }
-                    if (_regexParams != "")
-                    {
-                        sql = sql + ", regex_params = '" + mySqlDB.EscapeString(_regexParams) + "'";
-                    }
+
                     sql = sql + " where cid = '" + _cid.ToString() + "'";
 
                     try
