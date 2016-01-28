@@ -51,7 +51,7 @@ namespace ArcDB
             InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
             StartPosition = FormStartPosition.Manual;
-            Location = new Point(ParentForm.Location.X + 300, ParentForm.Location.Y + 200);
+            Location = new Point(ParentForm.Location.X + 350, ParentForm.Location.Y + 200);
         }
 
         //表单加载时候的执行的操作
