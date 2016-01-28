@@ -46,7 +46,7 @@ namespace ArcDB
             InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
             StartPosition = FormStartPosition.Manual;
-            Location = new Point(ParentForm.Location.X + 200, ParentForm.Location.Y + 200);
+            Location = new Point(ParentForm.Location.X + 300, ParentForm.Location.Y + 200);
         }
 
         #region 事件区域
