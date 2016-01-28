@@ -37,7 +37,7 @@ namespace ArcDB
         private CancellationTokenSource cancelTokenSource;
 
         //构造方法
-        public PubConfigForm(string coConnString,string pubConnString,int pubID,string pubTablePrename)
+        public PubConfigForm(string coConnString,string pubConnString,int pubID,string pubTablePrename, System.Windows.Forms.Form ParentForm)
         {
             _pubID = pubID;
             _coConnString = coConnString;
@@ -45,6 +45,8 @@ namespace ArcDB
             _pubTablePrename = pubTablePrename;
             InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
+            StartPosition = FormStartPosition.Manual;
+            Location = new Point(ParentForm.Location.X + 200, ParentForm.Location.Y + 200);
         }
 
         #region 事件区域

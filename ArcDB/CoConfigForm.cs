@@ -44,12 +44,14 @@ namespace ArcDB
         private CancellationTokenSource cancelToken = new CancellationTokenSource();
 
         //构造函数
-        public CoConfigForm(string connString,long cid)
+        public CoConfigForm(string connString,long cid, System.Windows.Forms.Form ParentForm)
         {
             _connString = connString;
             _cid = cid;
             InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
+            StartPosition = FormStartPosition.Manual;
+            Location = new Point(ParentForm.Location.X + 200, ParentForm.Location.Y + 200);
         }
 
         //表单加载时候的执行的操作

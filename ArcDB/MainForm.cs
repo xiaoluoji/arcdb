@@ -298,7 +298,7 @@ namespace ArcDB
             {
                 ListViewItem checkedItem = listViewCollect.CheckedItems[0];
                 long cid = long.Parse(checkedItem.SubItems[0].Text);
-                CoConfigForm coFormModify = new CoConfigForm(_coConnString, cid);
+                CoConfigForm coFormModify = new CoConfigForm(_coConnString, cid,this);
                 coFormModify.Text = "修改采集规则";
                 coFormModify.Show();
                 this.Enabled = false;
@@ -313,7 +313,7 @@ namespace ArcDB
         //增加采集规则
         private void btnAddCoconfig_Click(object sender, EventArgs e)
         {
-            CoConfigForm coFormAdd = new CoConfigForm(_coConnString, -1);
+            CoConfigForm coFormAdd = new CoConfigForm(_coConnString, -1,this);
             coFormAdd.Text = "添加新采集规则";
             coFormAdd.Show();
             this.Enabled = false;
@@ -624,7 +624,7 @@ namespace ArcDB
             {
                 ListViewItem checkedItem = listViewPublish.CheckedItems[0];
                 int pubID = int.Parse(checkedItem.SubItems[0].Text);
-                PubConfigForm pubFormModify = new PubConfigForm(_coConnString,_pubConnString, pubID,_pubTablePrename);
+                PubConfigForm pubFormModify = new PubConfigForm(_coConnString,_pubConnString, pubID,_pubTablePrename,this);
                 pubFormModify.Text = "修改发布规则";
                 pubFormModify.Show();
                 this.Enabled = false;
@@ -646,7 +646,7 @@ namespace ArcDB
         //点击增加发布规则按钮
         private void btnAddPubConfig_Click(object sender, EventArgs e)
         {
-            PubConfigForm pubFormAdd = new PubConfigForm(_coConnString, _pubConnString, -1,_pubTablePrename);
+            PubConfigForm pubFormAdd = new PubConfigForm(_coConnString, _pubConnString, -1,_pubTablePrename,this);
             pubFormAdd.Text = "新增发布规则";
             pubFormAdd.Show();
             this.Enabled = false;
