@@ -258,9 +258,17 @@ namespace ArcDB
                                 string fullDate = kvp.Value.ToString();
                                 try  //尝试将完整时间格式转换成短日期格式
                                 {
-                                    DateTime dt = DateTime.Parse(fullDate);
-                                    string shortDate = dt.ToShortDateString();
-                                    subItems.Add(shortDate);
+                                    if (fullDate=="")
+                                    {
+                                        subItems.Add(fullDate);
+                                    }
+                                    else
+                                    {
+                                        DateTime dt = DateTime.Parse(fullDate);
+                                        string shortDate = dt.ToShortDateString();
+                                        subItems.Add(shortDate);
+                                    }
+
                                 }
                                 catch (Exception)   //如果转换失败，则继续用完整日期格式
                                 {
@@ -571,9 +579,17 @@ namespace ArcDB
                                 string fullDate = kvp.Value.ToString();
                                 try  //尝试将完整时间格式转换成短日期格式
                                 {
-                                    DateTime dt = DateTime.Parse(fullDate);
-                                    string shortDate = dt.ToShortDateString();
-                                    subItems.Add(shortDate);
+                                    if (fullDate=="")
+                                    {
+                                        subItems.Add(fullDate);
+                                    }
+                                    else
+                                    {
+                                        DateTime dt = DateTime.Parse(fullDate);
+                                        string shortDate = dt.ToShortDateString();
+                                        subItems.Add(shortDate);
+                                    }
+
                                 }
                                 catch (Exception)   //如果转换失败，则继续用完整日期格式
                                 {
