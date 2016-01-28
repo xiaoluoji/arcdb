@@ -457,7 +457,8 @@ namespace ArcDB
                     return true;
                 }
             }
-            if (imgPathList.Count>0)
+            /*
+            if (imgPathList.Count>0)  //此处判断还需要再改进，根绝采集规则中设置是否只采集带图片文章来判断
             {
                 return false;
             }
@@ -465,6 +466,9 @@ namespace ArcDB
             {
                 return true;
             }
+            */
+            //如果文章中不带任何图片，则返回false
+            return false;
         }
 
         //根据文章内容获取文章概要
