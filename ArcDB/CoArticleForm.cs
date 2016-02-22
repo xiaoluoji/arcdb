@@ -34,8 +34,9 @@ namespace ArcDB
         private string _cfgBasePath="";                                                                       //图片保存根目录
         private string _cfgImgBaseurl="";                                                                   //图片网址所使用的域名
         private int _cfgDescriptionLength = 0;                                                           //生成文章概要时候生成概要的长度，此数据从数据库sys_config表中获取，如果数据没有配置则默认为120
-        private int _cfgThumbWidth = 0;                                                                    //生成缩略图时设置的缩略图宽度，此数据从数据库sys_config表中获取，如果数据没有配置则默认是300
-        private int _cfgThumbHeight = 0;                                                                   //生成缩略图时设置的缩略图高度，此数据从数据库sys_config表中获取，如果数据没有配置则默认是300
+        private int _cfgThumbWidthDefault = 0;                                                        //生成缩略图时设置的缩略图宽度，此数据从数据库sys_config表cfg_thumb_width记录中获取，如果数据没有配置则默认是300,此参数只用作填白生成缩略图方法的参数
+        private int _cfgThumbHeightDefault = 0;                                                       //生成缩略图时设置的缩略图高度，此数据从数据库sys_config表cfg_thumb_height记录中获取，如果数据没有配置则默认是300，此参数只用作填白生成缩略图方法的参数
+        private List<int> _cfgThumbWidthList;                                                           //需要生成多种规格缩略图所指定的宽度，此数据从数据库sys_config表cfg_thumb_width_arr记录中获取，多种规格使用“|”分隔
         private string _cfgPicNone = "";                                                                      //采集文章内容中出现图片找不到的情况时，使用默认的一张图片来替换找不到的图片
 
 
@@ -349,41 +350,65 @@ namespace ArcDB
                 else
                     _cfgDescriptionLength = 120;
             }
-            //读取缩略图宽度参数
-            if (_cfgThumbWidth == 0)
+
+            //读取生成多种规格缩略图宽度参数
+
+            if (_cfgThumbWidthList == null)
+            {
+                _cfgThumbWidthList = new List<int>();
+                sql = "select value from sys_config where varname='cfg_thumb_width_arr'";
+                dbResult = myDB.GetRecords(sql, ref sResult, ref counts);
+                if (sResult==mySqlDB.SUCCESS && counts>0)
+                {
+                    string temp = dbResult[0]["value"].ToString();
+                    string[] tempArr = temp.Split('|');
+                    List<string> tempList = tempArr.ToList();
+                    foreach (string item in tempList)
+                    {
+                        int width = 0;
+                        if (int.TryParse(item,out width))
+                        {
+                            _cfgThumbWidthList.Add(int.Parse(item));
+                        }
+                    }
+                }
+            }
+
+            //读取填白方法生成缩略图宽度参数
+            if (_cfgThumbWidthDefault == 0)
             {
                 sql = "select value from sys_config where varname='cfg_thumb_width'";
                 dbResult = myDB.GetRecords(sql, ref sResult, ref counts);
                 if (sResult == mySqlDB.SUCCESS && counts > 0)
                 {
                     string temp = dbResult[0]["value"].ToString();
-                    if (int.TryParse(temp, out _cfgThumbWidth))
+                    if (int.TryParse(temp, out _cfgThumbWidthDefault))
                     {
-                        _cfgThumbWidth = int.Parse(temp);
+                        _cfgThumbWidthDefault = int.Parse(temp);
                     }
                     else
-                        _cfgThumbWidth = 300;
+                        _cfgThumbWidthDefault = 300;
                 }
                 else
-                    _cfgThumbWidth = 300;
+                    _cfgThumbWidthDefault = 300;
             }
-            //读取缩略图高度参数
-            if (_cfgThumbHeight == 0)
+            //读取填白方法生成缩略图高度参数
+            if (_cfgThumbHeightDefault == 0)
             {
                 sql = "select value from sys_config where varname='cfg_thumb_height'";
                 dbResult = myDB.GetRecords(sql, ref sResult, ref counts);
                 if (sResult == mySqlDB.SUCCESS && counts > 0)
                 {
                     string temp = dbResult[0]["value"].ToString();
-                    if (int.TryParse(temp, out _cfgThumbHeight))
+                    if (int.TryParse(temp, out _cfgThumbHeightDefault))
                     {
-                        _cfgThumbHeight = int.Parse(temp);
+                        _cfgThumbHeightDefault = int.Parse(temp);
                     }
                     else
-                        _cfgThumbHeight = 300;
+                        _cfgThumbHeightDefault = 300;
                 }
                 else
-                    _cfgThumbHeight = 300;
+                    _cfgThumbHeightDefault = 300;
             }
             //读取采集文章内容中缺失图片默认替换图片参数
             if (_cfgPicNone == "")
@@ -522,6 +547,24 @@ namespace ArcDB
                 Exception mysqlError = new Exception(sResult);
                 coException.Add(mysqlError);
                 return false;
+            }
+        }
+
+        private void updateThumbStatus(ArticleCollectOffline collectOffline,long picID)
+        {
+            mySqlDB myDB = new mySqlDB(_connString);
+            string sResult = "";
+            int counts = 0;
+            string sql = "update arc_pics set is_thumb_maked='yes' where pid='" + picID.ToString() + "'";
+            counts = myDB.executeDMLSQL(sql, ref sResult);
+            if (sResult != mySqlDB.SUCCESS) //如果更新文章内容出错，则将错误信息记录下来到当前采集对象中
+            {
+                List<Exception> coException = collectOffline.CoException;
+                Exception mysqlError = new Exception(sResult);
+                mysqlError.Data.Add("错误类型", "数据库更新错误");
+                mysqlError.Data.Add("数据表","arc_pics");
+                mysqlError.Data.Add("ID", picID.ToString());
+                coException.Add(mysqlError);
             }
         }
 
@@ -733,6 +776,8 @@ namespace ArcDB
                                         counts = 0;
                                         string picFilePath = _cfgBasePath + @"src\"; //用来保存采集的图片要存储在采集服务器上的路径；
                                         string thumbFilePath = _cfgBasePath + @"thumb\"; //用来保存缩略图要存储在采集服务器上的路径；
+                                        List<string> thumbListFileName = new List<string>(); //用来保存生成的多种规格缩略图保存路径；
+
                                         int firstSubDirNum = 0;  //一级子目录编号，同时也是图片域名的子域名编号
                                         int secondSubDirNum = 0;  //二级子目录编号
                                         firstSubDirNum = _cfgPicNum / 100000;
@@ -753,18 +798,57 @@ namespace ArcDB
                                         string randomFileName = Path.GetRandomFileName();
                                         string picFileName = picFilePath + @"\" + randomFileName + fileExtenstion;
                                         string thumbFileName = thumbFilePath + @"\" + randomFileName + fileExtenstion;
+                                        if (_cfgThumbWidthList.Count>0)
+                                        {
+                                            foreach (int item in _cfgThumbWidthList)
+                                            {
+                                                string tempFileName= thumbFilePath + @"\" + randomFileName+ "."+item.ToString() + fileExtenstion;
+                                                thumbListFileName.Add(tempFileName);
+                                            }
+                                        }
                                         //生成图片和缩略图完整URL
                                         string imgUrlPath = @"http://img" + firstSubDirNum.ToString() + @"." + _cfgImgBaseurl + @"/" + secondSubDirNum.ToString() + @"/";
                                         string imgUrl = imgUrlPath + randomFileName + fileExtenstion;
                                         string thumbUrlPath = @"http://thumb" + firstSubDirNum.ToString() + @"." + _cfgImgBaseurl + @"/" + secondSubDirNum.ToString() + @"/";
                                         string thumbUrl = thumbUrlPath + randomFileName + fileExtenstion;
+                                        List<string>thumbListUrl = new List<string>();
+                                        if (_cfgThumbWidthList.Count>0)
+                                        {
+                                            foreach (var item in _cfgThumbWidthList)
+                                            {
+                                                string tempUrl= thumbUrlPath + randomFileName + "." + item.ToString() + fileExtenstion;
+                                                thumbListUrl.Add(tempUrl);
+                                            }
+                                        }
                                         while (File.Exists(picFileName))  //随机生成新的图片文件名，如果随机文件名重复则要反复生成，直到不重复为止
                                         {
                                             randomFileName = Path.GetRandomFileName();
                                             picFileName = picFilePath + @"\" + randomFileName + fileExtenstion;
                                             imgUrl = imgUrlPath + randomFileName + fileExtenstion;
+                                            //拼接缩略图文件完整路径
                                             thumbFileName = thumbFilePath + @"\" + randomFileName + fileExtenstion;
+                                            if (_cfgThumbWidthList.Count > 0)
+                                            {
+                                                List<string> tempListFileName = new List<string>();
+                                                foreach (int item in _cfgThumbWidthList)
+                                                {
+                                                    string tempFileName = thumbFilePath + @"\" + randomFileName + "." + item.ToString() + fileExtenstion;
+                                                    tempListFileName.Add(tempFileName);
+                                                }
+                                                thumbListFileName = tempListFileName;
+                                            }
+                                            //拼接缩略图完整URL
                                             thumbUrl = thumbUrlPath + randomFileName + fileExtenstion;
+                                            if (_cfgThumbWidthList.Count > 0)
+                                            {
+                                                List<string> tempListUrl = new List<string>();
+                                                foreach (var item in _cfgThumbWidthList)
+                                                {
+                                                    string tempUrl = thumbUrlPath + randomFileName + "." + item.ToString() + fileExtenstion;
+                                                    tempListUrl.Add(tempUrl);
+                                                }
+                                                thumbListUrl = tempListUrl;
+                                            }
                                         }
                                         try
                                         {
@@ -796,21 +880,49 @@ namespace ArcDB
                                                     return;
                                                 }
                                                 arcContent = arcContent.Replace(imgPath, imgUrl);
-                                                if (litpicUrl == "")
+                                                if (_cfgThumbWidthList.Count>0)
                                                 {
-                                                    Image sourcePic = Image.FromFile(picFileName);
-                                                    thumbPicID = myDB.LastInsertedId;
-                                                    bool isThumbGenerated = ArcTool.GenThumbnail(sourcePic, thumbFileName, _cfgThumbWidth, _cfgThumbHeight);
-                                                    //如果正确生成图片缩略图，则将缩略图设置为缩略图URL，否则使用图片url作为缩略图
-                                                    if (isThumbGenerated)
+                                                    for (int i = 0; i < thumbListFileName.Count; i++)
                                                     {
-                                                        litpicUrl = thumbUrl;
-                                                    }
-                                                    else
-                                                    {
-                                                        litpicUrl = imgUrl;
+                                                        bool isThumbGenerated = ArcTool.MakeThumb(picFileName, thumbListFileName[i], _cfgThumbWidthList[i], 0, "W");
+                                                        if (isThumbGenerated)
+                                                        {
+                                                            updateThumbStatus(collectOffline, myDB.LastInsertedId);
+                                                        }
+                                                        if (litpicUrl=="")
+                                                        {
+                                                            thumbPicID = myDB.LastInsertedId;
+                                                            if (isThumbGenerated)
+                                                            {
+                                                                litpicUrl = thumbListUrl[i];
+                                                            }
+                                                            else
+                                                            {
+                                                                litpicUrl = imgUrl;
+                                                            }
+                                                        }
                                                     }
                                                 }
+                                                else
+                                                {
+                                                    if (litpicUrl == "")
+                                                    {
+                                                        Image sourcePic = Image.FromFile(picFileName);
+                                                        thumbPicID = myDB.LastInsertedId;
+                                                        bool isThumbGenerated = ArcTool.GenThumbFillWithWhite(sourcePic, thumbFileName, _cfgThumbWidthDefault, _cfgThumbHeightDefault);
+                                                        //如果正确生成图片缩略图，则将缩略图设置为缩略图URL，否则使用图片url作为缩略图
+                                                        if (isThumbGenerated)
+                                                        {
+                                                            litpicUrl = thumbUrl;
+                                                            updateThumbStatus(collectOffline, thumbPicID);
+                                                        }
+                                                        else
+                                                        {
+                                                            litpicUrl = imgUrl;
+                                                        }
+                                                    }
+                                                }
+
                                             }
                                         }
                                         catch (Exception ex) //如果复制图片过程中出错的话，保存出错异常，退出当前处理过程
