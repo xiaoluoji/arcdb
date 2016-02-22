@@ -38,7 +38,6 @@ namespace ArcDB
         private int _cfgThumbHeight = 0;                                                                   //生成缩略图时设置的缩略图高度，此数据从数据库sys_config表中获取，如果数据没有配置则默认是300
         private string _cfgPicNone = "";                                                                      //采集文章内容中出现图片找不到的情况时，使用默认的一张图片来替换找不到的图片
 
-
         public CoArticleForm(string connString, Dictionary<long, string> dicCids)
         {
             CheckForIllegalCrossThreadCalls = false;
