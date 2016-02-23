@@ -141,7 +141,15 @@ namespace ArcDB
         private void btnSaveConfig_Click(object sender, EventArgs e)
         {
             updateSysconfig();
-            _sysConfig.SaveToFile(_configFile);
+            try
+            {
+                _sysConfig.SaveToFile(_configFile);
+                MessageBox.Show("保存配置成功！");
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("保存配置失败！");
+            }
         }
 
         #endregion   Main Form 相关方法结束
