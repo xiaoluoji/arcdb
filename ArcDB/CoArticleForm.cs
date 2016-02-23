@@ -573,7 +573,7 @@ namespace ArcDB
         }
 
         //更新文章内容，这里是更新将文章内容中的本地路径替换成图片服务器访问的URL链接后的内容，包括增加文章缩略图
-        private bool updateArcContent(ArticleCollectOffline collectOffline, long aid,string arcContent,string litpicUrl,string isAllpicCopied,long thumbPicID)
+        private bool updateArcContent(ArticleCollectOffline collectOffline, long aid,string arcContent,string litpicUrl,string isAllpicCopied,long thumbPicID,int picCount)
         {
             mySqlDB myDB = new mySqlDB(_connString);
             string sResult = "";
@@ -611,6 +611,15 @@ namespace ArcDB
                     coException.Add(mysqlError);
                     return false;
                 }
+            }
+            sql = "update arc_contents set pic_count='" + picCount.ToString() + "' where aid='" + aid.ToString() + "'";
+            counts = myDB.executeDMLSQL(sql, ref sResult);
+            if (sResult != mySqlDB.SUCCESS) //如果更新文章内容出错，则将错误信息记录下来到当前采集对象中
+            {
+                List<Exception> coException = collectOffline.CoException;
+                Exception mysqlError = new Exception(sResult);
+                coException.Add(mysqlError);
+                return false;
             }
             return true;
         }
@@ -771,6 +780,7 @@ namespace ArcDB
                                 string isAllpicCopied = "yes";     //对应文章表中的is_allpic_copied字段，用来判断文章内容中的图片是否都正确处理了。初始为都能正确处理，如果处理过程中出错则设置为 "no"
                                 string litpicUrl = "";
                                 long thumbPicID = 0;
+                                int picCount = 0;
                                 foreach (string imgPath in imgPathList)  //循环处理文章中包含的图片，将图片复制到新的路径，用于图片服务器访问，生成图片最终用于网络访问的URL
                                 {
                                     if (testPicFile(imgPath))
@@ -867,6 +877,7 @@ namespace ArcDB
                                             if (sResult == mySqlDB.SUCCESS && counts > 0)
                                             {
                                                 _cfgPicNum++;
+                                                picCount++;
                                                 if (!updateCfgPicnum(collectOffline))   //如果更新数据系统配置表中的图片总数参数失败的话，就退出当前图片处理过程，不然的话会导致图片总数出问题。
                                                 {
                                                     List<Exception> coException = collectOffline.CoException;
@@ -950,7 +961,7 @@ namespace ArcDB
                                         arcContent = arcContent.Replace(imgPath, _cfgPicNone);
                                     }
                                 } //循环处理文章中的图片结束
-                                bool isArcContentUpdated = updateArcContent(collectOffline, aid, arcContent, litpicUrl, isAllpicCopied, thumbPicID); //更新处理完毕后的文章内容和缩略图
+                                bool isArcContentUpdated = updateArcContent(collectOffline, aid, arcContent, litpicUrl, isAllpicCopied, thumbPicID,picCount); //更新处理完毕后的文章内容和缩略图
                                 if (!isArcContentUpdated)  //如果文章更新失败退出当前处理过程
                                 {
                                     List<Exception> coException = collectOffline.CoException;
