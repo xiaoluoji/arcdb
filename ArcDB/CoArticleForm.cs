@@ -368,7 +368,11 @@ namespace ArcDB
                         int width = 0;
                         if (int.TryParse(item,out width))
                         {
-                            _cfgThumbWidthList.Add(int.Parse(item));
+                            width = int.Parse(item);
+                            if (width>0)
+                            {
+                                _cfgThumbWidthList.Add(width);
+                            }
                         }
                     }
                 }
