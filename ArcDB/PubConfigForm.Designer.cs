@@ -31,9 +31,6 @@
             this.tabctrPubform = new System.Windows.Forms.TabControl();
             this.tabPubConfig = new System.Windows.Forms.TabPage();
             this.gboxPubTypename = new System.Windows.Forms.GroupBox();
-            this.listViewPubTypeinfo = new ArcDB.ListViewNF();
-            this.pub_typeid = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.pub_typename = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnSearchPubTypename = new System.Windows.Forms.Button();
             this.tboxPubTypeid = new System.Windows.Forms.TextBox();
             this.lblPubTypeid = new System.Windows.Forms.Label();
@@ -42,9 +39,6 @@
             this.lblPubTypename = new System.Windows.Forms.Label();
             this.tboxPubTypename = new System.Windows.Forms.TextBox();
             this.gboxCoTypename = new System.Windows.Forms.GroupBox();
-            this.listViewCoTypeinfo = new ArcDB.ListViewNF();
-            this.co_typeid = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.co_typename = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnSearchCoTypename = new System.Windows.Forms.Button();
             this.tboxCoTypeid = new System.Windows.Forms.TextBox();
             this.lblCoTypeid = new System.Windows.Forms.Label();
@@ -71,8 +65,14 @@
             this.tboxPubTestResult = new System.Windows.Forms.TextBox();
             this.btnSavePubConfig = new System.Windows.Forms.Button();
             this.btnPubTest = new System.Windows.Forms.Button();
-            this.co_type_unused_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.listViewPubTypeinfo = new ArcDB.ListViewNF();
+            this.pub_typeid = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.pub_typename = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.pub_type_items = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.listViewCoTypeinfo = new ArcDB.ListViewNF();
+            this.co_typeid = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.co_typename = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.co_type_unused_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabctrPubform.SuspendLayout();
             this.tabPubConfig.SuspendLayout();
             this.gboxPubTypename.SuspendLayout();
@@ -121,33 +121,6 @@
             this.gboxPubTypename.TabIndex = 17;
             this.gboxPubTypename.TabStop = false;
             this.gboxPubTypename.Text = "选择发布分类";
-            // 
-            // listViewPubTypeinfo
-            // 
-            this.listViewPubTypeinfo.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.pub_typeid,
-            this.pub_typename,
-            this.pub_type_items});
-            this.listViewPubTypeinfo.FullRowSelect = true;
-            this.listViewPubTypeinfo.GridLines = true;
-            this.listViewPubTypeinfo.Location = new System.Drawing.Point(9, 103);
-            this.listViewPubTypeinfo.MultiSelect = false;
-            this.listViewPubTypeinfo.Name = "listViewPubTypeinfo";
-            this.listViewPubTypeinfo.Size = new System.Drawing.Size(407, 303);
-            this.listViewPubTypeinfo.TabIndex = 16;
-            this.listViewPubTypeinfo.UseCompatibleStateImageBehavior = false;
-            this.listViewPubTypeinfo.View = System.Windows.Forms.View.Details;
-            this.listViewPubTypeinfo.SelectedIndexChanged += new System.EventHandler(this.listViewPubTypeinfo_SelectedIndexChanged);
-            // 
-            // pub_typeid
-            // 
-            this.pub_typeid.Text = "发布分类ID";
-            this.pub_typeid.Width = 120;
-            // 
-            // pub_typename
-            // 
-            this.pub_typename.Text = "发布分类名称";
-            this.pub_typename.Width = 130;
             // 
             // btnSearchPubTypename
             // 
@@ -198,7 +171,7 @@
             this.lblPubTypename.Name = "lblPubTypename";
             this.lblPubTypename.Size = new System.Drawing.Size(89, 18);
             this.lblPubTypename.TabIndex = 9;
-            this.lblPubTypename.Text = "采集分类:";
+            this.lblPubTypename.Text = "发布分类:";
             // 
             // tboxPubTypename
             // 
@@ -223,33 +196,6 @@
             this.gboxCoTypename.TabIndex = 15;
             this.gboxCoTypename.TabStop = false;
             this.gboxCoTypename.Text = "选择采集分类";
-            // 
-            // listViewCoTypeinfo
-            // 
-            this.listViewCoTypeinfo.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.co_typeid,
-            this.co_typename,
-            this.co_type_unused_nums});
-            this.listViewCoTypeinfo.FullRowSelect = true;
-            this.listViewCoTypeinfo.GridLines = true;
-            this.listViewCoTypeinfo.Location = new System.Drawing.Point(9, 103);
-            this.listViewCoTypeinfo.MultiSelect = false;
-            this.listViewCoTypeinfo.Name = "listViewCoTypeinfo";
-            this.listViewCoTypeinfo.Size = new System.Drawing.Size(407, 303);
-            this.listViewCoTypeinfo.TabIndex = 16;
-            this.listViewCoTypeinfo.UseCompatibleStateImageBehavior = false;
-            this.listViewCoTypeinfo.View = System.Windows.Forms.View.Details;
-            this.listViewCoTypeinfo.SelectedIndexChanged += new System.EventHandler(this.listViewCoTypeinfo_SelectedIndexChanged);
-            // 
-            // co_typeid
-            // 
-            this.co_typeid.Text = "采集分类ID";
-            this.co_typeid.Width = 120;
-            // 
-            // co_typename
-            // 
-            this.co_typename.Text = "采集分类名称";
-            this.co_typename.Width = 130;
             // 
             // btnSearchCoTypename
             // 
@@ -487,15 +433,69 @@
             this.btnPubTest.UseVisualStyleBackColor = true;
             this.btnPubTest.Click += new System.EventHandler(this.btnPubTest_Click);
             // 
-            // co_type_unused_nums
+            // listViewPubTypeinfo
             // 
-            this.co_type_unused_nums.Text = "未使用文章数";
-            this.co_type_unused_nums.Width = 130;
+            this.listViewPubTypeinfo.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.pub_typeid,
+            this.pub_typename,
+            this.pub_type_items});
+            this.listViewPubTypeinfo.FullRowSelect = true;
+            this.listViewPubTypeinfo.GridLines = true;
+            this.listViewPubTypeinfo.Location = new System.Drawing.Point(9, 103);
+            this.listViewPubTypeinfo.MultiSelect = false;
+            this.listViewPubTypeinfo.Name = "listViewPubTypeinfo";
+            this.listViewPubTypeinfo.Size = new System.Drawing.Size(407, 303);
+            this.listViewPubTypeinfo.TabIndex = 16;
+            this.listViewPubTypeinfo.UseCompatibleStateImageBehavior = false;
+            this.listViewPubTypeinfo.View = System.Windows.Forms.View.Details;
+            this.listViewPubTypeinfo.SelectedIndexChanged += new System.EventHandler(this.listViewPubTypeinfo_SelectedIndexChanged);
+            // 
+            // pub_typeid
+            // 
+            this.pub_typeid.Text = "发布分类ID";
+            this.pub_typeid.Width = 120;
+            // 
+            // pub_typename
+            // 
+            this.pub_typename.Text = "发布分类名称";
+            this.pub_typename.Width = 130;
             // 
             // pub_type_items
             // 
             this.pub_type_items.Text = "栏目文章数";
             this.pub_type_items.Width = 130;
+            // 
+            // listViewCoTypeinfo
+            // 
+            this.listViewCoTypeinfo.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.co_typeid,
+            this.co_typename,
+            this.co_type_unused_nums});
+            this.listViewCoTypeinfo.FullRowSelect = true;
+            this.listViewCoTypeinfo.GridLines = true;
+            this.listViewCoTypeinfo.Location = new System.Drawing.Point(9, 103);
+            this.listViewCoTypeinfo.MultiSelect = false;
+            this.listViewCoTypeinfo.Name = "listViewCoTypeinfo";
+            this.listViewCoTypeinfo.Size = new System.Drawing.Size(407, 303);
+            this.listViewCoTypeinfo.TabIndex = 16;
+            this.listViewCoTypeinfo.UseCompatibleStateImageBehavior = false;
+            this.listViewCoTypeinfo.View = System.Windows.Forms.View.Details;
+            this.listViewCoTypeinfo.SelectedIndexChanged += new System.EventHandler(this.listViewCoTypeinfo_SelectedIndexChanged);
+            // 
+            // co_typeid
+            // 
+            this.co_typeid.Text = "采集分类ID";
+            this.co_typeid.Width = 120;
+            // 
+            // co_typename
+            // 
+            this.co_typename.Text = "采集分类名称";
+            this.co_typename.Width = 130;
+            // 
+            // co_type_unused_nums
+            // 
+            this.co_type_unused_nums.Text = "未使用文章数";
+            this.co_type_unused_nums.Width = 130;
             // 
             // PubConfigForm
             // 
