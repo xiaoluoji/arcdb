@@ -102,7 +102,8 @@ namespace ArcDB
                         ow = originalImage.Width;
                         oh = originalImage.Width * height / towidth;
                         x = 0;
-                        y = (originalImage.Height - oh) / 2;
+                        //y = (originalImage.Height - oh) / 2;
+                        y = 0;
                     }
                     break;
                 default:
