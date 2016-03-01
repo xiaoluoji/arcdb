@@ -183,6 +183,13 @@ namespace ArticleCollect
             {
                 afterClear = regStrong.Replace(afterClear, "");
             }
+            Regex regDivClear = new Regex("</?div>");
+            if (regDivClear.IsMatch(afterClear))
+            {
+                afterClear = regDivClear.Replace(afterClear, "");
+            }
+            afterClear = "<div>" + afterClear;
+            afterClear = afterClear + "</div>";
             return afterClear;
         }
 
