@@ -34,7 +34,7 @@ namespace ArcDB
         private string _cfgBasePath="";                                                                       //图片保存根目录
         private string _cfgImgBaseurl="";                                                                   //图片网址所使用的域名
         private int _cfgDescriptionLength = 0;                                                           //生成文章概要时候生成概要的长度，此数据从数据库sys_config表中获取，如果数据没有配置则默认为120
-        private List<Size> _cfgThumbSizeList;                                                        //需要生成多种规格缩略图所指定的宽度，此数据从数据库sys_config表cfg_thumb_size记录中获取，比如158*140表示宽158，高140，指定宽高则按Cut模式生成缩略图，只指定宽的话则按等比宽度生成。多种规格使用“|”分隔
+        private List<Size> _cfgThumbSizeList;                                                        //需要生成多种规格缩略图所指定的宽度，此数据从数据库sys_config表cfg_thumb_size记录中获取，比如158x140表示宽158，高140，指定宽高则按Cut模式生成缩略图，只指定宽的话则按等比宽度生成。多种规格使用“|”分隔
         private int _cfgThumbWidthDefault = 0;                                                    //生成缩略图时设置的缩略图宽度，当从数据库中获取不到缩略图尺寸设置时使用
         private int _cfgThumbHeightDefault = 0;                                                   //生成缩略图时设置的缩略图高度，当从数据库中获取不到缩略图尺寸设置时使用
         private string _cfgPicNone = "";                                                                      //采集文章内容中出现图片找不到的情况时，使用默认的一张图片来替换找不到的图片
@@ -407,7 +407,8 @@ namespace ArcDB
                         int height = 0;
                         Size thumbSize=new Size();
                         thumbSize.Width = 0;thumbSize.Height = 0;
-                        string[] tempSize = item.Split('*');
+                        char[] separator = { 'x', 'X' };
+                        string[] tempSize = item.Split(separator);
                         if (int.TryParse(tempSize[0],out width))
                         {
                             if (width>0)
