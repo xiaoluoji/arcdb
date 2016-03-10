@@ -782,8 +782,8 @@ namespace ArcDB
                             sql = sql + ",'" + mySqlDB.EscapeString(sourceSite) + "'";
                             sql = sql + ",'" + mySqlDB.EscapeString(description) + "'";
                             sql = sql + ",'" + mySqlDB.EscapeString(arcContent) + "'";
-                            sql = sql + ",'" + mySqlDB.EscapeString(addDate) + "'";
                             sql = sql + ",'" + mySqlDB.EscapeString(arcUrl) + "'";
+                            sql = sql + ",'" + addDate + "'";
                             sql = sql + ",'" + hash + "')";
                             counts = myDB.executeDMLSQL(sql, ref sResult);
                             if (sResult == mySqlDB.SUCCESS && counts > 0)
