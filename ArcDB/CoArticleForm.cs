@@ -774,12 +774,15 @@ namespace ArcDB
                                 description = "";
                             }
                             long aid = 0;
-                            sql = "insert into arc_contents (type_id,cid,title,source_site,description,content,url,hash) values ('" + typeID.ToString() + "'";
+                            string addDate = "";
+                            addDate = DateTime.Now.ToString();
+                            sql = "insert into arc_contents (type_id,cid,title,source_site,description,content,url,add_date,hash) values ('" + typeID.ToString() + "'";
                             sql = sql + ",'" + cid.ToString() + "'";
                             sql = sql + ",'" + mySqlDB.EscapeString(arcTitle) + "'";
                             sql = sql + ",'" + mySqlDB.EscapeString(sourceSite) + "'";
                             sql = sql + ",'" + mySqlDB.EscapeString(description) + "'";
                             sql = sql + ",'" + mySqlDB.EscapeString(arcContent) + "'";
+                            sql = sql + ",'" + mySqlDB.EscapeString(addDate) + "'";
                             sql = sql + ",'" + mySqlDB.EscapeString(arcUrl) + "'";
                             sql = sql + ",'" + hash + "')";
                             counts = myDB.executeDMLSQL(sql, ref sResult);
