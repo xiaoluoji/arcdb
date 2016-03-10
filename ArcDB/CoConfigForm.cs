@@ -514,7 +514,7 @@ namespace ArcDB
                     regexParams = regexParamsArr.ToList<string>();
                 }
 
-                ArticleCollectOffline collectOffline = new ArticleCollectOffline(_cid,_listPath, listStartPageNum, listStopPageNum, _xpathArcurlNode, _xpathTitleNode, _xpathContentNode, subNodeParams, regexParams, _arcSubPageSymbol, arcSubPageStartNum);
+                ArticleCollectOffline collectOffline = new ArticleCollectOffline(_cid,_sourceLang, _listPath, listStartPageNum, listStopPageNum, _xpathArcurlNode, _xpathTitleNode, _xpathContentNode, subNodeParams, regexParams, _arcSubPageSymbol, arcSubPageStartNum);
                 if (moreListPages!= null)
                 {
                     collectOffline.AddListPages(moreListPages);

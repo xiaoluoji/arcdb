@@ -1254,6 +1254,7 @@ namespace ArcDB
                     }
                     else
                     {
+                        string sourceLang = dicConfig["source_lang"].ToString();
                         string listPath = dicConfig["list_path"].ToString();
                         int listStartPageNum = int.Parse(dicConfig["start_page_number"].ToString());
                         int listStopPageNum = int.Parse(dicConfig["stop_page_number"].ToString());
@@ -1278,7 +1279,7 @@ namespace ArcDB
                             regexParams = getLines(dicConfig["regex_params"].ToString());
                         }
                         CancellationTokenSource cancelToken = new CancellationTokenSource();
-                        ArticleCollectOffline collectOffline = new ArticleCollectOffline(cid,listPath, listStartPageNum, listStopPageNum, xpathArcurlNode, xpathTitleNode, xpathContentNode, subNodeParams, regexParams, arcSubPageSymbol, arcSubPageStartNum);
+                        ArticleCollectOffline collectOffline = new ArticleCollectOffline(cid,sourceLang, listPath, listStartPageNum, listStopPageNum, xpathArcurlNode, xpathTitleNode, xpathContentNode, subNodeParams, regexParams, arcSubPageSymbol, arcSubPageStartNum);
                         if (moreListPages != null)
                         {
                             collectOffline.AddListPages(moreListPages);

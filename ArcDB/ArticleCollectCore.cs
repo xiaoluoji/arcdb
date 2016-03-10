@@ -21,6 +21,7 @@ namespace ArticleCollect
         private int _currentProcessedArticles;           //当前采集文章数量
         private int _currentProcessedListPages;        //当前获得列表页数
         private int _currentGetArticlePages;             //当前获得文章URL数量
+        private Encoding _arcEncoding;                   //当前采集的页面编码
 
 
         #endregion
@@ -74,6 +75,40 @@ namespace ArticleCollect
 
 
         #region Public Methods
+        //获取编码格式
+        public Encoding GetArcEncoding(string sourceLang,string arcPath)
+        {
+            Encoding arcEncoding=null;
+            try
+            {
+                arcEncoding = Encoding.GetEncoding(sourceLang);
+            }
+            catch (Exception)
+            {
+                Regex regexCharset = new Regex("charset=\"?gb2312\"?", RegexOptions.IgnoreCase);
+                string[] arcContent = File.ReadAllLines(arcPath);
+                foreach (string item in arcContent)
+                {
+                    if (regexCharset.IsMatch(item))
+                    {
+                        arcEncoding = Encoding.GetEncoding("gb2312");
+                        break;
+                    }
+                    else
+                    {
+                        regexCharset = new Regex("charset=\"?utf-8\"?", RegexOptions.IgnoreCase);
+                        if (regexCharset.IsMatch(item))
+                        {
+                            arcEncoding = Encoding.GetEncoding("utf-8");
+                            break;
+                        }
+                    }
+
+                }
+            }
+            return arcEncoding;
+        }
+
         //去除内容中的指定子节点的内容
         public string RemoveSubNode(string htmlContent, List<string> subNodeParams)
         {
@@ -272,7 +307,7 @@ namespace ArticleCollect
         }
 
         //通过指定的文章页路径，获取文章的所有内容
-        public Dictionary<string, string> GetArticleContentOffline(string articlePath, string xpathTitleNode, string xpathContentNode, List<string> subNodeParams = null, List<string> regexParams = null, string arcSubpageSymbol = "_", int arcSubpageStartNum = 2)
+        public Dictionary<string, string> GetArticleContentOffline(string sourceLang,string articlePath, string xpathTitleNode, string xpathContentNode, List<string> subNodeParams = null, List<string> regexParams = null, string arcSubpageSymbol = "_", int arcSubpageStartNum = 2)
         {
             Dictionary<string, string> article = new Dictionary<string, string>();
             string arcTitle = "";
@@ -287,7 +322,15 @@ namespace ArticleCollect
                 //tboxOutputSingle.AppendText(string.Format("当前页面：{0} \n", arcPage));
                 try
                 {
-                    arcDoc.Load(arcPage, true);
+                    if (_arcEncoding==null)
+                    {
+                        _arcEncoding = GetArcEncoding(sourceLang, arcPage);
+                        if (_arcEncoding == null)
+                        {
+                            _arcEncoding = Encoding.GetEncoding("utf-8");
+                        }
+                    }
+                    arcDoc.Load(arcPage, _arcEncoding);
                     if (arcTitle == "")
                     {
                         //HtmlAgilityPack.HtmlNode arcTitleNode = arcDoc.DocumentNode.SelectSingleNode("//div[@class='mian_left']//div[@class='article_title']/h1");
@@ -362,14 +405,22 @@ namespace ArticleCollect
         }
 
         //检查匹配文章标题和内容的Xpath标签是否能正确匹配到内容
-        public bool CheckArticleOffline(string articlePath, string xpathTitleNode, string xpathContentNode,ref string arcTitle)
+        public bool CheckArticleOffline(string sourceLang,string articlePath, string xpathTitleNode, string xpathContentNode,ref string arcTitle)
         {
             arcTitle = "";
             string arcContent = "";
             HtmlAgilityPack.HtmlDocument arcDoc = new HtmlAgilityPack.HtmlDocument();
             try
             {
-                arcDoc.Load(articlePath, true);
+                if (_arcEncoding == null)
+                {
+                    _arcEncoding = GetArcEncoding(sourceLang, articlePath);
+                    if (_arcEncoding == null)
+                    {
+                        _arcEncoding = Encoding.GetEncoding("utf-8");
+                    }
+                }
+                arcDoc.Load(articlePath, _arcEncoding);
                 HtmlAgilityPack.HtmlNode arcTitleNode = arcDoc.DocumentNode.SelectSingleNode(xpathTitleNode);
                 if (arcTitleNode is HtmlAgilityPack.HtmlNode)
                 {
@@ -401,10 +452,11 @@ namespace ArticleCollect
         private object correctAddLock=new object();
         private object wrongAddLock=new object();
         private object exceptionAddLock=new object();
-        public Dictionary<string, List<Dictionary<string, string>>> GetArticlePagesOffline(List<string> listPages, string xpathArcurlNode, string xpathTitleNode, string xpathContentNode)
+        public Dictionary<string, List<Dictionary<string, string>>> GetArticlePagesOffline(string sourceLang,List<string> listPages, string xpathArcurlNode, string xpathTitleNode, string xpathContentNode)
         {
             _currentProcessedListPages = 0;
             _currentGetArticlePages = 0;
+            Encoding arcEncoding;
             Dictionary<string, List<Dictionary<string, string>>> dicArticles = new Dictionary<string, List<Dictionary<string, string>>>();
             List<Dictionary<string, string>> correctListArticles = new List<Dictionary<string, string>>();
             List<Dictionary<string, string>> wrongListArticles = new List<Dictionary<string, string>>();
@@ -419,7 +471,15 @@ namespace ArticleCollect
                     HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
                     try
                     {
-                        doc.Load(listSinglePage, true);
+                        if (_arcEncoding == null)
+                        {
+                            _arcEncoding = GetArcEncoding(sourceLang, listSinglePage);
+                            if (_arcEncoding == null)
+                            {
+                                _arcEncoding = Encoding.GetEncoding("utf-8");
+                            }
+                        }
+                        doc.Load(listSinglePage, _arcEncoding);
                         HtmlAgilityPack.HtmlNodeCollection arcHrefs = doc.DocumentNode.SelectNodes(xpathArcurlNode);
                         foreach (HtmlAgilityPack.HtmlNode item in arcHrefs)
                         {
@@ -428,7 +488,7 @@ namespace ArticleCollect
                             if (File.Exists(arcPath))
                             {
                                 string arcTitle = "";
-                                if (CheckArticleOffline(arcPath, xpathTitleNode, xpathContentNode,ref arcTitle))
+                                if (CheckArticleOffline(sourceLang, arcPath, xpathTitleNode, xpathContentNode,ref arcTitle))
                                     lock (correctAddLock)
                                     {
                                         Dictionary<string, string> oneArticleInfo = new Dictionary<string, string>();
@@ -479,7 +539,7 @@ namespace ArticleCollect
         //private object coParallelLock = new object(); //多线程采集中的线程锁
         //给定指定的文章页集合，采集文章内容
         private object articleAddLock=new object();
-        public List<Dictionary<string, string>> CoArticlesOffline(List<string> articlePages, string xpathArcurlNode, string xpathTitleNode, string xpathContentNode, List<string> subNodeParams = null, List<string> regexParams = null, string arcSubpageSymbol = "_", int arcSubpageStartNum = 2)
+        public List<Dictionary<string, string>> CoArticlesOffline(string sourceLang,List<string> articlePages, string xpathArcurlNode, string xpathTitleNode, string xpathContentNode, List<string> subNodeParams = null, List<string> regexParams = null, string arcSubpageSymbol = "_", int arcSubpageStartNum = 2)
         {
             //创建用来返回最终文章的List
             _currentProcessedArticles = 0;
@@ -494,7 +554,7 @@ namespace ArticleCollect
                     {
                         po.CancellationToken.ThrowIfCancellationRequested();
                         Dictionary<string, string> article;
-                        article = GetArticleContentOffline(articlePath, xpathTitleNode, xpathContentNode, subNodeParams, regexParams, arcSubpageSymbol, arcSubpageStartNum);
+                        article = GetArticleContentOffline(sourceLang,articlePath, xpathTitleNode, xpathContentNode, subNodeParams, regexParams, arcSubpageSymbol, arcSubpageStartNum);
                         lock (articleAddLock)
                         {
                             articleList.Add(article);

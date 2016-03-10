@@ -20,6 +20,7 @@ namespace ArticleCollect
         private long _typeID;                                                                        //采集所属分类ID
         private string _sourceSite;                                                                //采集来源网址
         private string _listPath;                                                                     //列表页本地路径
+        private string _sourceLang;                                                              //网页编码格式名称
         private int _listStartPageNumber;                                                    //列表页起始页面编号
         private int _listStopPageNumber;                                                    //列表页起始页面编号
         private string _xpathArcurlNode;                                                     //列表页文章URL Xpath表达式
@@ -46,9 +47,10 @@ namespace ArticleCollect
 
 
 
-        public ArticleCollectOffline(long cid,string listPath,int startPageNumber, int stopPageNumber,string xpathArcurlNode, string xpathTitleNode, string xpathContentNode, List<string> subNodeParams=null, List<string> regexParams=null, string arcSubpageSymbol = "_", int arcSubpageStartNum = 2)
+        public ArticleCollectOffline(long cid, string sourceLang,string listPath,int startPageNumber, int stopPageNumber,string xpathArcurlNode, string xpathTitleNode, string xpathContentNode, List<string> subNodeParams=null, List<string> regexParams=null, string arcSubpageSymbol = "_", int arcSubpageStartNum = 2)
         {
             _cid = cid;
+            _sourceLang = sourceLang;
             _listPath = listPath;
             _listStartPageNumber = startPageNumber;
             _listStopPageNumber = stopPageNumber;
@@ -92,6 +94,11 @@ namespace ArticleCollect
         public string ListPath
         {
             get { return _listPath; }
+        }
+        //返回页面编码
+        public string SourceLang
+        {
+            get { return _sourceLang; }
         }
         //返回列表页起始页面编号
         public int ListStartPageNumber  
@@ -275,7 +282,7 @@ namespace ArticleCollect
         public void ProcessArticlePages()
         {
             _coState = "获取文章页";
-            Dictionary<string, List<Dictionary<string, string>>> dicListArticles = _collectOffline.GetArticlePagesOffline(_listPages,_xpathArcurlNode,_xpathTitleNode,_xpathContentNode);
+            Dictionary<string, List<Dictionary<string, string>>> dicListArticles = _collectOffline.GetArticlePagesOffline(_sourceLang, _listPages,_xpathArcurlNode,_xpathTitleNode,_xpathContentNode);
             _correctArticlePages = dicListArticles["correct"];
             _wrongArticlePages = dicListArticles["wrong"];
         }
@@ -292,7 +299,7 @@ namespace ArticleCollect
             {
                 articleUrls.Add(item["arcpath"]);
             }
-            _articles = _collectOffline.CoArticlesOffline(articleUrls, _xpathArcurlNode, _xpathTitleNode, _xpathContentNode, _subNodeParams, _regexParams,_arcSubpageSymbol,_arcSubpageStartNum);
+            _articles = _collectOffline.CoArticlesOffline(_sourceLang, articleUrls, _xpathArcurlNode, _xpathTitleNode, _xpathContentNode, _subNodeParams, _regexParams,_arcSubpageSymbol,_arcSubpageStartNum);
             //_coState = "采集结束";
         }
 

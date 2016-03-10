@@ -366,7 +366,8 @@
             this.cboxCoSource_Lang.FormattingEnabled = true;
             this.cboxCoSource_Lang.Items.AddRange(new object[] {
             "gb2312",
-            "utf8"});
+            "utf-8",
+            "GBK"});
             this.cboxCoSource_Lang.Location = new System.Drawing.Point(390, 33);
             this.cboxCoSource_Lang.Name = "cboxCoSource_Lang";
             this.cboxCoSource_Lang.Size = new System.Drawing.Size(130, 26);
