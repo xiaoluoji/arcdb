@@ -769,6 +769,10 @@ namespace ArcDB
                             string arcUrl = article["url"];
                             string hash = GetHashAsString(arcTitle);
                             string description = getArticleDescription(arcContent, collectOffline);
+                            if (description.Length<10)
+                            {
+                                description = "";
+                            }
                             long aid = 0;
                             sql = "insert into arc_contents (type_id,cid,title,source_site,description,content,url,hash) values ('" + typeID.ToString() + "'";
                             sql = sql + ",'" + cid.ToString() + "'";
