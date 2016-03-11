@@ -56,12 +56,10 @@ namespace ArcDB
         }
 
         #region 使用imageMagic扩展库生成缩略图
-        private void MakeThumb(string sourcePath, string dstPath, int width, int height, string mode)
+        private static bool MakeThumb(string sourcePath, string dstPath, int width, int height, string mode)
         {
             // FullPath is the new file's path.
             ImageMagick.MagickImage img = new ImageMagick.MagickImage(sourcePath);
-            String file_name = System.IO.Path.GetFileName(sourcePath);
-
             if (img.Height != height || img.Width != width)
             {
                 int new_width = width;
@@ -106,14 +104,19 @@ namespace ArcDB
                 }
                 String newGeomStr = new_width.ToString() + "x" + new_height.ToString() + "!";
                 ImageMagick.MagickGeometry intermediate_geo = new ImageMagick.MagickGeometry(newGeomStr);
-
                 img.Resize(intermediate_geo);
                 img.Crop(width, height, dstGravity);
-
-
             }
-            img.Sharpen();
-            img.Write(dstPath);
+            try
+            {
+                img.Sharpen();
+                img.Write(dstPath);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
         #endregion
 
