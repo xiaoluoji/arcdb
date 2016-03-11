@@ -104,11 +104,13 @@ namespace ArcDB
                 }
                 String newGeomStr = new_width.ToString() + "x" + new_height.ToString() + "!";
                 ImageMagick.MagickGeometry intermediate_geo = new ImageMagick.MagickGeometry(newGeomStr);
-                img.Resize(intermediate_geo);
+                //img.Resize(intermediate_geo);
+                img.Thumbnail(intermediate_geo);
                 img.Crop(width, height, dstGravity);
             }
             try
             {
+                img.Quality = 95;
                 img.Sharpen();
                 img.Write(dstPath);
                 return true;
