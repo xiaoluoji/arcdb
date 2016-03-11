@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using ImageMagick;
 
 
 namespace ArcDB
@@ -54,6 +55,68 @@ namespace ArcDB
             return description;
         }
 
+        #region 使用imageMagic扩展库生成缩略图
+        private void MakeThumb(string sourcePath, string dstPath, int width, int height, string mode)
+        {
+            // FullPath is the new file's path.
+            ImageMagick.MagickImage img = new ImageMagick.MagickImage(sourcePath);
+            String file_name = System.IO.Path.GetFileName(sourcePath);
+
+            if (img.Height != height || img.Width != width)
+            {
+                int new_width = width;
+                int new_height = height;
+                ImageMagick.Gravity dstGravity = new ImageMagick.Gravity(); //设置目标截取的位置
+                dstGravity = Gravity.Center;  //默认截取位置是从中间截取
+                decimal result_ratio = (decimal)height / (decimal)width;   //目标
+                decimal current_ratio = (decimal)img.Height / (decimal)img.Width;
+
+                switch (mode)
+                {
+                    case "HW":      //指定高宽缩放（可能变形）
+                        break;
+                    case "W":       //指定宽，高按比例
+                        new_height = img.Height * width / img.Width;
+                        dstGravity = Gravity.North;
+                        break;
+                    case "H":       //指定高，宽按比例
+                        new_width = img.Width * height / img.Height;
+                        break;
+                    case "Cut":         //指定高宽裁减（不变形）    
+                        Boolean preserve_width = false;
+                        if (current_ratio > result_ratio)
+                        {
+                            preserve_width = true;
+                        }
+                        if (preserve_width)
+                        {
+                            dstGravity = Gravity.North;
+                            new_width = width;
+                            new_height = (int)Math.Round((decimal)(current_ratio * new_width));
+                        }
+                        else
+                        {
+                            dstGravity = Gravity.Center;
+                            new_height = height;
+                            new_width = (int)Math.Round((decimal)(new_height / current_ratio));
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                String newGeomStr = new_width.ToString() + "x" + new_height.ToString() + "!";
+                ImageMagick.MagickGeometry intermediate_geo = new ImageMagick.MagickGeometry(newGeomStr);
+
+                img.Resize(intermediate_geo);
+                img.Crop(width, height, dstGravity);
+
+
+            }
+            img.Sharpen();
+            img.Write(dstPath);
+        }
+        #endregion
+
         #region 按指定模式生成缩略图
         /// <summary>
         /// 生成缩略图
@@ -63,7 +126,7 @@ namespace ArcDB
         /// <param name="width">缩略图宽度</param>
         /// <param name="height">缩略图高度</param>
         /// <param name="mode">生成缩略图的方式</param>    
-        public static bool MakeThumb(string originalImagePath, string thumbnailPath, int width, int height, string mode)
+        public static bool MakeThumbOld(string originalImagePath, string thumbnailPath, int width, int height, string mode)
         {
             if (originalImagePath=="")
             {
