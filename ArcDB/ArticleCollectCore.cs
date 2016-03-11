@@ -173,6 +173,17 @@ namespace ArticleCollect
                 afterClear = afterClear.Replace(@"<div></div>", "");
             }
 
+            //清理P 信息   备选正则：
+            Regex regPtag = new Regex(@"<p[^>]+>");
+            if (regPtag.IsMatch(afterClear))
+            {
+                afterClear = regPtag.Replace(afterClear, @"<p>");
+            }
+            if (afterClear.Contains(@"<p></p>"))
+            {
+                afterClear = afterClear.Replace(@"<p></p>", "");
+            }
+
             //清理图片信息，使用XPATH
             HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
             try
