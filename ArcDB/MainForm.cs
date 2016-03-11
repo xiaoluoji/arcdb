@@ -831,11 +831,12 @@ namespace ArcDB
         #endregion   发布规则功能块结束
 
         #region 文章相关工具模块
-
+        //重新生成采集数据库的文章概要
         private void btnGetCoArcDesc_Click(object sender, EventArgs e)
         {
             ThreadPool.QueueUserWorkItem(getCoArticleDescription,null);
         }
+        //重新生成发布数据库文章的概要
         private void btnGetPubArcDesc_Click(object sender, EventArgs e)
         {
             ThreadPool.QueueUserWorkItem(setPubArticleDescription, null);
@@ -844,8 +845,12 @@ namespace ArcDB
         private void btnCreateHitsRecords_Click(object sender, EventArgs e)
         {
             ThreadPool.QueueUserWorkItem(createHitsRecords, null);
+        } 
+        //重新生成所有图片的缩略图
+        private void btnRegenerateAllthumbs_Click(object sender, EventArgs e)
+        {
+            ThreadPool.QueueUserWorkItem(reGenarateAllthumbs, null);
         }
-
         private void getCoArticleDescription(object state)
         {
             _coConnString = GetCoConnString();
@@ -1041,6 +1046,89 @@ namespace ArcDB
             }
 
         }
+
+        //重新生成所有图片的缩略图
+        private void reGenarateAllthumbs(object state)
+        {
+            _coConnString = GetCoConnString();
+            int thumbWidth = 158;
+            int thumbHeight = 140;
+            int finishedThumbs = 0;
+
+            if (_coConnString != "")
+            {
+                System.Threading.Timer timer = new System.Threading.Timer(
+                    //timeCB,
+                    //PrintTime,      //TimerCallBack委托对象
+                    delegate {
+                        this.Invoke((Action)delegate { lblRegenerateThumbsCount.Text = string.Format("{0}", finishedThumbs); });
+                    },
+                    //(object state)=>labTime.Text = string.Format("Time is {0}\n", DateTime.Now.ToLongTimeString()),
+                    null,           //想传入的参数 （null表示没有参数）
+                    0,              //在开始之前，等待多长时间（以毫秒为单位）
+                    1000);       //每次调用的间隔时间（以毫秒为单位）
+                mySqlDB coMyDB = new mySqlDB(_coConnString);
+                string sResult = "";
+                int counts = 0;
+                string picBasepath = "";
+                string sql = "select value from sys_config where varname='cfg_basepath'";
+                List<Dictionary<string, object>> dbResult = coMyDB.GetRecords(sql, ref sResult, ref counts);
+                if (sResult==mySqlDB.SUCCESS && counts>0)
+                {
+                    picBasepath = dbResult[0]["value"].ToString();
+                }
+                if (picBasepath!="")
+                {
+                    sql = "select pid,pic_path,is_thumb_maked from arc_pics where is_thumb_maked='no' limit 1";
+                    List<Dictionary<string, object>> picRecord = new List<Dictionary<string, object>>();
+                    picRecord = coMyDB.GetRecords(sql, ref sResult, ref counts);
+                    string picRootpath = picBasepath + "src";
+                    string thumbRootPath = picBasepath + "thumb";
+                    while (sResult == mySqlDB.SUCCESS && counts > 0)
+                    {
+                        string pid = picRecord[0]["pid"].ToString();
+                        string picPath = picRecord[0]["pic_path"].ToString();
+                        string thumbPath = picPath.Replace(picRootpath, thumbRootPath);
+                        string thumbDirpath = Path.GetDirectoryName(thumbPath);
+                        string picFilename = Path.GetFileNameWithoutExtension(picPath);
+                        string picExtenstion = Path.GetExtension(picPath);
+                        string thumbFilename = thumbDirpath +@"\"+ picFilename + "." + thumbWidth.ToString() + picExtenstion;
+                        if (!Directory.Exists(thumbDirpath))
+                        {
+                            Directory.CreateDirectory(thumbDirpath);
+                        }
+                        if (ArcTool.MakeThumb(picPath,thumbFilename,thumbWidth,thumbHeight,"Cut"))
+                        {
+                            sql = "update arc_pics set is_thumb_maked='yes' where pid='" + pid + "'";
+                            counts = coMyDB.executeDMLSQL(sql, ref sResult);
+                            if (sResult==mySqlDB.SUCCESS && counts>0)
+                            {
+                                finishedThumbs++;
+                            }
+                            else
+                            {
+                                tboxArctoolOutput.AppendText(string.Format("错误信息：更新arc_pics表错误 PID：{0}:  error:{1}  \n", pid,sResult));
+                            }
+                        }
+                        else
+                        {
+                            tboxArctoolOutput.AppendText(string.Format("错误信息：生成缩略图错误: pid:{0} ！\n",pid));
+                        }
+                        //再次从数据里获取一篇文章
+                        sql = "select pid,pic_path,is_thumb_maked from arc_pics where is_thumb_maked='no' limit 1";
+                        picRecord = coMyDB.GetRecords(sql, ref sResult, ref counts);
+                    }
+
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("请正确配置采集数据库参数！");
+            }
+
+        }
+
 
         #endregion 文章相关工具模块结束
 
