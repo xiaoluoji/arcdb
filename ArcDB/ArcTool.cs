@@ -56,7 +56,7 @@ namespace ArcDB
         }
 
         #region 使用imageMagic扩展库生成缩略图
-        private static bool MakeThumb(string sourcePath, string dstPath, int width, int height, string mode)
+        public static bool MakeThumb(string sourcePath, string dstPath, int width, int height, string mode)
         {
             // FullPath is the new file's path.
             ImageMagick.MagickImage img = new ImageMagick.MagickImage(sourcePath);
