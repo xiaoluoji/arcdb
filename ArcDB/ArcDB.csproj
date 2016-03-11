@@ -39,6 +39,12 @@
       <HintPath>..\..\第三方程序集\已生成\HtmlAgilityPack.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="ImageListView">
+      <HintPath>..\..\第三方程序集\已生成\ImageListView.dll</HintPath>
+    </Reference>
+    <Reference Include="Magick.NET-Q16-AnyCPU">
+      <HintPath>..\..\第三方程序集\已生成\Magick.NET-Q16-AnyCPU.dll</HintPath>
+    </Reference>
     <Reference Include="MurmurHash">
       <HintPath>..\..\第三方程序集\已生成\MurmurHash.dll</HintPath>
       <Private>False</Private>
@@ -169,6 +175,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\HtmlAgilityPack.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\ImageListView.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Magick.NET-Q16-AnyCPU.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
