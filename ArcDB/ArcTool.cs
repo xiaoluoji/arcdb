@@ -13,6 +13,7 @@ namespace ArcDB
 {
     class ArcTool
     {
+        #region 生成文章摘要功能
         //根据文章内容获取文章概要
         public static string GetDescription(string article,int descriptionLength)
         {
@@ -54,6 +55,8 @@ namespace ArcDB
             }
             return description;
         }
+        #endregion
+
 
         #region 给图片添加水印
         public static bool MakeWatermark(string watermarkFile,string sourcePath,string dstPath, Gravity watermarkPosition,ImageMagick.CompositeOperator watermarkType)
