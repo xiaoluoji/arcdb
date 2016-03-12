@@ -1080,43 +1080,49 @@ namespace ArcDB
                 if (picBasepath!="")
                 {
                     sql = "select pid,pic_path,is_thumb_maked from arc_pics where is_thumb_maked='no' limit 1";
-                    List<Dictionary<string, object>> picRecord = new List<Dictionary<string, object>>();
-                    picRecord = coMyDB.GetRecords(sql, ref sResult, ref counts);
+                    List<Dictionary<string, object>> picRecords = new List<Dictionary<string, object>>();
+                    picRecords = coMyDB.GetRecords(sql, ref sResult, ref counts);
                     string picRootpath = picBasepath + "src";
                     string thumbRootPath = picBasepath + "thumb";
                     while (sResult == mySqlDB.SUCCESS && counts > 0)
                     {
-                        string pid = picRecord[0]["pid"].ToString();
-                        string picPath = picRecord[0]["pic_path"].ToString();
-                        string thumbPath = picPath.Replace(picRootpath, thumbRootPath);
-                        string thumbDirpath = Path.GetDirectoryName(thumbPath);
-                        string picFilename = Path.GetFileNameWithoutExtension(picPath);
-                        string picExtenstion = Path.GetExtension(picPath);
-                        string thumbFilename = thumbDirpath +@"\"+ picFilename + "." + thumbWidth.ToString() + picExtenstion;
-                        if (!Directory.Exists(thumbDirpath))
+                        ParallelOptions po = new ParallelOptions();
+                        Parallel.ForEach(picRecords, po, oneRecord =>
                         {
-                            Directory.CreateDirectory(thumbDirpath);
-                        }
-                        if (ArcTool.MakeThumb(picPath,thumbFilename,thumbWidth,thumbHeight,"Cut"))
-                        {
-                            sql = "update arc_pics set is_thumb_maked='yes' where pid='" + pid + "'";
-                            counts = coMyDB.executeDMLSQL(sql, ref sResult);
-                            if (sResult==mySqlDB.SUCCESS && counts>0)
+                            string pid = oneRecord["pid"].ToString();
+                            string picPath = oneRecord["pic_path"].ToString();
+                            string thumbPath = picPath.Replace(picRootpath, thumbRootPath);
+                            string thumbDirpath = Path.GetDirectoryName(thumbPath);
+                            string picFilename = Path.GetFileNameWithoutExtension(picPath);
+                            string picExtenstion = Path.GetExtension(picPath);
+                            string thumbFilename = thumbDirpath + @"\" + picFilename + "." + thumbWidth.ToString() + picExtenstion;
+                            if (!Directory.Exists(thumbDirpath))
                             {
-                                finishedThumbs++;
+                                Directory.CreateDirectory(thumbDirpath);
+                            }
+                            if (ArcTool.MakeThumb(picPath, thumbFilename, thumbWidth, thumbHeight, "Cut"))
+                            {
+                                mySqlDB myDB = new mySqlDB(_coConnString);
+                                string result = "";
+                                string newsql = "update arc_pics set is_thumb_maked='yes' where pid='" + pid + "'";
+                                int count = myDB.executeDMLSQL(newsql , ref result);
+                                if (result == mySqlDB.SUCCESS && count > 0)
+                                {
+                                    Interlocked.Add(ref finishedThumbs, 1);
+                                }
+                                else
+                                {
+                                    tboxArctoolOutput.AppendText(string.Format("错误信息：更新arc_pics表错误 PID：{0}:  error:{1}  \n", pid, sResult));
+                                }
                             }
                             else
                             {
-                                tboxArctoolOutput.AppendText(string.Format("错误信息：更新arc_pics表错误 PID：{0}:  error:{1}  \n", pid,sResult));
+                                tboxArctoolOutput.AppendText(string.Format("错误信息：生成缩略图错误: pid:{0} ！\n", pid));
                             }
-                        }
-                        else
-                        {
-                            tboxArctoolOutput.AppendText(string.Format("错误信息：生成缩略图错误: pid:{0} ！\n",pid));
-                        }
+                        });
                         //再次从数据里获取一篇文章
-                        sql = "select pid,pic_path,is_thumb_maked from arc_pics where is_thumb_maked='no' limit 1";
-                        picRecord = coMyDB.GetRecords(sql, ref sResult, ref counts);
+                        sql = "select pid,pic_path,is_thumb_maked from arc_pics where is_thumb_maked='no' limit 100";
+                        picRecords = coMyDB.GetRecords(sql, ref sResult, ref counts);
                     }
 
                 }

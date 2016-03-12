@@ -110,7 +110,7 @@ namespace ArcDB
             }
             try
             {
-                img.Quality = 95;
+                img.Quality = 100;
                 img.Sharpen();
                 img.Write(dstPath);
                 return true;
