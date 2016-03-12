@@ -15,6 +15,7 @@ using ArticleCollect;
 using System.Runtime.Remoting.Messaging;
 using System.Threading;
 using System.Diagnostics;
+using ImageMagick;
 
 
 
@@ -849,7 +850,12 @@ namespace ArcDB
         //重新生成所有图片的缩略图
         private void btnRegenerateAllthumbs_Click(object sender, EventArgs e)
         {
-            ThreadPool.QueueUserWorkItem(reGenarateAllthumbs, null);
+            ThreadPool.QueueUserWorkItem(reGenerateAllthumbs, null);
+        }
+        //给所有原始图片加上水印
+        private void btnGenarateWatermark_Click(object sender, EventArgs e)
+        {
+            ThreadPool.QueueUserWorkItem(reGenerateWatermark, null);
         }
         private void getCoArticleDescription(object state)
         {
@@ -1048,7 +1054,7 @@ namespace ArcDB
         }
 
         //重新生成所有图片的缩略图
-        private void reGenarateAllthumbs(object state)
+        private void reGenerateAllthumbs(object state)
         {
             _coConnString = GetCoConnString();
             int thumbWidth = 158;
@@ -1134,6 +1140,110 @@ namespace ArcDB
             }
 
         }
+
+        //重新生成所有图片的水印
+        private void reGenerateWatermark(object state)
+        {
+            _coConnString = GetCoConnString();
+            int finishedWartermarks = 0;
+            if (_coConnString != "")
+            {
+                System.Threading.Timer timer = new System.Threading.Timer(
+                    //timeCB,
+                    //PrintTime,      //TimerCallBack委托对象
+                    delegate {
+                        this.Invoke((Action)delegate { lblWatermarkedPicCount.Text = string.Format("{0}", finishedWartermarks); });
+                    },
+                    //(object state)=>labTime.Text = string.Format("Time is {0}\n", DateTime.Now.ToLongTimeString()),
+                    null,           //想传入的参数 （null表示没有参数）
+                    0,              //在开始之前，等待多长时间（以毫秒为单位）
+                    1000);       //每次调用的间隔时间（以毫秒为单位）
+                mySqlDB coMyDB = new mySqlDB(_coConnString);
+                string sResult = "";
+                int counts = 0;
+                string picBasepath = "";
+                string watermarkFile = "";
+                //从数据库配置表中获取水印文件配置项
+                string sql = "select value from sys_config where varname='cfg_watermark_filename'";
+                List<Dictionary<string, object>> dbResult = coMyDB.GetRecords(sql, ref sResult, ref counts);
+                if (sResult == mySqlDB.SUCCESS && counts > 0)
+                {
+                     watermarkFile = RootPath+ dbResult[0]["value"].ToString();
+                }
+                //从数据库配置表中获取网站图片保存根目录
+                sql = "select value from sys_config where varname='cfg_basepath'";
+                dbResult = coMyDB.GetRecords(sql, ref sResult, ref counts);
+                if (sResult == mySqlDB.SUCCESS && counts > 0)
+                {
+                    picBasepath = dbResult[0]["value"].ToString();
+                }
+                if (picBasepath=="") //如果不能从数据库获取网站图片保存的根目录配置项，则退出程序
+                {
+                    MessageBox.Show("获取网站图片根目录失败！请检查sys_config表中是否正确配置cfg_basepath项");
+                    return;
+                }
+                if (File.Exists(watermarkFile))
+                {
+                    sql = "select pid,pic_path,clear from arc_pics where clear='no' limit 100";
+                    List<Dictionary<string, object>> picRecords = new List<Dictionary<string, object>>();
+                    picRecords = coMyDB.GetRecords(sql, ref sResult, ref counts);
+                    string picRootpath = picBasepath + "src";
+                    string dstRootPath = picBasepath + "dst";
+                    while (sResult == mySqlDB.SUCCESS && counts > 0)
+                    {
+                        ParallelOptions po = new ParallelOptions();
+                        Parallel.ForEach(picRecords, po, oneRecord =>
+                        {
+                            string pid = oneRecord["pid"].ToString();
+                            string picPath = oneRecord["pic_path"].ToString();
+                            string dstPath = picPath.Replace(picRootpath, dstRootPath);
+                            string dstDirpath = Path.GetDirectoryName(dstPath);
+                            string picFilename = Path.GetFileName(picPath);
+                            string dstFilename = dstDirpath + @"\" + picFilename;
+                            if (!Directory.Exists(dstDirpath))
+                            {
+                                Directory.CreateDirectory(dstDirpath);
+                            }
+                            if (ArcTool.MakeWatermark(watermarkFile,picPath,dstFilename,Gravity.Southeast,ImageMagick.CompositeOperator.HardLight))
+                            {
+                                mySqlDB myDB = new mySqlDB(_coConnString);
+                                string result = "";
+                                string newsql = "update arc_pics set clear='yes' where pid='" + pid + "'";
+                                int count = myDB.executeDMLSQL(newsql, ref result);
+                                if (result == mySqlDB.SUCCESS && count > 0)
+                                {
+                                    Interlocked.Add(ref finishedWartermarks, 1);
+                                }
+                                else
+                                {
+                                    tboxArctoolOutput.AppendText(string.Format("错误信息：更新arc_pics表错误 PID：{0}:  error:{1}  \n", pid, sResult));
+                                }
+                            }
+                            else
+                            {
+                                tboxArctoolOutput.AppendText(string.Format("错误信息：生成缩略图错误: pid:{0} ！\n", pid));
+                            }
+                        });
+                        //再次从数据里获取一篇文章
+                        sql = "select pid,pic_path,clear from arc_pics where clear='no' limit 100";
+                        picRecords = coMyDB.GetRecords(sql, ref sResult, ref counts);
+                    }
+
+                }
+                else
+                {
+                    MessageBox.Show("未找到水印文件，请检查文件是否保存在程序根目录！水印文件：" + watermarkFile);
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("请正确配置采集数据库参数！");
+            }
+
+        }
+
+
 
 
         #endregion 文章相关工具模块结束

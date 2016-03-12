@@ -55,6 +55,27 @@ namespace ArcDB
             return description;
         }
 
+        #region 给图片添加水印
+        public static bool MakeWatermark(string watermarkFile,string sourcePath,string dstPath, Gravity watermarkPosition,ImageMagick.CompositeOperator watermarkType)
+        {
+            try
+            {
+                using (MagickImage watermark = new MagickImage(watermarkFile))
+                {
+                    ImageMagick.MagickImage srcImg = new MagickImage(sourcePath);
+                    srcImg.Composite(watermark, watermarkPosition, watermarkType);
+                    srcImg.Write(dstPath);
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        #endregion
+
+
         #region 使用imageMagic扩展库生成缩略图
         public static bool MakeThumb(string sourcePath, string dstPath, int width, int height, string mode)
         {
