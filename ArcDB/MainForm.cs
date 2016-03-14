@@ -1057,8 +1057,9 @@ namespace ArcDB
         private void reGenerateAllthumbs(object state)
         {
             _coConnString = GetCoConnString();
-            int thumbWidth = 158;
-            int thumbHeight = 140;
+            int thumbWidthDefault = 0;
+            int thumbHeightDefault = 0;
+            List<Size> thumbSizeList;
             int finishedThumbs = 0;
 
             if (_coConnString != "")
@@ -1073,21 +1074,98 @@ namespace ArcDB
                     null,           //想传入的参数 （null表示没有参数）
                     0,              //在开始之前，等待多长时间（以毫秒为单位）
                     1000);       //每次调用的间隔时间（以毫秒为单位）
-                mySqlDB coMyDB = new mySqlDB(_coConnString);
+                mySqlDB myDB = new mySqlDB(_coConnString);
                 string sResult = "";
                 int counts = 0;
                 string picBasepath = "";
-                string sql = "select value from sys_config where varname='cfg_basepath'";
-                List<Dictionary<string, object>> dbResult = coMyDB.GetRecords(sql, ref sResult, ref counts);
+
+                //读取默认生成缩略图宽度参数
+                string sql = "select value from sys_config where varname='cfg_thumb_width'";
+                List<Dictionary<string, object>> dbResult = myDB.GetRecords(sql, ref sResult, ref counts);
+                if (sResult == mySqlDB.SUCCESS && counts > 0)
+                {
+                    string temp = dbResult[0]["value"].ToString();
+                    if (int.TryParse(temp, out thumbWidthDefault))
+                    {
+                        thumbWidthDefault = int.Parse(temp);
+                    }
+                    else
+                        thumbWidthDefault = 300;
+                }
+                else
+                    thumbWidthDefault = 300;
+
+                //读取默认生成缩略图高度参数
+                sql = "select value from sys_config where varname='cfg_thumb_height'";
+                dbResult = myDB.GetRecords(sql, ref sResult, ref counts);
+                if (sResult == mySqlDB.SUCCESS && counts > 0)
+                {
+                    string temp = dbResult[0]["value"].ToString();
+                    if (int.TryParse(temp, out thumbHeightDefault))
+                    {
+                        thumbHeightDefault = int.Parse(temp);
+                    }
+                    else
+                        thumbHeightDefault = 300;
+                }
+                else
+                    thumbHeightDefault = 300;
+
+                //读取生成多种规格缩略图宽度参数
+
+                thumbSizeList = new List<Size>();
+                sql = "select value from sys_config where varname='cfg_thumb_size'";
+                dbResult = myDB.GetRecords(sql, ref sResult, ref counts);
+                if (sResult == mySqlDB.SUCCESS && counts > 0)
+                {
+                    string temp = dbResult[0]["value"].ToString();
+                    string[] tempSizeArr = temp.Split('|');
+
+                    List<string> tempSizeList = tempSizeArr.ToList();
+                    foreach (string item in tempSizeList)
+                    {
+                        int width = 0;
+                        int height = 0;
+                        Size thumbSize = new Size();
+                        thumbSize.Width = 0; thumbSize.Height = 0;
+                        char[] separator = { 'x', 'X' };
+                        string[] tempSize = item.Split(separator);
+                        if (int.TryParse(tempSize[0], out width))
+                        {
+                            if (width > 0)
+                            {
+                                thumbSize.Width = width;
+                            }
+                        }
+                        if (tempSize.Count() > 1 && thumbSize.Width > 0)
+                        {
+                            if (int.TryParse(tempSize[1], out height))
+                            {
+                                if (height > 0)
+                                {
+                                    thumbSize.Height = height;
+                                }
+                            }
+                        }
+                        if (thumbSize.Width > 0)
+                        {
+                            thumbSizeList.Add(thumbSize);
+                        }
+                    }
+                }
+
+                //从数据库配置表中获取网站图片保存根目录
+                sql = "select value from sys_config where varname='cfg_basepath'";
+                dbResult = myDB.GetRecords(sql, ref sResult, ref counts);
                 if (sResult==mySqlDB.SUCCESS && counts>0)
                 {
                     picBasepath = dbResult[0]["value"].ToString();
                 }
                 if (picBasepath!="")
                 {
-                    sql = "select pid,pic_path,is_thumb_maked from arc_pics where is_thumb_maked='no' limit 1";
+                    sql = "select pid,pic_path,is_thumb_maked from arc_pics where is_thumb_maked='no' limit 100";
                     List<Dictionary<string, object>> picRecords = new List<Dictionary<string, object>>();
-                    picRecords = coMyDB.GetRecords(sql, ref sResult, ref counts);
+                    picRecords = myDB.GetRecords(sql, ref sResult, ref counts);
                     string picRootpath = picBasepath + "src";
                     string thumbRootPath = picBasepath + "thumb";
                     while (sResult == mySqlDB.SUCCESS && counts > 0)
@@ -1101,17 +1179,35 @@ namespace ArcDB
                             string thumbDirpath = Path.GetDirectoryName(thumbPath);
                             string picFilename = Path.GetFileNameWithoutExtension(picPath);
                             string picExtenstion = Path.GetExtension(picPath);
-                            string thumbFilename = thumbDirpath + @"\" + picFilename + "." + thumbWidth.ToString() + picExtenstion;
                             if (!Directory.Exists(thumbDirpath))
                             {
                                 Directory.CreateDirectory(thumbDirpath);
                             }
-                            if (ArcTool.MakeThumb(picPath, thumbFilename, thumbWidth, thumbHeight, "Cut"))
+                            bool isThumbGenerated = true;
+                            if (thumbSizeList.Count>0)
                             {
-                                mySqlDB myDB = new mySqlDB(_coConnString);
+                                foreach (Size thumbSize in thumbSizeList)
+                                {
+                                    int width = thumbSize.Width;
+                                    int height = thumbSize.Height;
+                                    string thumbFilename = thumbDirpath + @"\" + picFilename + "." + width.ToString() + picExtenstion;
+                                    if (!ArcTool.MakeThumb(picPath, thumbFilename, width, height, "Cut"))
+                                    {
+                                        isThumbGenerated = false;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                string thumbFilename = thumbDirpath + @"\" + picFilename + "." + thumbWidthDefault.ToString() + picExtenstion;
+                                isThumbGenerated = ArcTool.MakeThumb(picPath, thumbFilename, thumbWidthDefault, thumbHeightDefault, "Cut");
+                            }
+                            if (isThumbGenerated)
+                            {
+                                mySqlDB myCoDB = new mySqlDB(_coConnString);
                                 string result = "";
                                 string newsql = "update arc_pics set is_thumb_maked='yes' where pid='" + pid + "'";
-                                int count = myDB.executeDMLSQL(newsql , ref result);
+                                int count = myCoDB.executeDMLSQL(newsql , ref result);
                                 if (result == mySqlDB.SUCCESS && count > 0)
                                 {
                                     Interlocked.Add(ref finishedThumbs, 1);
@@ -1128,7 +1224,7 @@ namespace ArcDB
                         });
                         //再次从数据里获取一篇文章
                         sql = "select pid,pic_path,is_thumb_maked from arc_pics where is_thumb_maked='no' limit 100";
-                        picRecords = coMyDB.GetRecords(sql, ref sResult, ref counts);
+                        picRecords = myDB.GetRecords(sql, ref sResult, ref counts);
                     }
 
                 }

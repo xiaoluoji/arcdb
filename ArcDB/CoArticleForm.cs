@@ -931,11 +931,11 @@ namespace ArcDB
                                                         Size thumbSize = _cfgThumbSizeList[i];
                                                         if (thumbSize.Height==0)
                                                         {
-                                                            isThumbGenerated = ArcTool.MakeThumb(picFileName, thumbListFileName[i], thumbSize.Width, 0, "W");
+                                                            isThumbGenerated = ArcTool.MakeThumbOld(picFileName, thumbListFileName[i], thumbSize.Width, 0, "W");
                                                         }
                                                         else
                                                         {
-                                                            isThumbGenerated = ArcTool.MakeThumb(picFileName, thumbListFileName[i], thumbSize.Width, thumbSize.Height, "Cut");
+                                                           isThumbGenerated = ArcTool.MakeThumbOld(picFileName, thumbListFileName[i], thumbSize.Width, thumbSize.Height, "Cut");
                                                         }
                                                         if (isThumbGenerated)
                                                         {
@@ -957,7 +957,7 @@ namespace ArcDB
                                                 }
                                                 else   //如果数据库中没有配置生成多种规格缩略图参数则按默认缩略图规格参数来生成缩略图
                                                 {
-                                                    bool isThumbGenerated = ArcTool.MakeThumb(picFileName, thumbFileName, _cfgThumbWidthDefault,_cfgThumbHeightDefault, "Cut");
+                                                    bool isThumbGenerated = ArcTool.MakeThumbOld(picFileName, thumbFileName, _cfgThumbWidthDefault,_cfgThumbHeightDefault, "Cut");
                                                     if (litpicUrl == "")
                                                     {
                                                         thumbPicID = myDB.LastInsertedId;
