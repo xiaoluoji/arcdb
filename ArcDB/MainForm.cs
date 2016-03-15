@@ -1280,7 +1280,8 @@ namespace ArcDB
                 }
                 if (File.Exists(watermarkFile))
                 {
-                    sql = "select pid,pic_path,clear from arc_pics where clear='no' limit 100";
+                    //sql = "select pid,pic_path,clear from arc_pics where clear='no' limit 100";
+                    sql = "select pid,source_path,clear from arc_pics where clear='no' limit 100";
                     List<Dictionary<string, object>> picRecords = new List<Dictionary<string, object>>();
                     picRecords = coMyDB.GetRecords(sql, ref sResult, ref counts);
                     string picRootpath = picBasepath + "src";
@@ -1291,7 +1292,8 @@ namespace ArcDB
                         Parallel.ForEach(picRecords, po, oneRecord =>
                         {
                             string pid = oneRecord["pid"].ToString();
-                            string picPath = oneRecord["pic_path"].ToString();
+                            //string picPath = oneRecord["pic_path"].ToString();
+                            string picPath = oneRecord["source_path"].ToString();
                             string dstPath = picPath.Replace(picRootpath, dstRootPath);
                             string dstDirpath = Path.GetDirectoryName(dstPath);
                             string picFilename = Path.GetFileName(picPath);
@@ -1321,10 +1323,13 @@ namespace ArcDB
                             }
                         });
                         //再次从数据里获取一篇文章
-                        sql = "select pid,pic_path,clear from arc_pics where clear='no' limit 100";
+                        //sql = "select pid,pic_path,clear from arc_pics where clear='no' limit 100";
+                        sql = "select pid,source_path,clear from arc_pics where clear='no' limit 100";
                         picRecords = coMyDB.GetRecords(sql, ref sResult, ref counts);
                     }
-
+                    string errorFile = RootPath + "watermarkError.log";
+                    File.AppendAllText(errorFile, DateTime.Now.ToString() + "\r\n");
+                    File.AppendAllText(errorFile, tboxArctoolOutput.Text);
                 }
                 else
                 {
