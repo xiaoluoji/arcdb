@@ -1312,12 +1312,12 @@ namespace ArcDB
                                 }
                                 else
                                 {
-                                    tboxArctoolOutput.AppendText(string.Format("错误信息：更新arc_pics表错误 PID：{0}:  error:{1}  \n", pid, sResult));
+                                    tboxArctoolOutput.AppendText(string.Format("错误信息：更新arc_pics表clear字段错误 PID：{0}:  error:{1}  \n", pid, sResult));
                                 }
                             }
                             else
                             {
-                                tboxArctoolOutput.AppendText(string.Format("错误信息：生成缩略图错误: pid:{0} ！\n", pid));
+                                tboxArctoolOutput.AppendText(string.Format("错误信息：添加水印错误 pid:{0} ！\n", pid));
                             }
                         });
                         //再次从数据里获取一篇文章
