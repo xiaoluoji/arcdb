@@ -35,7 +35,8 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GraphicsMagick.NET-AnyCPU">
+    <Reference Include="GraphicsMagick.NET-AnyCPU, Version=1.0.0.0, Culture=neutral, PublicKeyToken=ee2094eb40f5ea47, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\第三方程序集\已生成\GraphicsMagick.NET-AnyCPU.dll</HintPath>
     </Reference>
     <Reference Include="HtmlAgilityPack">
@@ -44,6 +45,7 @@
     </Reference>
     <Reference Include="ImageListView">
       <HintPath>..\..\第三方程序集\已生成\ImageListView.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="MurmurHash">
       <HintPath>..\..\第三方程序集\已生成\MurmurHash.dll</HintPath>
