@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using ImageMagick;
+using GraphicsMagick;
 
 
 namespace ArcDB
@@ -59,13 +59,13 @@ namespace ArcDB
 
 
         #region 给图片添加水印
-        public static bool MakeWatermark(string watermarkFile,string sourcePath,string dstPath, Gravity watermarkPosition,ImageMagick.CompositeOperator watermarkType)
+        public static bool MakeWatermark(string watermarkFile,string sourcePath,string dstPath, Gravity watermarkPosition,GraphicsMagick.CompositeOperator watermarkType)
         {
             try
             {
                 using (MagickImage watermark = new MagickImage(watermarkFile))
                 {
-                    ImageMagick.MagickImage srcImg = new MagickImage(sourcePath);
+                    GraphicsMagick.MagickImage srcImg = new MagickImage(sourcePath);
                     srcImg.Composite(watermark, watermarkPosition, watermarkType);
                     srcImg.Write(dstPath);
                 }
@@ -80,15 +80,15 @@ namespace ArcDB
 
 
         #region 使用imageMagic扩展库生成缩略图
-        public static bool MakeThumb(string sourcePath, string dstPath, int width, int height, string mode)
+        public static bool MakeThumb(string sourcePath, string dstPath, int width, int height, string mode,int quality=100)
         {
             // FullPath is the new file's path.
-            ImageMagick.MagickImage img = new ImageMagick.MagickImage(sourcePath);
+            GraphicsMagick.MagickImage img = new GraphicsMagick.MagickImage(sourcePath);
             if (img.Height != height || img.Width != width)
             {
                 int new_width = width;
                 int new_height = height;
-                ImageMagick.Gravity dstGravity = new ImageMagick.Gravity(); //设置目标截取的位置
+                GraphicsMagick.Gravity dstGravity = new GraphicsMagick.Gravity(); //设置目标截取的位置
                 dstGravity = Gravity.Center;  //默认截取位置是从中间截取
                 decimal result_ratio = (decimal)height / (decimal)width;   //目标
                 decimal current_ratio = (decimal)img.Height / (decimal)img.Width;
@@ -127,14 +127,14 @@ namespace ArcDB
                         break;
                 }
                 String newGeomStr = new_width.ToString() + "x" + new_height.ToString() + "!";
-                ImageMagick.MagickGeometry intermediate_geo = new ImageMagick.MagickGeometry(newGeomStr);
+                GraphicsMagick.MagickGeometry intermediate_geo = new GraphicsMagick.MagickGeometry(newGeomStr);
                 //img.Resize(intermediate_geo);
                 img.Thumbnail(intermediate_geo);
                 img.Crop(width, height, dstGravity);
             }
             try
             {
-                img.Quality = 100;
+                img.Quality = quality;
                 img.Sharpen();
                 img.Write(dstPath);
                 return true;

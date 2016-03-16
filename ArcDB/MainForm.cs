@@ -1061,6 +1061,11 @@ namespace ArcDB
             int thumbHeightDefault = 0;
             List<Size> thumbSizeList;
             int finishedThumbs = 0;
+            int thumbQuality = 100;
+            if (int.TryParse(tboxThumbQuality.Text,out thumbQuality))
+            {
+                thumbQuality = int.Parse(tboxThumbQuality.Text);
+            }
 
             if (_coConnString != "")
             {
@@ -1191,7 +1196,7 @@ namespace ArcDB
                                     int width = thumbSize.Width;
                                     int height = thumbSize.Height;
                                     string thumbFilename = thumbDirpath + @"\" + picFilename + "." + width.ToString() + picExtenstion;
-                                    if (!ArcTool.MakeThumb(picPath, thumbFilename, width, height, "Cut"))
+                                    if (!ArcTool.MakeThumb(picPath, thumbFilename, width, height, "Cut",thumbQuality))
                                     {
                                         isThumbGenerated = false;
                                     }
@@ -1200,7 +1205,7 @@ namespace ArcDB
                             else
                             {
                                 string thumbFilename = thumbDirpath + @"\" + picFilename + "." + thumbWidthDefault.ToString() + picExtenstion;
-                                isThumbGenerated = ArcTool.MakeThumb(picPath, thumbFilename, thumbWidthDefault, thumbHeightDefault, "Cut");
+                                isThumbGenerated = ArcTool.MakeThumb(picPath, thumbFilename, thumbWidthDefault, thumbHeightDefault, "Cut",thumbQuality);
                             }
                             if (isThumbGenerated)
                             {
@@ -1214,12 +1219,12 @@ namespace ArcDB
                                 }
                                 else
                                 {
-                                    tboxArctoolOutput.AppendText(string.Format("错误信息：更新arc_pics表错误 PID：{0}:  error:{1}  \n", pid, sResult));
+                                    tboxPictoolOutput.AppendText(string.Format("错误信息：更新arc_pics表错误 PID：{0}:  error:{1}  \n", pid, sResult));
                                 }
                             }
                             else
                             {
-                                tboxArctoolOutput.AppendText(string.Format("错误信息：生成缩略图错误: pid:{0} ！\n", pid));
+                                tboxPictoolOutput.AppendText(string.Format("错误信息：生成缩略图错误: pid:{0} ！\n", pid));
                             }
                         });
                         //再次从数据里获取一篇文章
@@ -1314,12 +1319,12 @@ namespace ArcDB
                                 }
                                 else
                                 {
-                                    tboxArctoolOutput.AppendText(string.Format("错误信息：更新arc_pics表clear字段错误 PID：{0}:  error:{1}  \n", pid, sResult));
+                                    tboxPictoolOutput.AppendText(string.Format("错误信息：更新arc_pics表clear字段错误 PID：{0}:  error:{1}  \n", pid, sResult));
                                 }
                             }
                             else
                             {
-                                tboxArctoolOutput.AppendText(string.Format("错误信息：添加水印错误 pid:{0} ！\n", pid));
+                                tboxPictoolOutput.AppendText(string.Format("错误信息：添加水印错误 pid:{0} ！\n", pid));
                             }
                         });
                         //再次从数据里获取一篇文章
@@ -1347,8 +1352,7 @@ namespace ArcDB
 
 
 
+
         #endregion 文章相关工具模块结束
-
-
     }
 }

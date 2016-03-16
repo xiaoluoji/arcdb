@@ -63,6 +63,16 @@ namespace ArcDB.Properties {
         /// <summary>
         ///   查找 System.Byte[] 类型的本地化资源。
         /// </summary>
+        internal static byte[] GraphicsMagick_NET_AnyCPU {
+            get {
+                object obj = ResourceManager.GetObject("GraphicsMagick_NET_AnyCPU", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Byte[] 类型的本地化资源。
+        /// </summary>
         internal static byte[] HtmlAgilityPack {
             get {
                 object obj = ResourceManager.GetObject("HtmlAgilityPack", resourceCulture);
@@ -76,16 +86,6 @@ namespace ArcDB.Properties {
         internal static byte[] ImageListView {
             get {
                 object obj = ResourceManager.GetObject("ImageListView", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   查找 System.Byte[] 类型的本地化资源。
-        /// </summary>
-        internal static byte[] Magick_NET_Q16_AnyCPU {
-            get {
-                object obj = ResourceManager.GetObject("Magick_NET_Q16_AnyCPU", resourceCulture);
                 return ((byte[])(obj));
             }
         }
