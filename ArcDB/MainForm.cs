@@ -15,7 +15,7 @@ using ArticleCollect;
 using System.Runtime.Remoting.Messaging;
 using System.Threading;
 using System.Diagnostics;
-using ImageMagick;
+using GraphicsMagick;
 
 
 
@@ -1307,7 +1307,7 @@ namespace ArcDB
                             {
                                 Directory.CreateDirectory(dstDirpath);
                             }
-                            if (ArcTool.MakeWatermark(watermarkFile,picPath,dstFilename,Gravity.Southeast,ImageMagick.CompositeOperator.HardLight))
+                            if (ArcTool.MakeWatermark(watermarkFile,picPath,dstFilename,Gravity.Southeast,GraphicsMagick.CompositeOperator.Overlay))
                             {
                                 mySqlDB myDB = new mySqlDB(_coConnString);
                                 string result = "";
