@@ -229,6 +229,11 @@ namespace ArticleCollect
             {
                 afterClear = regStrong.Replace(afterClear, "");
             }
+            Regex regScript = new Regex(@"<script[^>]*?>.*?</script>");
+            if (regScript.IsMatch(afterClear))
+            {
+                afterClear = regScript.Replace(afterClear, "");
+            }
             Regex regDivClear = new Regex("</?div>");
             if (regDivClear.IsMatch(afterClear))
             {
