@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using GraphicsMagick;
+using ImageMagick;
 
 
 namespace ArcDB
@@ -59,13 +59,13 @@ namespace ArcDB
 
 
         #region 给图片添加水印
-        public static bool MakeWatermark(string watermarkFile,string sourcePath,string dstPath, Gravity watermarkPosition,GraphicsMagick.CompositeOperator watermarkType)
+        public static bool MakeWatermark(string watermarkFile,string sourcePath,string dstPath, Gravity watermarkPosition,ImageMagick.CompositeOperator watermarkType)
         {
             try
             {
                 using (MagickImage watermark = new MagickImage(watermarkFile))
                 {
-                    GraphicsMagick.MagickImage srcImg = new MagickImage(sourcePath);
+                    ImageMagick.MagickImage srcImg = new MagickImage(sourcePath);
                     srcImg.Composite(watermark, watermarkPosition, watermarkType);
                     srcImg.Write(dstPath);
                 }
@@ -83,12 +83,12 @@ namespace ArcDB
         public static bool MakeThumb(string sourcePath, string dstPath, int width, int height, string mode,int quality=100)
         {
             // FullPath is the new file's path.
-            GraphicsMagick.MagickImage img = new GraphicsMagick.MagickImage(sourcePath);
+            ImageMagick.MagickImage img = new ImageMagick.MagickImage(sourcePath);
             if (img.Height != height || img.Width != width)
             {
                 int new_width = width;
                 int new_height = height;
-                GraphicsMagick.Gravity dstGravity = new GraphicsMagick.Gravity(); //设置目标截取的位置
+                ImageMagick.Gravity dstGravity = new ImageMagick.Gravity(); //设置目标截取的位置
                 dstGravity = Gravity.Center;  //默认截取位置是从中间截取
                 decimal result_ratio = (decimal)height / (decimal)width;   //目标
                 decimal current_ratio = (decimal)img.Height / (decimal)img.Width;
@@ -127,7 +127,7 @@ namespace ArcDB
                         break;
                 }
                 String newGeomStr = new_width.ToString() + "x" + new_height.ToString() + "!";
-                GraphicsMagick.MagickGeometry intermediate_geo = new GraphicsMagick.MagickGeometry(newGeomStr);
+                ImageMagick .MagickGeometry intermediate_geo = new ImageMagick .MagickGeometry(newGeomStr);
                 //img.Resize(intermediate_geo);
                 img.Thumbnail(intermediate_geo);
                 img.Crop(width, height, dstGravity);
