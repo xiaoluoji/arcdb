@@ -117,6 +117,20 @@
             this.btnGetCoArcDesc = new System.Windows.Forms.Button();
             this.lblCoArcDescLength = new System.Windows.Forms.Label();
             this.tboxCoArcDescLength = new System.Windows.Forms.TextBox();
+            this.tabPagePictool = new System.Windows.Forms.TabPage();
+            this.groupGenerateWatermark = new System.Windows.Forms.GroupBox();
+            this.lblGenarateWartermark = new System.Windows.Forms.Label();
+            this.lblWatermarkedPicCount = new System.Windows.Forms.Label();
+            this.btnGenarateWatermark = new System.Windows.Forms.Button();
+            this.lblPictoolOutput = new System.Windows.Forms.Label();
+            this.tboxPictoolOutput = new System.Windows.Forms.TextBox();
+            this.groupGenerateThumb = new System.Windows.Forms.GroupBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.tboxThumbQuality = new System.Windows.Forms.TextBox();
+            this.lblThumbQuality = new System.Windows.Forms.Label();
+            this.lblReGenerateAllthumbs = new System.Windows.Forms.Label();
+            this.lblRegenerateThumbsCount = new System.Windows.Forms.Label();
+            this.btnRegenerateAllthumbs = new System.Windows.Forms.Button();
             this.tabPageConfig = new System.Windows.Forms.TabPage();
             this.gbxPubDatabaseSet = new System.Windows.Forms.GroupBox();
             this.label13 = new System.Windows.Forms.Label();
@@ -147,20 +161,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.tboxCoPassword = new System.Windows.Forms.TextBox();
             this.cboxCoCharset = new System.Windows.Forms.ComboBox();
-            this.tabPagePictool = new System.Windows.Forms.TabPage();
-            this.groupGenerateThumb = new System.Windows.Forms.GroupBox();
-            this.lblReGenerateAllthumbs = new System.Windows.Forms.Label();
-            this.lblRegenerateThumbsCount = new System.Windows.Forms.Label();
-            this.btnRegenerateAllthumbs = new System.Windows.Forms.Button();
-            this.lblPictoolOutput = new System.Windows.Forms.Label();
-            this.tboxPictoolOutput = new System.Windows.Forms.TextBox();
-            this.groupGenerateWatermark = new System.Windows.Forms.GroupBox();
-            this.lblGenarateWartermark = new System.Windows.Forms.Label();
-            this.lblWatermarkedPicCount = new System.Windows.Forms.Label();
-            this.btnGenarateWatermark = new System.Windows.Forms.Button();
-            this.lblThumbQuality = new System.Windows.Forms.Label();
-            this.tboxThumbQuality = new System.Windows.Forms.TextBox();
-            this.label16 = new System.Windows.Forms.Label();
             this.tabctrMainform.SuspendLayout();
             this.tabPageCollect.SuspendLayout();
             this.gboxCoFilter.SuspendLayout();
@@ -176,12 +176,12 @@
             this.tabPageArctool.SuspendLayout();
             this.gboxCreateHitsRecords.SuspendLayout();
             this.gboxGetCoArcDesc.SuspendLayout();
+            this.tabPagePictool.SuspendLayout();
+            this.groupGenerateWatermark.SuspendLayout();
+            this.groupGenerateThumb.SuspendLayout();
             this.tabPageConfig.SuspendLayout();
             this.gbxPubDatabaseSet.SuspendLayout();
             this.gbxCoDatabaseSet.SuspendLayout();
-            this.tabPagePictool.SuspendLayout();
-            this.groupGenerateThumb.SuspendLayout();
-            this.groupGenerateWatermark.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabctrMainform
@@ -196,7 +196,7 @@
             this.tabctrMainform.Location = new System.Drawing.Point(0, 0);
             this.tabctrMainform.Name = "tabctrMainform";
             this.tabctrMainform.SelectedIndex = 0;
-            this.tabctrMainform.Size = new System.Drawing.Size(1015, 659);
+            this.tabctrMainform.Size = new System.Drawing.Size(1015, 758);
             this.tabctrMainform.TabIndex = 1;
             // 
             // tabPageCollect
@@ -213,14 +213,14 @@
             this.tabPageCollect.Location = new System.Drawing.Point(4, 28);
             this.tabPageCollect.Name = "tabPageCollect";
             this.tabPageCollect.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageCollect.Size = new System.Drawing.Size(1007, 627);
+            this.tabPageCollect.Size = new System.Drawing.Size(1007, 726);
             this.tabPageCollect.TabIndex = 0;
             this.tabPageCollect.Text = "采集内容";
             this.tabPageCollect.UseVisualStyleBackColor = true;
             // 
             // btnDeleteCoconfig
             // 
-            this.btnDeleteCoconfig.Location = new System.Drawing.Point(559, 571);
+            this.btnDeleteCoconfig.Location = new System.Drawing.Point(560, 683);
             this.btnDeleteCoconfig.Name = "btnDeleteCoconfig";
             this.btnDeleteCoconfig.Size = new System.Drawing.Size(133, 37);
             this.btnDeleteCoconfig.TabIndex = 9;
@@ -230,7 +230,7 @@
             // 
             // btnCopyCoconfig
             // 
-            this.btnCopyCoconfig.Location = new System.Drawing.Point(420, 571);
+            this.btnCopyCoconfig.Location = new System.Drawing.Point(421, 683);
             this.btnCopyCoconfig.Name = "btnCopyCoconfig";
             this.btnCopyCoconfig.Size = new System.Drawing.Size(133, 37);
             this.btnCopyCoconfig.TabIndex = 8;
@@ -240,7 +240,7 @@
             // 
             // btnCoArticles
             // 
-            this.btnCoArticles.Location = new System.Drawing.Point(869, 571);
+            this.btnCoArticles.Location = new System.Drawing.Point(870, 683);
             this.btnCoArticles.Name = "btnCoArticles";
             this.btnCoArticles.Size = new System.Drawing.Size(133, 37);
             this.btnCoArticles.TabIndex = 7;
@@ -250,7 +250,7 @@
             // 
             // btnAddCoconfig
             // 
-            this.btnAddCoconfig.Location = new System.Drawing.Point(281, 571);
+            this.btnAddCoconfig.Location = new System.Drawing.Point(282, 683);
             this.btnAddCoconfig.Name = "btnAddCoconfig";
             this.btnAddCoconfig.Size = new System.Drawing.Size(133, 37);
             this.btnAddCoconfig.TabIndex = 6;
@@ -260,7 +260,7 @@
             // 
             // btnClearCoFilter
             // 
-            this.btnClearCoFilter.Location = new System.Drawing.Point(701, 571);
+            this.btnClearCoFilter.Location = new System.Drawing.Point(702, 683);
             this.btnClearCoFilter.Name = "btnClearCoFilter";
             this.btnClearCoFilter.Size = new System.Drawing.Size(133, 37);
             this.btnClearCoFilter.TabIndex = 5;
@@ -466,7 +466,7 @@
             // 
             // btnModifyCoconfig
             // 
-            this.btnModifyCoconfig.Location = new System.Drawing.Point(142, 571);
+            this.btnModifyCoconfig.Location = new System.Drawing.Point(143, 683);
             this.btnModifyCoconfig.Name = "btnModifyCoconfig";
             this.btnModifyCoconfig.Size = new System.Drawing.Size(133, 37);
             this.btnModifyCoconfig.TabIndex = 3;
@@ -491,7 +491,7 @@
             this.listViewCollect.Location = new System.Drawing.Point(3, 162);
             this.listViewCollect.MultiSelect = false;
             this.listViewCollect.Name = "listViewCollect";
-            this.listViewCollect.Size = new System.Drawing.Size(999, 390);
+            this.listViewCollect.Size = new System.Drawing.Size(999, 501);
             this.listViewCollect.TabIndex = 2;
             this.listViewCollect.UseCompatibleStateImageBehavior = false;
             this.listViewCollect.View = System.Windows.Forms.View.Details;
@@ -538,7 +538,7 @@
             // 
             // btnLoadCoconfig
             // 
-            this.btnLoadCoconfig.Location = new System.Drawing.Point(3, 571);
+            this.btnLoadCoconfig.Location = new System.Drawing.Point(4, 683);
             this.btnLoadCoconfig.Name = "btnLoadCoconfig";
             this.btnLoadCoconfig.Size = new System.Drawing.Size(133, 37);
             this.btnLoadCoconfig.TabIndex = 1;
@@ -551,7 +551,7 @@
             this.tabPageDelWatermark.Location = new System.Drawing.Point(4, 28);
             this.tabPageDelWatermark.Name = "tabPageDelWatermark";
             this.tabPageDelWatermark.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageDelWatermark.Size = new System.Drawing.Size(1007, 627);
+            this.tabPageDelWatermark.Size = new System.Drawing.Size(1007, 726);
             this.tabPageDelWatermark.TabIndex = 1;
             this.tabPageDelWatermark.Text = "去水印";
             this.tabPageDelWatermark.UseVisualStyleBackColor = true;
@@ -569,14 +569,14 @@
             this.tabPageDistribute.Controls.Add(this.listViewPublish);
             this.tabPageDistribute.Location = new System.Drawing.Point(4, 28);
             this.tabPageDistribute.Name = "tabPageDistribute";
-            this.tabPageDistribute.Size = new System.Drawing.Size(1007, 627);
+            this.tabPageDistribute.Size = new System.Drawing.Size(1007, 726);
             this.tabPageDistribute.TabIndex = 2;
             this.tabPageDistribute.Text = "内容分发";
             this.tabPageDistribute.UseVisualStyleBackColor = true;
             // 
             // btnDelPubConfig
             // 
-            this.btnDelPubConfig.Location = new System.Drawing.Point(559, 571);
+            this.btnDelPubConfig.Location = new System.Drawing.Point(560, 683);
             this.btnDelPubConfig.Name = "btnDelPubConfig";
             this.btnDelPubConfig.Size = new System.Drawing.Size(133, 37);
             this.btnDelPubConfig.TabIndex = 16;
@@ -586,7 +586,7 @@
             // 
             // btnCopyPubConfig
             // 
-            this.btnCopyPubConfig.Location = new System.Drawing.Point(420, 571);
+            this.btnCopyPubConfig.Location = new System.Drawing.Point(421, 683);
             this.btnCopyPubConfig.Name = "btnCopyPubConfig";
             this.btnCopyPubConfig.Size = new System.Drawing.Size(133, 37);
             this.btnCopyPubConfig.TabIndex = 15;
@@ -596,7 +596,7 @@
             // 
             // btnPubArticles
             // 
-            this.btnPubArticles.Location = new System.Drawing.Point(869, 571);
+            this.btnPubArticles.Location = new System.Drawing.Point(870, 683);
             this.btnPubArticles.Name = "btnPubArticles";
             this.btnPubArticles.Size = new System.Drawing.Size(133, 37);
             this.btnPubArticles.TabIndex = 14;
@@ -606,7 +606,7 @@
             // 
             // btnAddPubConfig
             // 
-            this.btnAddPubConfig.Location = new System.Drawing.Point(281, 571);
+            this.btnAddPubConfig.Location = new System.Drawing.Point(282, 683);
             this.btnAddPubConfig.Name = "btnAddPubConfig";
             this.btnAddPubConfig.Size = new System.Drawing.Size(133, 37);
             this.btnAddPubConfig.TabIndex = 13;
@@ -616,7 +616,7 @@
             // 
             // btnClearPubFilter
             // 
-            this.btnClearPubFilter.Location = new System.Drawing.Point(701, 571);
+            this.btnClearPubFilter.Location = new System.Drawing.Point(702, 683);
             this.btnClearPubFilter.Name = "btnClearPubFilter";
             this.btnClearPubFilter.Size = new System.Drawing.Size(133, 37);
             this.btnClearPubFilter.TabIndex = 12;
@@ -626,7 +626,7 @@
             // 
             // btnModifyPubConfig
             // 
-            this.btnModifyPubConfig.Location = new System.Drawing.Point(142, 571);
+            this.btnModifyPubConfig.Location = new System.Drawing.Point(143, 683);
             this.btnModifyPubConfig.Name = "btnModifyPubConfig";
             this.btnModifyPubConfig.Size = new System.Drawing.Size(133, 37);
             this.btnModifyPubConfig.TabIndex = 11;
@@ -636,7 +636,7 @@
             // 
             // btnLoadPubConfig
             // 
-            this.btnLoadPubConfig.Location = new System.Drawing.Point(3, 571);
+            this.btnLoadPubConfig.Location = new System.Drawing.Point(4, 683);
             this.btnLoadPubConfig.Name = "btnLoadPubConfig";
             this.btnLoadPubConfig.Size = new System.Drawing.Size(133, 37);
             this.btnLoadPubConfig.TabIndex = 10;
@@ -874,7 +874,7 @@
             this.tabPageArctool.Location = new System.Drawing.Point(4, 28);
             this.tabPageArctool.Name = "tabPageArctool";
             this.tabPageArctool.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageArctool.Size = new System.Drawing.Size(1007, 627);
+            this.tabPageArctool.Size = new System.Drawing.Size(1007, 726);
             this.tabPageArctool.TabIndex = 4;
             this.tabPageArctool.Text = "文章工具";
             this.tabPageArctool.UseVisualStyleBackColor = true;
@@ -922,7 +922,7 @@
             // lblArctoolOutput
             // 
             this.lblArctoolOutput.AutoSize = true;
-            this.lblArctoolOutput.Location = new System.Drawing.Point(14, 311);
+            this.lblArctoolOutput.Location = new System.Drawing.Point(12, 427);
             this.lblArctoolOutput.Name = "lblArctoolOutput";
             this.lblArctoolOutput.Size = new System.Drawing.Size(89, 18);
             this.lblArctoolOutput.TabIndex = 38;
@@ -930,7 +930,7 @@
             // 
             // tboxArctoolOutput
             // 
-            this.tboxArctoolOutput.Location = new System.Drawing.Point(8, 361);
+            this.tboxArctoolOutput.Location = new System.Drawing.Point(6, 477);
             this.tboxArctoolOutput.Multiline = true;
             this.tboxArctoolOutput.Name = "tboxArctoolOutput";
             this.tboxArctoolOutput.Size = new System.Drawing.Size(991, 241);
@@ -1046,6 +1046,144 @@
             this.tboxCoArcDescLength.TabIndex = 22;
             this.tboxCoArcDescLength.Text = "120";
             // 
+            // tabPagePictool
+            // 
+            this.tabPagePictool.Controls.Add(this.groupGenerateWatermark);
+            this.tabPagePictool.Controls.Add(this.lblPictoolOutput);
+            this.tabPagePictool.Controls.Add(this.tboxPictoolOutput);
+            this.tabPagePictool.Controls.Add(this.groupGenerateThumb);
+            this.tabPagePictool.Location = new System.Drawing.Point(4, 28);
+            this.tabPagePictool.Name = "tabPagePictool";
+            this.tabPagePictool.Size = new System.Drawing.Size(1007, 726);
+            this.tabPagePictool.TabIndex = 5;
+            this.tabPagePictool.Text = "图片工具";
+            this.tabPagePictool.UseVisualStyleBackColor = true;
+            // 
+            // groupGenerateWatermark
+            // 
+            this.groupGenerateWatermark.Controls.Add(this.lblGenarateWartermark);
+            this.groupGenerateWatermark.Controls.Add(this.lblWatermarkedPicCount);
+            this.groupGenerateWatermark.Controls.Add(this.btnGenarateWatermark);
+            this.groupGenerateWatermark.Location = new System.Drawing.Point(8, 138);
+            this.groupGenerateWatermark.Name = "groupGenerateWatermark";
+            this.groupGenerateWatermark.Size = new System.Drawing.Size(991, 110);
+            this.groupGenerateWatermark.TabIndex = 53;
+            this.groupGenerateWatermark.TabStop = false;
+            this.groupGenerateWatermark.Text = "添加水印";
+            // 
+            // lblGenarateWartermark
+            // 
+            this.lblGenarateWartermark.AutoSize = true;
+            this.lblGenarateWartermark.Location = new System.Drawing.Point(661, 48);
+            this.lblGenarateWartermark.Name = "lblGenarateWartermark";
+            this.lblGenarateWartermark.Size = new System.Drawing.Size(161, 18);
+            this.lblGenarateWartermark.TabIndex = 54;
+            this.lblGenarateWartermark.Text = "已添加水印图片数:";
+            // 
+            // lblWatermarkedPicCount
+            // 
+            this.lblWatermarkedPicCount.AutoSize = true;
+            this.lblWatermarkedPicCount.Location = new System.Drawing.Point(899, 48);
+            this.lblWatermarkedPicCount.Name = "lblWatermarkedPicCount";
+            this.lblWatermarkedPicCount.Size = new System.Drawing.Size(17, 18);
+            this.lblWatermarkedPicCount.TabIndex = 53;
+            this.lblWatermarkedPicCount.Text = "0";
+            // 
+            // btnGenarateWatermark
+            // 
+            this.btnGenarateWatermark.Location = new System.Drawing.Point(9, 39);
+            this.btnGenarateWatermark.Name = "btnGenarateWatermark";
+            this.btnGenarateWatermark.Size = new System.Drawing.Size(170, 37);
+            this.btnGenarateWatermark.TabIndex = 52;
+            this.btnGenarateWatermark.Text = "批量加水印";
+            this.btnGenarateWatermark.UseVisualStyleBackColor = true;
+            this.btnGenarateWatermark.Click += new System.EventHandler(this.btnGenarateWatermark_Click);
+            // 
+            // lblPictoolOutput
+            // 
+            this.lblPictoolOutput.AutoSize = true;
+            this.lblPictoolOutput.Location = new System.Drawing.Point(8, 444);
+            this.lblPictoolOutput.Name = "lblPictoolOutput";
+            this.lblPictoolOutput.Size = new System.Drawing.Size(89, 18);
+            this.lblPictoolOutput.TabIndex = 51;
+            this.lblPictoolOutput.Text = "输出窗口:";
+            // 
+            // tboxPictoolOutput
+            // 
+            this.tboxPictoolOutput.Location = new System.Drawing.Point(8, 477);
+            this.tboxPictoolOutput.Multiline = true;
+            this.tboxPictoolOutput.Name = "tboxPictoolOutput";
+            this.tboxPictoolOutput.Size = new System.Drawing.Size(991, 241);
+            this.tboxPictoolOutput.TabIndex = 52;
+            // 
+            // groupGenerateThumb
+            // 
+            this.groupGenerateThumb.Controls.Add(this.label16);
+            this.groupGenerateThumb.Controls.Add(this.tboxThumbQuality);
+            this.groupGenerateThumb.Controls.Add(this.lblThumbQuality);
+            this.groupGenerateThumb.Controls.Add(this.lblReGenerateAllthumbs);
+            this.groupGenerateThumb.Controls.Add(this.lblRegenerateThumbsCount);
+            this.groupGenerateThumb.Controls.Add(this.btnRegenerateAllthumbs);
+            this.groupGenerateThumb.Location = new System.Drawing.Point(9, 14);
+            this.groupGenerateThumb.Name = "groupGenerateThumb";
+            this.groupGenerateThumb.Size = new System.Drawing.Size(990, 100);
+            this.groupGenerateThumb.TabIndex = 50;
+            this.groupGenerateThumb.TabStop = false;
+            this.groupGenerateThumb.Text = "生成缩略图";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(194, 56);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(125, 18);
+            this.label16.TabIndex = 51;
+            this.label16.Text = "（默认为100）";
+            // 
+            // tboxThumbQuality
+            // 
+            this.tboxThumbQuality.Location = new System.Drawing.Point(325, 20);
+            this.tboxThumbQuality.Name = "tboxThumbQuality";
+            this.tboxThumbQuality.Size = new System.Drawing.Size(118, 28);
+            this.tboxThumbQuality.TabIndex = 50;
+            // 
+            // lblThumbQuality
+            // 
+            this.lblThumbQuality.AutoSize = true;
+            this.lblThumbQuality.Location = new System.Drawing.Point(203, 25);
+            this.lblThumbQuality.Name = "lblThumbQuality";
+            this.lblThumbQuality.Size = new System.Drawing.Size(116, 18);
+            this.lblThumbQuality.TabIndex = 49;
+            this.lblThumbQuality.Text = "缩录图质量：";
+            // 
+            // lblReGenerateAllthumbs
+            // 
+            this.lblReGenerateAllthumbs.AutoSize = true;
+            this.lblReGenerateAllthumbs.Location = new System.Drawing.Point(660, 46);
+            this.lblReGenerateAllthumbs.Name = "lblReGenerateAllthumbs";
+            this.lblReGenerateAllthumbs.Size = new System.Drawing.Size(197, 18);
+            this.lblReGenerateAllthumbs.TabIndex = 48;
+            this.lblReGenerateAllthumbs.Text = "已重新生成缩略图数量:";
+            // 
+            // lblRegenerateThumbsCount
+            // 
+            this.lblRegenerateThumbsCount.AutoSize = true;
+            this.lblRegenerateThumbsCount.Location = new System.Drawing.Point(898, 46);
+            this.lblRegenerateThumbsCount.Name = "lblRegenerateThumbsCount";
+            this.lblRegenerateThumbsCount.Size = new System.Drawing.Size(17, 18);
+            this.lblRegenerateThumbsCount.TabIndex = 47;
+            this.lblRegenerateThumbsCount.Text = "0";
+            // 
+            // btnRegenerateAllthumbs
+            // 
+            this.btnRegenerateAllthumbs.Location = new System.Drawing.Point(8, 37);
+            this.btnRegenerateAllthumbs.Name = "btnRegenerateAllthumbs";
+            this.btnRegenerateAllthumbs.Size = new System.Drawing.Size(170, 37);
+            this.btnRegenerateAllthumbs.TabIndex = 46;
+            this.btnRegenerateAllthumbs.Text = "重新生成缩略图";
+            this.btnRegenerateAllthumbs.UseVisualStyleBackColor = true;
+            this.btnRegenerateAllthumbs.Click += new System.EventHandler(this.btnRegenerateAllthumbs_Click);
+            // 
             // tabPageConfig
             // 
             this.tabPageConfig.Controls.Add(this.gbxPubDatabaseSet);
@@ -1054,7 +1192,7 @@
             this.tabPageConfig.Location = new System.Drawing.Point(4, 28);
             this.tabPageConfig.Name = "tabPageConfig";
             this.tabPageConfig.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageConfig.Size = new System.Drawing.Size(1007, 627);
+            this.tabPageConfig.Size = new System.Drawing.Size(1007, 726);
             this.tabPageConfig.TabIndex = 3;
             this.tabPageConfig.Text = "系统设置";
             this.tabPageConfig.UseVisualStyleBackColor = true;
@@ -1333,149 +1471,11 @@
             this.cboxCoCharset.TabIndex = 28;
             this.cboxCoCharset.Text = "utf8";
             // 
-            // tabPagePictool
-            // 
-            this.tabPagePictool.Controls.Add(this.groupGenerateWatermark);
-            this.tabPagePictool.Controls.Add(this.lblPictoolOutput);
-            this.tabPagePictool.Controls.Add(this.tboxPictoolOutput);
-            this.tabPagePictool.Controls.Add(this.groupGenerateThumb);
-            this.tabPagePictool.Location = new System.Drawing.Point(4, 28);
-            this.tabPagePictool.Name = "tabPagePictool";
-            this.tabPagePictool.Size = new System.Drawing.Size(1007, 627);
-            this.tabPagePictool.TabIndex = 5;
-            this.tabPagePictool.Text = "图片工具";
-            this.tabPagePictool.UseVisualStyleBackColor = true;
-            // 
-            // groupGenerateThumb
-            // 
-            this.groupGenerateThumb.Controls.Add(this.label16);
-            this.groupGenerateThumb.Controls.Add(this.tboxThumbQuality);
-            this.groupGenerateThumb.Controls.Add(this.lblThumbQuality);
-            this.groupGenerateThumb.Controls.Add(this.lblReGenerateAllthumbs);
-            this.groupGenerateThumb.Controls.Add(this.lblRegenerateThumbsCount);
-            this.groupGenerateThumb.Controls.Add(this.btnRegenerateAllthumbs);
-            this.groupGenerateThumb.Location = new System.Drawing.Point(9, 14);
-            this.groupGenerateThumb.Name = "groupGenerateThumb";
-            this.groupGenerateThumb.Size = new System.Drawing.Size(990, 100);
-            this.groupGenerateThumb.TabIndex = 50;
-            this.groupGenerateThumb.TabStop = false;
-            this.groupGenerateThumb.Text = "生成缩略图";
-            // 
-            // lblReGenerateAllthumbs
-            // 
-            this.lblReGenerateAllthumbs.AutoSize = true;
-            this.lblReGenerateAllthumbs.Location = new System.Drawing.Point(660, 46);
-            this.lblReGenerateAllthumbs.Name = "lblReGenerateAllthumbs";
-            this.lblReGenerateAllthumbs.Size = new System.Drawing.Size(197, 18);
-            this.lblReGenerateAllthumbs.TabIndex = 48;
-            this.lblReGenerateAllthumbs.Text = "已重新生成缩略图数量:";
-            // 
-            // lblRegenerateThumbsCount
-            // 
-            this.lblRegenerateThumbsCount.AutoSize = true;
-            this.lblRegenerateThumbsCount.Location = new System.Drawing.Point(898, 46);
-            this.lblRegenerateThumbsCount.Name = "lblRegenerateThumbsCount";
-            this.lblRegenerateThumbsCount.Size = new System.Drawing.Size(17, 18);
-            this.lblRegenerateThumbsCount.TabIndex = 47;
-            this.lblRegenerateThumbsCount.Text = "0";
-            // 
-            // btnRegenerateAllthumbs
-            // 
-            this.btnRegenerateAllthumbs.Location = new System.Drawing.Point(8, 37);
-            this.btnRegenerateAllthumbs.Name = "btnRegenerateAllthumbs";
-            this.btnRegenerateAllthumbs.Size = new System.Drawing.Size(170, 37);
-            this.btnRegenerateAllthumbs.TabIndex = 46;
-            this.btnRegenerateAllthumbs.Text = "重新生成缩略图";
-            this.btnRegenerateAllthumbs.UseVisualStyleBackColor = true;
-            this.btnRegenerateAllthumbs.Click += new System.EventHandler(this.btnRegenerateAllthumbs_Click);
-            // 
-            // lblPictoolOutput
-            // 
-            this.lblPictoolOutput.AutoSize = true;
-            this.lblPictoolOutput.Location = new System.Drawing.Point(8, 345);
-            this.lblPictoolOutput.Name = "lblPictoolOutput";
-            this.lblPictoolOutput.Size = new System.Drawing.Size(89, 18);
-            this.lblPictoolOutput.TabIndex = 51;
-            this.lblPictoolOutput.Text = "输出窗口:";
-            // 
-            // tboxPictoolOutput
-            // 
-            this.tboxPictoolOutput.Location = new System.Drawing.Point(8, 378);
-            this.tboxPictoolOutput.Multiline = true;
-            this.tboxPictoolOutput.Name = "tboxPictoolOutput";
-            this.tboxPictoolOutput.Size = new System.Drawing.Size(991, 241);
-            this.tboxPictoolOutput.TabIndex = 52;
-            // 
-            // groupGenerateWatermark
-            // 
-            this.groupGenerateWatermark.Controls.Add(this.lblGenarateWartermark);
-            this.groupGenerateWatermark.Controls.Add(this.lblWatermarkedPicCount);
-            this.groupGenerateWatermark.Controls.Add(this.btnGenarateWatermark);
-            this.groupGenerateWatermark.Location = new System.Drawing.Point(8, 138);
-            this.groupGenerateWatermark.Name = "groupGenerateWatermark";
-            this.groupGenerateWatermark.Size = new System.Drawing.Size(991, 110);
-            this.groupGenerateWatermark.TabIndex = 53;
-            this.groupGenerateWatermark.TabStop = false;
-            this.groupGenerateWatermark.Text = "添加水印";
-            // 
-            // lblGenarateWartermark
-            // 
-            this.lblGenarateWartermark.AutoSize = true;
-            this.lblGenarateWartermark.Location = new System.Drawing.Point(661, 48);
-            this.lblGenarateWartermark.Name = "lblGenarateWartermark";
-            this.lblGenarateWartermark.Size = new System.Drawing.Size(161, 18);
-            this.lblGenarateWartermark.TabIndex = 54;
-            this.lblGenarateWartermark.Text = "已添加水印图片数:";
-            // 
-            // lblWatermarkedPicCount
-            // 
-            this.lblWatermarkedPicCount.AutoSize = true;
-            this.lblWatermarkedPicCount.Location = new System.Drawing.Point(899, 48);
-            this.lblWatermarkedPicCount.Name = "lblWatermarkedPicCount";
-            this.lblWatermarkedPicCount.Size = new System.Drawing.Size(17, 18);
-            this.lblWatermarkedPicCount.TabIndex = 53;
-            this.lblWatermarkedPicCount.Text = "0";
-            // 
-            // btnGenarateWatermark
-            // 
-            this.btnGenarateWatermark.Location = new System.Drawing.Point(9, 39);
-            this.btnGenarateWatermark.Name = "btnGenarateWatermark";
-            this.btnGenarateWatermark.Size = new System.Drawing.Size(170, 37);
-            this.btnGenarateWatermark.TabIndex = 52;
-            this.btnGenarateWatermark.Text = "批量加水印";
-            this.btnGenarateWatermark.UseVisualStyleBackColor = true;
-            this.btnGenarateWatermark.Click += new System.EventHandler(this.btnGenarateWatermark_Click);
-            // 
-            // lblThumbQuality
-            // 
-            this.lblThumbQuality.AutoSize = true;
-            this.lblThumbQuality.Location = new System.Drawing.Point(203, 25);
-            this.lblThumbQuality.Name = "lblThumbQuality";
-            this.lblThumbQuality.Size = new System.Drawing.Size(116, 18);
-            this.lblThumbQuality.TabIndex = 49;
-            this.lblThumbQuality.Text = "缩录图质量：";
-            // 
-            // tboxThumbQuality
-            // 
-            this.tboxThumbQuality.Location = new System.Drawing.Point(325, 20);
-            this.tboxThumbQuality.Name = "tboxThumbQuality";
-            this.tboxThumbQuality.Size = new System.Drawing.Size(118, 28);
-            this.tboxThumbQuality.TabIndex = 50;
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(194, 56);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(125, 18);
-            this.label16.TabIndex = 51;
-            this.label16.Text = "（默认为100）";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1015, 659);
+            this.ClientSize = new System.Drawing.Size(1015, 758);
             this.Controls.Add(this.tabctrMainform);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
@@ -1510,17 +1510,17 @@
             this.gboxCreateHitsRecords.PerformLayout();
             this.gboxGetCoArcDesc.ResumeLayout(false);
             this.gboxGetCoArcDesc.PerformLayout();
+            this.tabPagePictool.ResumeLayout(false);
+            this.tabPagePictool.PerformLayout();
+            this.groupGenerateWatermark.ResumeLayout(false);
+            this.groupGenerateWatermark.PerformLayout();
+            this.groupGenerateThumb.ResumeLayout(false);
+            this.groupGenerateThumb.PerformLayout();
             this.tabPageConfig.ResumeLayout(false);
             this.gbxPubDatabaseSet.ResumeLayout(false);
             this.gbxPubDatabaseSet.PerformLayout();
             this.gbxCoDatabaseSet.ResumeLayout(false);
             this.gbxCoDatabaseSet.PerformLayout();
-            this.tabPagePictool.ResumeLayout(false);
-            this.tabPagePictool.PerformLayout();
-            this.groupGenerateThumb.ResumeLayout(false);
-            this.groupGenerateThumb.PerformLayout();
-            this.groupGenerateWatermark.ResumeLayout(false);
-            this.groupGenerateWatermark.PerformLayout();
             this.ResumeLayout(false);
 
         }
