@@ -1263,13 +1263,30 @@ namespace ArcDB
                 string sResult = "";
                 int counts = 0;
                 string picBasepath = "";
-                string watermarkFile = "";
+                string defaultWatermarkFile = "";
+                string bigWatermarkFile = "";
+                string mediumWatermarkFile = "";
+                string smallWatermarkFile = "";
                 //从数据库配置表中获取水印文件配置项
                 string sql = "select value from sys_config where varname='cfg_watermark_filename'";
                 List<Dictionary<string, object>> dbResult = coMyDB.GetRecords(sql, ref sResult, ref counts);
                 if (sResult == mySqlDB.SUCCESS && counts > 0)
                 {
-                     watermarkFile = RootPath+ dbResult[0]["value"].ToString();
+                    defaultWatermarkFile = RootPath+ dbResult[0]["value"].ToString();
+                    string preFilename = Path.GetFileNameWithoutExtension(defaultWatermarkFile);
+                    string fileExtenstion = Path.GetExtension(defaultWatermarkFile);
+                    if (File.Exists(RootPath+preFilename+"-big"+fileExtenstion))
+                    {
+                        bigWatermarkFile = RootPath + preFilename + "-big" + fileExtenstion;
+                    }
+                    if (File.Exists(RootPath + preFilename + "-medium" + fileExtenstion))
+                    {
+                        mediumWatermarkFile = RootPath + preFilename + "-medium" + fileExtenstion;
+                    }
+                    if (File.Exists(RootPath + preFilename + "-small" + fileExtenstion))
+                    {
+                        smallWatermarkFile = RootPath + preFilename + "-small" + fileExtenstion;
+                    }
                 }
                 //从数据库配置表中获取网站图片保存根目录
                 sql = "select value from sys_config where varname='cfg_basepath'";
@@ -1283,7 +1300,7 @@ namespace ArcDB
                     MessageBox.Show("获取网站图片根目录失败！请检查sys_config表中是否正确配置cfg_basepath项");
                     return;
                 }
-                if (File.Exists(watermarkFile))
+                if (File.Exists(defaultWatermarkFile))
                 {
                     sql = "select pid,pic_path,clear from arc_pics where clear='no' limit 100";
                     //sql = "select pid,source_path,clear from arc_pics where clear='no' limit 100";
@@ -1297,17 +1314,37 @@ namespace ArcDB
                         Parallel.ForEach(picRecords, po, oneRecord =>
                         {
                             string pid = oneRecord["pid"].ToString();
-                            string picPath = oneRecord["pic_path"].ToString();
+                            string srcPicPath = oneRecord["pic_path"].ToString();
                             //string picPath = oneRecord["source_path"].ToString();
-                            string dstPath = picPath.Replace(picRootpath, dstRootPath);
+                            string dstPath = srcPicPath.Replace(picRootpath, dstRootPath);
                             string dstDirpath = Path.GetDirectoryName(dstPath);
-                            string picFilename = Path.GetFileName(picPath);
-                            string dstFilename = dstDirpath + @"\" + picFilename;
+                            string picFilename = Path.GetFileName(srcPicPath);
+                            string dstPicPath = dstDirpath + @"\" + picFilename;
                             if (!Directory.Exists(dstDirpath))
                             {
                                 Directory.CreateDirectory(dstDirpath);
                             }
-                            if (ArcTool.MakeWatermark(watermarkFile,picPath,dstFilename,Gravity.Southeast,ImageMagick.CompositeOperator.HardLight))
+                            string tempWatermarkFile = defaultWatermarkFile;
+                            try
+                            {
+                                Image srcImage = Image.FromFile(srcPicPath);
+                                if (srcImage.Width <= 500 && smallWatermarkFile!="")
+                                {
+                                    tempWatermarkFile = smallWatermarkFile;
+                                }
+                                else if (srcImage.Width <= 700 && mediumWatermarkFile!="")
+                                {
+                                    tempWatermarkFile = mediumWatermarkFile;
+                                }
+                                else if (bigWatermarkFile!="")
+                                {
+                                    tempWatermarkFile = bigWatermarkFile;
+                                }
+                            }
+                            catch (Exception)
+                            {
+                            }
+                            if (ArcTool.MakeWatermark(tempWatermarkFile,srcPicPath,dstPicPath,Gravity.Southeast,ImageMagick.CompositeOperator.HardLight))
                             {
                                 mySqlDB myDB = new mySqlDB(_coConnString);
                                 string result = "";
@@ -1338,7 +1375,7 @@ namespace ArcDB
                 }
                 else
                 {
-                    MessageBox.Show("未找到水印文件，请检查文件是否保存在程序根目录！水印文件：" + watermarkFile);
+                    MessageBox.Show("未找到水印文件，请检查文件是否保存在程序根目录！水印文件：" + defaultWatermarkFile);
                 }
 
             }
