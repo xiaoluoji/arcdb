@@ -55,15 +55,6 @@
             this.lblCoFileterCo_name = new System.Windows.Forms.Label();
             this.cboxCoFilterCo_name = new System.Windows.Forms.ComboBox();
             this.btnModifyCoconfig = new System.Windows.Forms.Button();
-            this.listViewCollect = new ArcDB.ListViewNF();
-            this.cid = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.co_name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.type_name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.source_lang = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.source_site = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.up_time = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.co_time = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.co_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnLoadCoconfig = new System.Windows.Forms.Button();
             this.tabPageDelWatermark = new System.Windows.Forms.TabPage();
             this.tabPageDistribute = new System.Windows.Forms.TabPage();
@@ -89,16 +80,6 @@
             this.tboxPubFilterPub_name = new System.Windows.Forms.TextBox();
             this.lblPubFilterPub_name = new System.Windows.Forms.Label();
             this.cboxPubFilterPub_name = new System.Windows.Forms.ComboBox();
-            this.listViewPublish = new ArcDB.ListViewNF();
-            this.pub_id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.pub_name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.co_typename = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.unused_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.pub_typename = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.pub_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.published_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.pub_add_date = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.pub_export_date = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPageArctool = new System.Windows.Forms.TabPage();
             this.gboxCreateHitsRecords = new System.Windows.Forms.GroupBox();
             this.lblFinishedCreateHitsRecords = new System.Windows.Forms.Label();
@@ -161,6 +142,29 @@
             this.label4 = new System.Windows.Forms.Label();
             this.tboxCoPassword = new System.Windows.Forms.TextBox();
             this.cboxCoCharset = new System.Windows.Forms.ComboBox();
+            this.listViewCollect = new ArcDB.ListViewNF();
+            this.cid = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.co_name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.type_name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.source_lang = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.source_site = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.up_time = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.co_time = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.co_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.listViewPublish = new ArcDB.ListViewNF();
+            this.pub_id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.pub_name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.co_typename = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.unused_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.pub_typename = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.pub_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.published_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.pub_add_date = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.pub_export_date = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.gboxModifyThumbUrl = new System.Windows.Forms.GroupBox();
+            this.lblModifyThumbUrl = new System.Windows.Forms.Label();
+            this.lblModifyThumbUrlCount = new System.Windows.Forms.Label();
+            this.btnModifyThumbUrl = new System.Windows.Forms.Button();
             this.tabctrMainform.SuspendLayout();
             this.tabPageCollect.SuspendLayout();
             this.gboxCoFilter.SuspendLayout();
@@ -182,6 +186,7 @@
             this.tabPageConfig.SuspendLayout();
             this.gbxPubDatabaseSet.SuspendLayout();
             this.gbxCoDatabaseSet.SuspendLayout();
+            this.gboxModifyThumbUrl.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabctrMainform
@@ -474,68 +479,6 @@
             this.btnModifyCoconfig.UseVisualStyleBackColor = true;
             this.btnModifyCoconfig.Click += new System.EventHandler(this.btnModifyCoconfig_Click);
             // 
-            // listViewCollect
-            // 
-            this.listViewCollect.CheckBoxes = true;
-            this.listViewCollect.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.cid,
-            this.co_name,
-            this.type_name,
-            this.source_lang,
-            this.source_site,
-            this.up_time,
-            this.co_time,
-            this.co_nums});
-            this.listViewCollect.FullRowSelect = true;
-            this.listViewCollect.GridLines = true;
-            this.listViewCollect.Location = new System.Drawing.Point(3, 162);
-            this.listViewCollect.MultiSelect = false;
-            this.listViewCollect.Name = "listViewCollect";
-            this.listViewCollect.Size = new System.Drawing.Size(999, 501);
-            this.listViewCollect.TabIndex = 2;
-            this.listViewCollect.UseCompatibleStateImageBehavior = false;
-            this.listViewCollect.View = System.Windows.Forms.View.Details;
-            // 
-            // cid
-            // 
-            this.cid.Text = "ID";
-            this.cid.Width = 50;
-            // 
-            // co_name
-            // 
-            this.co_name.Text = "采集名称";
-            this.co_name.Width = 120;
-            // 
-            // type_name
-            // 
-            this.type_name.Text = "文章分类";
-            this.type_name.Width = 120;
-            // 
-            // source_lang
-            // 
-            this.source_lang.Text = "编码";
-            this.source_lang.Width = 70;
-            // 
-            // source_site
-            // 
-            this.source_site.Text = "采集来源";
-            this.source_site.Width = 120;
-            // 
-            // up_time
-            // 
-            this.up_time.Text = "加入/修改日期";
-            this.up_time.Width = 95;
-            // 
-            // co_time
-            // 
-            this.co_time.Text = "最后采集日期";
-            this.co_time.Width = 95;
-            // 
-            // co_nums
-            // 
-            this.co_nums.Text = "采集数量";
-            this.co_nums.Width = 90;
-            // 
             // btnLoadCoconfig
             // 
             this.btnLoadCoconfig.Location = new System.Drawing.Point(4, 683);
@@ -798,73 +741,6 @@
             this.cboxPubFilterPub_name.Size = new System.Drawing.Size(72, 26);
             this.cboxPubFilterPub_name.TabIndex = 0;
             // 
-            // listViewPublish
-            // 
-            this.listViewPublish.CheckBoxes = true;
-            this.listViewPublish.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.pub_id,
-            this.pub_name,
-            this.co_typename,
-            this.unused_nums,
-            this.pub_typename,
-            this.pub_nums,
-            this.published_nums,
-            this.pub_add_date,
-            this.pub_export_date});
-            this.listViewPublish.FullRowSelect = true;
-            this.listViewPublish.GridLines = true;
-            this.listViewPublish.Location = new System.Drawing.Point(3, 162);
-            this.listViewPublish.MultiSelect = false;
-            this.listViewPublish.Name = "listViewPublish";
-            this.listViewPublish.Size = new System.Drawing.Size(999, 390);
-            this.listViewPublish.TabIndex = 0;
-            this.listViewPublish.UseCompatibleStateImageBehavior = false;
-            this.listViewPublish.View = System.Windows.Forms.View.Details;
-            // 
-            // pub_id
-            // 
-            this.pub_id.Text = "ID";
-            // 
-            // pub_name
-            // 
-            this.pub_name.Text = "发布规则名称";
-            this.pub_name.Width = 120;
-            // 
-            // co_typename
-            // 
-            this.co_typename.Text = "采集分类";
-            this.co_typename.Width = 120;
-            // 
-            // unused_nums
-            // 
-            this.unused_nums.Text = "可用文章数";
-            this.unused_nums.Width = 120;
-            // 
-            // pub_typename
-            // 
-            this.pub_typename.Text = "发布分类";
-            this.pub_typename.Width = 120;
-            // 
-            // pub_nums
-            // 
-            this.pub_nums.Text = "单次发布数量";
-            this.pub_nums.Width = 120;
-            // 
-            // published_nums
-            // 
-            this.published_nums.Text = "已发布数量";
-            this.published_nums.Width = 120;
-            // 
-            // pub_add_date
-            // 
-            this.pub_add_date.Text = "添加日期";
-            this.pub_add_date.Width = 120;
-            // 
-            // pub_export_date
-            // 
-            this.pub_export_date.Text = "发布日期";
-            this.pub_export_date.Width = 120;
-            // 
             // tabPageArctool
             // 
             this.tabPageArctool.Controls.Add(this.gboxCreateHitsRecords);
@@ -1048,6 +924,7 @@
             // 
             // tabPagePictool
             // 
+            this.tabPagePictool.Controls.Add(this.gboxModifyThumbUrl);
             this.tabPagePictool.Controls.Add(this.groupGenerateWatermark);
             this.tabPagePictool.Controls.Add(this.lblPictoolOutput);
             this.tabPagePictool.Controls.Add(this.tboxPictoolOutput);
@@ -1471,6 +1348,175 @@
             this.cboxCoCharset.TabIndex = 28;
             this.cboxCoCharset.Text = "utf8";
             // 
+            // listViewCollect
+            // 
+            this.listViewCollect.CheckBoxes = true;
+            this.listViewCollect.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.cid,
+            this.co_name,
+            this.type_name,
+            this.source_lang,
+            this.source_site,
+            this.up_time,
+            this.co_time,
+            this.co_nums});
+            this.listViewCollect.FullRowSelect = true;
+            this.listViewCollect.GridLines = true;
+            this.listViewCollect.Location = new System.Drawing.Point(3, 162);
+            this.listViewCollect.MultiSelect = false;
+            this.listViewCollect.Name = "listViewCollect";
+            this.listViewCollect.Size = new System.Drawing.Size(999, 501);
+            this.listViewCollect.TabIndex = 2;
+            this.listViewCollect.UseCompatibleStateImageBehavior = false;
+            this.listViewCollect.View = System.Windows.Forms.View.Details;
+            // 
+            // cid
+            // 
+            this.cid.Text = "ID";
+            this.cid.Width = 50;
+            // 
+            // co_name
+            // 
+            this.co_name.Text = "采集名称";
+            this.co_name.Width = 120;
+            // 
+            // type_name
+            // 
+            this.type_name.Text = "文章分类";
+            this.type_name.Width = 120;
+            // 
+            // source_lang
+            // 
+            this.source_lang.Text = "编码";
+            this.source_lang.Width = 70;
+            // 
+            // source_site
+            // 
+            this.source_site.Text = "采集来源";
+            this.source_site.Width = 120;
+            // 
+            // up_time
+            // 
+            this.up_time.Text = "加入/修改日期";
+            this.up_time.Width = 95;
+            // 
+            // co_time
+            // 
+            this.co_time.Text = "最后采集日期";
+            this.co_time.Width = 95;
+            // 
+            // co_nums
+            // 
+            this.co_nums.Text = "采集数量";
+            this.co_nums.Width = 90;
+            // 
+            // listViewPublish
+            // 
+            this.listViewPublish.CheckBoxes = true;
+            this.listViewPublish.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.pub_id,
+            this.pub_name,
+            this.co_typename,
+            this.unused_nums,
+            this.pub_typename,
+            this.pub_nums,
+            this.published_nums,
+            this.pub_add_date,
+            this.pub_export_date});
+            this.listViewPublish.FullRowSelect = true;
+            this.listViewPublish.GridLines = true;
+            this.listViewPublish.Location = new System.Drawing.Point(3, 162);
+            this.listViewPublish.MultiSelect = false;
+            this.listViewPublish.Name = "listViewPublish";
+            this.listViewPublish.Size = new System.Drawing.Size(999, 390);
+            this.listViewPublish.TabIndex = 0;
+            this.listViewPublish.UseCompatibleStateImageBehavior = false;
+            this.listViewPublish.View = System.Windows.Forms.View.Details;
+            // 
+            // pub_id
+            // 
+            this.pub_id.Text = "ID";
+            // 
+            // pub_name
+            // 
+            this.pub_name.Text = "发布规则名称";
+            this.pub_name.Width = 120;
+            // 
+            // co_typename
+            // 
+            this.co_typename.Text = "采集分类";
+            this.co_typename.Width = 120;
+            // 
+            // unused_nums
+            // 
+            this.unused_nums.Text = "可用文章数";
+            this.unused_nums.Width = 120;
+            // 
+            // pub_typename
+            // 
+            this.pub_typename.Text = "发布分类";
+            this.pub_typename.Width = 120;
+            // 
+            // pub_nums
+            // 
+            this.pub_nums.Text = "单次发布数量";
+            this.pub_nums.Width = 120;
+            // 
+            // published_nums
+            // 
+            this.published_nums.Text = "已发布数量";
+            this.published_nums.Width = 120;
+            // 
+            // pub_add_date
+            // 
+            this.pub_add_date.Text = "添加日期";
+            this.pub_add_date.Width = 120;
+            // 
+            // pub_export_date
+            // 
+            this.pub_export_date.Text = "发布日期";
+            this.pub_export_date.Width = 120;
+            // 
+            // gboxModifyThumbUrl
+            // 
+            this.gboxModifyThumbUrl.Controls.Add(this.lblModifyThumbUrl);
+            this.gboxModifyThumbUrl.Controls.Add(this.lblModifyThumbUrlCount);
+            this.gboxModifyThumbUrl.Controls.Add(this.btnModifyThumbUrl);
+            this.gboxModifyThumbUrl.Location = new System.Drawing.Point(9, 264);
+            this.gboxModifyThumbUrl.Name = "gboxModifyThumbUrl";
+            this.gboxModifyThumbUrl.Size = new System.Drawing.Size(991, 110);
+            this.gboxModifyThumbUrl.TabIndex = 55;
+            this.gboxModifyThumbUrl.TabStop = false;
+            this.gboxModifyThumbUrl.Text = "修改线上缩略图URL";
+            // 
+            // lblModifyThumbUrl
+            // 
+            this.lblModifyThumbUrl.AutoSize = true;
+            this.lblModifyThumbUrl.Location = new System.Drawing.Point(661, 48);
+            this.lblModifyThumbUrl.Name = "lblModifyThumbUrl";
+            this.lblModifyThumbUrl.Size = new System.Drawing.Size(161, 18);
+            this.lblModifyThumbUrl.TabIndex = 54;
+            this.lblModifyThumbUrl.Text = "已添加水印图片数:";
+            // 
+            // lblModifyThumbUrlCount
+            // 
+            this.lblModifyThumbUrlCount.AutoSize = true;
+            this.lblModifyThumbUrlCount.Location = new System.Drawing.Point(899, 48);
+            this.lblModifyThumbUrlCount.Name = "lblModifyThumbUrlCount";
+            this.lblModifyThumbUrlCount.Size = new System.Drawing.Size(17, 18);
+            this.lblModifyThumbUrlCount.TabIndex = 53;
+            this.lblModifyThumbUrlCount.Text = "0";
+            // 
+            // btnModifyThumbUrl
+            // 
+            this.btnModifyThumbUrl.Location = new System.Drawing.Point(9, 39);
+            this.btnModifyThumbUrl.Name = "btnModifyThumbUrl";
+            this.btnModifyThumbUrl.Size = new System.Drawing.Size(170, 37);
+            this.btnModifyThumbUrl.TabIndex = 52;
+            this.btnModifyThumbUrl.Text = "修改缩略图URL";
+            this.btnModifyThumbUrl.UseVisualStyleBackColor = true;
+            this.btnModifyThumbUrl.Click += new System.EventHandler(this.btnModifyThumbUrl_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
@@ -1521,6 +1567,8 @@
             this.gbxPubDatabaseSet.PerformLayout();
             this.gbxCoDatabaseSet.ResumeLayout(false);
             this.gbxCoDatabaseSet.PerformLayout();
+            this.gboxModifyThumbUrl.ResumeLayout(false);
+            this.gboxModifyThumbUrl.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1660,6 +1708,10 @@
         private System.Windows.Forms.Label lblThumbQuality;
         private System.Windows.Forms.TextBox tboxThumbQuality;
         private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.GroupBox gboxModifyThumbUrl;
+        private System.Windows.Forms.Label lblModifyThumbUrl;
+        private System.Windows.Forms.Label lblModifyThumbUrlCount;
+        private System.Windows.Forms.Button btnModifyThumbUrl;
     }
 }
 

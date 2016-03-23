@@ -857,6 +857,13 @@ namespace ArcDB
         {
             ThreadPool.QueueUserWorkItem(reGenerateWatermark, null);
         }
+        //更新线上文章缩略图URL
+        private void btnModifyThumbUrl_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        //更新采集数据库文章概要
         private void getCoArticleDescription(object state)
         {
             _coConnString = GetCoConnString();
@@ -937,6 +944,8 @@ namespace ArcDB
             }
 
         }
+
+        //更新线上数据库文章概要
         private void setPubArticleDescription(object state)
         {
             _coConnString = GetCoConnString();
@@ -1386,10 +1395,16 @@ namespace ArcDB
 
         }
 
+        //修改线上文章缩略图URL
+        private void modifyThumbUrl()
+        {
 
+        }
 
 
 
         #endregion 文章相关工具模块结束
+
+
     }
 }
