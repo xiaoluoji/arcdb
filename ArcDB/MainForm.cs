@@ -29,6 +29,7 @@ namespace ArcDB
         private string _coConnString;                                                                  //建立采集数据库连接的配置变量
         private string _pubConnString;                                                               //建立发布数据库连接的配置变量
         private string _pubTablePrename;                                                          //CMS数据库中的表前缀
+        private string _locoyspiderConnString;                                                  //建立火车头数据库连接的配置变量
 
         #region Main Form相关
         public MainForm()
@@ -91,6 +92,13 @@ namespace ArcDB
             tboxPubPassword.Text = _sysConfig["PubDatabase"]["Password"].StringValue;
             cboxPubCharset.Text = _sysConfig["PubDatabase"]["Charset"].StringValue;
             tboxPubTablePrename.Text = _sysConfig["PubDatabase"]["TablePrename"].StringValue;
+            //火车头数据库
+            tboxLocoyspiderHostName.Text = _sysConfig["LocoyspiderDatabase"]["Hostname"].StringValue;
+            tboxLocoyspiderUserName.Text = _sysConfig["LocoyspiderDatabase"]["Username"].StringValue;
+            tboxLocoyspiderDbName.Text = _sysConfig["LocoyspiderDatabase"]["Dbname"].StringValue;
+            tboxLocoyspiderPort.Text = _sysConfig["LocoyspiderDatabase"]["Port"].StringValue;
+            tboxLocoyspiderPassword.Text = _sysConfig["LocoyspiderDatabase"]["Password"].StringValue;
+            cboxLocoyspiderCharset.Text = _sysConfig["LocoyspiderDatabase"]["Charset"].StringValue;
         }
 
         //更新sysConfig对象中的配置参数
@@ -111,6 +119,13 @@ namespace ArcDB
             _sysConfig["PubDatabase"]["Password"].SetValue(tboxPubPassword.Text);
             _sysConfig["PubDatabase"]["Charset"].SetValue(cboxPubCharset.Text);
             _sysConfig["PubDatabase"]["TablePrename"].SetValue(tboxPubTablePrename.Text);
+            //火车头数据库
+            _sysConfig["LocoyspiderDatabase"]["Hostname"].SetValue(tboxCoHostName.Text);
+            _sysConfig["LocoyspiderDatabase"]["Username"].SetValue(tboxCoUserName.Text);
+            _sysConfig["LocoyspiderDatabase"]["Dbname"].SetValue(tboxCoDbName.Text);
+            _sysConfig["LocoyspiderDatabase"]["Port"].SetValue(tboxCoPort.Text);
+            _sysConfig["LocoyspiderDatabase"]["Password"].SetValue(tboxCoPassword.Text);
+            _sysConfig["LocoyspiderDatabase"]["Charset"].SetValue(cboxCoCharset.Text);
         }
 
         //通过mysql配置参数生成需要建立采集数据库mysql连接的配置字符串
@@ -136,6 +151,18 @@ namespace ArcDB
                 return "";
             }
             return (@"Server=" + tboxPubHostName.Text + @";DataBase=" + tboxPubDbName.Text + @";Uid=" + tboxPubUserName.Text + @";Pwd=" + tboxPubPassword.Text + @";charset=" + cboxPubCharset.Text + @";port=" + tboxPubPort.Text);
+        }
+
+        //通过mysql配置参数生成需要建立火车头数据库mysql连接的配置字符串
+        private string GetLocoyspiderConnString()
+        {
+            updateSysconfig();
+            if (tboxLocoyspiderDbName.Text == "" || tboxLocoyspiderHostName.Text == "" || tboxLocoyspiderPort.Text == "" || tboxLocoyspiderUserName.Text == "" || cboxLocoyspiderCharset.Text == "" || tboxLocoyspiderPort.Text == "")
+            {
+                MessageBox.Show("请将采集数据库配置信息填写完整！", "提示！", MessageBoxButtons.OK);
+                return "";
+            }
+            return (@"Server=" + tboxLocoyspiderHostName.Text + @";DataBase=" + tboxLocoyspiderDbName.Text + @";Uid=" + tboxLocoyspiderUserName.Text + @";Pwd=" + tboxLocoyspiderPassword.Text + @";charset=" + cboxLocoyspiderCharset.Text + @";port=" + tboxLocoyspiderPort.Text);
         }
 
         //保存配置信息到配置文件中
@@ -1324,8 +1351,8 @@ namespace ArcDB
                         {
                             string pid = oneRecord["pid"].ToString();
                             string srcPicPath = oneRecord["pic_path"].ToString();
-                            //string picPath = oneRecord["source_path"].ToString();
-                            string dstPath = srcPicPath.Replace(picRootpath, dstRootPath);
+                            string dstPath = srcPicPath.Replace(picRootpath, dstRootPath); //！如果上面的sql语句获取原图片字段为source_path字段，则此处会出现不能替换，导致将原图打上水印
+                            
                             string dstDirpath = Path.GetDirectoryName(dstPath);
                             string picFilename = Path.GetFileName(srcPicPath);
                             string dstPicPath = dstDirpath + @"\" + picFilename;

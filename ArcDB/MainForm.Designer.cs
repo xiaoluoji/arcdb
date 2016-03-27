@@ -99,6 +99,10 @@
             this.lblCoArcDescLength = new System.Windows.Forms.Label();
             this.tboxCoArcDescLength = new System.Windows.Forms.TextBox();
             this.tabPagePictool = new System.Windows.Forms.TabPage();
+            this.gboxModifyThumbUrl = new System.Windows.Forms.GroupBox();
+            this.lblModifyThumbUrl = new System.Windows.Forms.Label();
+            this.lblModifyThumbUrlCount = new System.Windows.Forms.Label();
+            this.btnModifyThumbUrl = new System.Windows.Forms.Button();
             this.groupGenerateWatermark = new System.Windows.Forms.GroupBox();
             this.lblGenarateWartermark = new System.Windows.Forms.Label();
             this.lblWatermarkedPicCount = new System.Windows.Forms.Label();
@@ -161,10 +165,19 @@
             this.published_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.pub_add_date = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.pub_export_date = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.gboxModifyThumbUrl = new System.Windows.Forms.GroupBox();
-            this.lblModifyThumbUrl = new System.Windows.Forms.Label();
-            this.lblModifyThumbUrlCount = new System.Windows.Forms.Label();
-            this.btnModifyThumbUrl = new System.Windows.Forms.Button();
+            this.gboxLockspiderDbset = new System.Windows.Forms.GroupBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.tboxLocoyspiderPort = new System.Windows.Forms.TextBox();
+            this.tboxLocoyspiderHostName = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.tboxLocoyspiderDbName = new System.Windows.Forms.TextBox();
+            this.tboxLocoyspiderUserName = new System.Windows.Forms.TextBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.tboxLocoyspiderPassword = new System.Windows.Forms.TextBox();
+            this.cboxLocoyspiderCharset = new System.Windows.Forms.ComboBox();
             this.tabctrMainform.SuspendLayout();
             this.tabPageCollect.SuspendLayout();
             this.gboxCoFilter.SuspendLayout();
@@ -181,12 +194,13 @@
             this.gboxCreateHitsRecords.SuspendLayout();
             this.gboxGetCoArcDesc.SuspendLayout();
             this.tabPagePictool.SuspendLayout();
+            this.gboxModifyThumbUrl.SuspendLayout();
             this.groupGenerateWatermark.SuspendLayout();
             this.groupGenerateThumb.SuspendLayout();
             this.tabPageConfig.SuspendLayout();
             this.gbxPubDatabaseSet.SuspendLayout();
             this.gbxCoDatabaseSet.SuspendLayout();
-            this.gboxModifyThumbUrl.SuspendLayout();
+            this.gboxLockspiderDbset.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabctrMainform
@@ -936,6 +950,46 @@
             this.tabPagePictool.Text = "图片工具";
             this.tabPagePictool.UseVisualStyleBackColor = true;
             // 
+            // gboxModifyThumbUrl
+            // 
+            this.gboxModifyThumbUrl.Controls.Add(this.lblModifyThumbUrl);
+            this.gboxModifyThumbUrl.Controls.Add(this.lblModifyThumbUrlCount);
+            this.gboxModifyThumbUrl.Controls.Add(this.btnModifyThumbUrl);
+            this.gboxModifyThumbUrl.Location = new System.Drawing.Point(9, 264);
+            this.gboxModifyThumbUrl.Name = "gboxModifyThumbUrl";
+            this.gboxModifyThumbUrl.Size = new System.Drawing.Size(991, 110);
+            this.gboxModifyThumbUrl.TabIndex = 55;
+            this.gboxModifyThumbUrl.TabStop = false;
+            this.gboxModifyThumbUrl.Text = "修改线上缩略图URL";
+            // 
+            // lblModifyThumbUrl
+            // 
+            this.lblModifyThumbUrl.AutoSize = true;
+            this.lblModifyThumbUrl.Location = new System.Drawing.Point(661, 48);
+            this.lblModifyThumbUrl.Name = "lblModifyThumbUrl";
+            this.lblModifyThumbUrl.Size = new System.Drawing.Size(161, 18);
+            this.lblModifyThumbUrl.TabIndex = 54;
+            this.lblModifyThumbUrl.Text = "已添加水印图片数:";
+            // 
+            // lblModifyThumbUrlCount
+            // 
+            this.lblModifyThumbUrlCount.AutoSize = true;
+            this.lblModifyThumbUrlCount.Location = new System.Drawing.Point(899, 48);
+            this.lblModifyThumbUrlCount.Name = "lblModifyThumbUrlCount";
+            this.lblModifyThumbUrlCount.Size = new System.Drawing.Size(17, 18);
+            this.lblModifyThumbUrlCount.TabIndex = 53;
+            this.lblModifyThumbUrlCount.Text = "0";
+            // 
+            // btnModifyThumbUrl
+            // 
+            this.btnModifyThumbUrl.Location = new System.Drawing.Point(9, 39);
+            this.btnModifyThumbUrl.Name = "btnModifyThumbUrl";
+            this.btnModifyThumbUrl.Size = new System.Drawing.Size(170, 37);
+            this.btnModifyThumbUrl.TabIndex = 52;
+            this.btnModifyThumbUrl.Text = "修改缩略图URL";
+            this.btnModifyThumbUrl.UseVisualStyleBackColor = true;
+            this.btnModifyThumbUrl.Click += new System.EventHandler(this.btnModifyThumbUrl_Click);
+            // 
             // groupGenerateWatermark
             // 
             this.groupGenerateWatermark.Controls.Add(this.lblGenarateWartermark);
@@ -1063,6 +1117,7 @@
             // 
             // tabPageConfig
             // 
+            this.tabPageConfig.Controls.Add(this.gboxLockspiderDbset);
             this.tabPageConfig.Controls.Add(this.gbxPubDatabaseSet);
             this.tabPageConfig.Controls.Add(this.btnSaveConfig);
             this.tabPageConfig.Controls.Add(this.gbxCoDatabaseSet);
@@ -1217,7 +1272,7 @@
             // 
             // btnSaveConfig
             // 
-            this.btnSaveConfig.Location = new System.Drawing.Point(848, 419);
+            this.btnSaveConfig.Location = new System.Drawing.Point(870, 662);
             this.btnSaveConfig.Name = "btnSaveConfig";
             this.btnSaveConfig.Size = new System.Drawing.Size(129, 36);
             this.btnSaveConfig.TabIndex = 37;
@@ -1428,7 +1483,7 @@
             this.listViewPublish.Location = new System.Drawing.Point(3, 162);
             this.listViewPublish.MultiSelect = false;
             this.listViewPublish.Name = "listViewPublish";
-            this.listViewPublish.Size = new System.Drawing.Size(999, 390);
+            this.listViewPublish.Size = new System.Drawing.Size(999, 501);
             this.listViewPublish.TabIndex = 0;
             this.listViewPublish.UseCompatibleStateImageBehavior = false;
             this.listViewPublish.View = System.Windows.Forms.View.Details;
@@ -1477,45 +1532,128 @@
             this.pub_export_date.Text = "发布日期";
             this.pub_export_date.Width = 120;
             // 
-            // gboxModifyThumbUrl
+            // gboxLockspiderDbset
             // 
-            this.gboxModifyThumbUrl.Controls.Add(this.lblModifyThumbUrl);
-            this.gboxModifyThumbUrl.Controls.Add(this.lblModifyThumbUrlCount);
-            this.gboxModifyThumbUrl.Controls.Add(this.btnModifyThumbUrl);
-            this.gboxModifyThumbUrl.Location = new System.Drawing.Point(9, 264);
-            this.gboxModifyThumbUrl.Name = "gboxModifyThumbUrl";
-            this.gboxModifyThumbUrl.Size = new System.Drawing.Size(991, 110);
-            this.gboxModifyThumbUrl.TabIndex = 55;
-            this.gboxModifyThumbUrl.TabStop = false;
-            this.gboxModifyThumbUrl.Text = "修改线上缩略图URL";
+            this.gboxLockspiderDbset.Controls.Add(this.label17);
+            this.gboxLockspiderDbset.Controls.Add(this.tboxLocoyspiderPort);
+            this.gboxLockspiderDbset.Controls.Add(this.tboxLocoyspiderHostName);
+            this.gboxLockspiderDbset.Controls.Add(this.label18);
+            this.gboxLockspiderDbset.Controls.Add(this.label19);
+            this.gboxLockspiderDbset.Controls.Add(this.tboxLocoyspiderDbName);
+            this.gboxLockspiderDbset.Controls.Add(this.tboxLocoyspiderUserName);
+            this.gboxLockspiderDbset.Controls.Add(this.label20);
+            this.gboxLockspiderDbset.Controls.Add(this.label21);
+            this.gboxLockspiderDbset.Controls.Add(this.label22);
+            this.gboxLockspiderDbset.Controls.Add(this.tboxLocoyspiderPassword);
+            this.gboxLockspiderDbset.Controls.Add(this.cboxLocoyspiderCharset);
+            this.gboxLockspiderDbset.Location = new System.Drawing.Point(8, 387);
+            this.gboxLockspiderDbset.Name = "gboxLockspiderDbset";
+            this.gboxLockspiderDbset.Size = new System.Drawing.Size(651, 162);
+            this.gboxLockspiderDbset.TabIndex = 38;
+            this.gboxLockspiderDbset.TabStop = false;
+            this.gboxLockspiderDbset.Text = "采集数据库设置";
             // 
-            // lblModifyThumbUrl
+            // label17
             // 
-            this.lblModifyThumbUrl.AutoSize = true;
-            this.lblModifyThumbUrl.Location = new System.Drawing.Point(661, 48);
-            this.lblModifyThumbUrl.Name = "lblModifyThumbUrl";
-            this.lblModifyThumbUrl.Size = new System.Drawing.Size(161, 18);
-            this.lblModifyThumbUrl.TabIndex = 54;
-            this.lblModifyThumbUrl.Text = "已添加水印图片数:";
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(6, 44);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(143, 18);
+            this.label17.TabIndex = 23;
+            this.label17.Text = "Mysql HostName:";
             // 
-            // lblModifyThumbUrlCount
+            // tboxLocoyspiderPort
             // 
-            this.lblModifyThumbUrlCount.AutoSize = true;
-            this.lblModifyThumbUrlCount.Location = new System.Drawing.Point(899, 48);
-            this.lblModifyThumbUrlCount.Name = "lblModifyThumbUrlCount";
-            this.lblModifyThumbUrlCount.Size = new System.Drawing.Size(17, 18);
-            this.lblModifyThumbUrlCount.TabIndex = 53;
-            this.lblModifyThumbUrlCount.Text = "0";
+            this.tboxLocoyspiderPort.Location = new System.Drawing.Point(471, 107);
+            this.tboxLocoyspiderPort.Name = "tboxLocoyspiderPort";
+            this.tboxLocoyspiderPort.Size = new System.Drawing.Size(166, 28);
+            this.tboxLocoyspiderPort.TabIndex = 35;
+            this.tboxLocoyspiderPort.Text = "3306";
             // 
-            // btnModifyThumbUrl
+            // tboxLocoyspiderHostName
             // 
-            this.btnModifyThumbUrl.Location = new System.Drawing.Point(9, 39);
-            this.btnModifyThumbUrl.Name = "btnModifyThumbUrl";
-            this.btnModifyThumbUrl.Size = new System.Drawing.Size(170, 37);
-            this.btnModifyThumbUrl.TabIndex = 52;
-            this.btnModifyThumbUrl.Text = "修改缩略图URL";
-            this.btnModifyThumbUrl.UseVisualStyleBackColor = true;
-            this.btnModifyThumbUrl.Click += new System.EventHandler(this.btnModifyThumbUrl_Click);
+            this.tboxLocoyspiderHostName.Location = new System.Drawing.Point(155, 34);
+            this.tboxLocoyspiderHostName.Name = "tboxLocoyspiderHostName";
+            this.tboxLocoyspiderHostName.Size = new System.Drawing.Size(166, 28);
+            this.tboxLocoyspiderHostName.TabIndex = 22;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(327, 117);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(107, 18);
+            this.label18.TabIndex = 34;
+            this.label18.Text = "Mysql Port:";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(6, 76);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(143, 18);
+            this.label19.TabIndex = 24;
+            this.label19.Text = "Mysql UserName:";
+            // 
+            // tboxLocoyspiderDbName
+            // 
+            this.tboxLocoyspiderDbName.Location = new System.Drawing.Point(155, 107);
+            this.tboxLocoyspiderDbName.Name = "tboxLocoyspiderDbName";
+            this.tboxLocoyspiderDbName.Size = new System.Drawing.Size(166, 28);
+            this.tboxLocoyspiderDbName.TabIndex = 31;
+            // 
+            // tboxLocoyspiderUserName
+            // 
+            this.tboxLocoyspiderUserName.Location = new System.Drawing.Point(155, 68);
+            this.tboxLocoyspiderUserName.Name = "tboxLocoyspiderUserName";
+            this.tboxLocoyspiderUserName.Size = new System.Drawing.Size(166, 28);
+            this.tboxLocoyspiderUserName.TabIndex = 25;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(6, 115);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(125, 18);
+            this.label20.TabIndex = 30;
+            this.label20.Text = "Mysql DbName:";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(327, 76);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(143, 18);
+            this.label21.TabIndex = 26;
+            this.label21.Text = "Mysql Password:";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(327, 37);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(134, 18);
+            this.label22.TabIndex = 29;
+            this.label22.Text = "Mysql Charset:";
+            // 
+            // tboxLocoyspiderPassword
+            // 
+            this.tboxLocoyspiderPassword.Location = new System.Drawing.Point(471, 68);
+            this.tboxLocoyspiderPassword.Name = "tboxLocoyspiderPassword";
+            this.tboxLocoyspiderPassword.Size = new System.Drawing.Size(166, 28);
+            this.tboxLocoyspiderPassword.TabIndex = 27;
+            // 
+            // cboxLocoyspiderCharset
+            // 
+            this.cboxLocoyspiderCharset.FormattingEnabled = true;
+            this.cboxLocoyspiderCharset.Items.AddRange(new object[] {
+            "utf8",
+            "gb2312"});
+            this.cboxLocoyspiderCharset.Location = new System.Drawing.Point(471, 34);
+            this.cboxLocoyspiderCharset.Name = "cboxLocoyspiderCharset";
+            this.cboxLocoyspiderCharset.Size = new System.Drawing.Size(166, 26);
+            this.cboxLocoyspiderCharset.TabIndex = 28;
+            this.cboxLocoyspiderCharset.Text = "utf8";
             // 
             // MainForm
             // 
@@ -1558,6 +1696,8 @@
             this.gboxGetCoArcDesc.PerformLayout();
             this.tabPagePictool.ResumeLayout(false);
             this.tabPagePictool.PerformLayout();
+            this.gboxModifyThumbUrl.ResumeLayout(false);
+            this.gboxModifyThumbUrl.PerformLayout();
             this.groupGenerateWatermark.ResumeLayout(false);
             this.groupGenerateWatermark.PerformLayout();
             this.groupGenerateThumb.ResumeLayout(false);
@@ -1567,8 +1707,8 @@
             this.gbxPubDatabaseSet.PerformLayout();
             this.gbxCoDatabaseSet.ResumeLayout(false);
             this.gbxCoDatabaseSet.PerformLayout();
-            this.gboxModifyThumbUrl.ResumeLayout(false);
-            this.gboxModifyThumbUrl.PerformLayout();
+            this.gboxLockspiderDbset.ResumeLayout(false);
+            this.gboxLockspiderDbset.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1712,6 +1852,19 @@
         private System.Windows.Forms.Label lblModifyThumbUrl;
         private System.Windows.Forms.Label lblModifyThumbUrlCount;
         private System.Windows.Forms.Button btnModifyThumbUrl;
+        private System.Windows.Forms.GroupBox gboxLockspiderDbset;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.TextBox tboxLocoyspiderPort;
+        private System.Windows.Forms.TextBox tboxLocoyspiderHostName;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.TextBox tboxLocoyspiderDbName;
+        private System.Windows.Forms.TextBox tboxLocoyspiderUserName;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.TextBox tboxLocoyspiderPassword;
+        private System.Windows.Forms.ComboBox cboxLocoyspiderCharset;
     }
 }
 
