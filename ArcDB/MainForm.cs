@@ -120,12 +120,12 @@ namespace ArcDB
             _sysConfig["PubDatabase"]["Charset"].SetValue(cboxPubCharset.Text);
             _sysConfig["PubDatabase"]["TablePrename"].SetValue(tboxPubTablePrename.Text);
             //火车头数据库
-            _sysConfig["LocoyspiderDatabase"]["Hostname"].SetValue(tboxCoHostName.Text);
-            _sysConfig["LocoyspiderDatabase"]["Username"].SetValue(tboxCoUserName.Text);
-            _sysConfig["LocoyspiderDatabase"]["Dbname"].SetValue(tboxCoDbName.Text);
-            _sysConfig["LocoyspiderDatabase"]["Port"].SetValue(tboxCoPort.Text);
-            _sysConfig["LocoyspiderDatabase"]["Password"].SetValue(tboxCoPassword.Text);
-            _sysConfig["LocoyspiderDatabase"]["Charset"].SetValue(cboxCoCharset.Text);
+            _sysConfig["LocoyspiderDatabase"]["Hostname"].SetValue(tboxLocoyspiderHostName.Text);
+            _sysConfig["LocoyspiderDatabase"]["Username"].SetValue(tboxLocoyspiderUserName.Text);
+            _sysConfig["LocoyspiderDatabase"]["Dbname"].SetValue(tboxLocoyspiderDbName.Text);
+            _sysConfig["LocoyspiderDatabase"]["Port"].SetValue(tboxLocoyspiderPort.Text);
+            _sysConfig["LocoyspiderDatabase"]["Password"].SetValue(tboxLocoyspiderPassword.Text);
+            _sysConfig["LocoyspiderDatabase"]["Charset"].SetValue(cboxLocoyspiderCharset.Text);
         }
 
         //通过mysql配置参数生成需要建立采集数据库mysql连接的配置字符串
