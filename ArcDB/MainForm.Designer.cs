@@ -55,6 +55,15 @@
             this.lblCoFileterCo_name = new System.Windows.Forms.Label();
             this.cboxCoFilterCo_name = new System.Windows.Forms.ComboBox();
             this.btnModifyCoconfig = new System.Windows.Forms.Button();
+            this.listViewCollect = new ArcDB.ListViewNF();
+            this.cid = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.co_name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.type_name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.source_lang = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.source_site = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.up_time = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.co_time = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.co_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnLoadCoconfig = new System.Windows.Forms.Button();
             this.tabPageDelWatermark = new System.Windows.Forms.TabPage();
             this.tabPageDistribute = new System.Windows.Forms.TabPage();
@@ -80,6 +89,16 @@
             this.tboxPubFilterPub_name = new System.Windows.Forms.TextBox();
             this.lblPubFilterPub_name = new System.Windows.Forms.Label();
             this.cboxPubFilterPub_name = new System.Windows.Forms.ComboBox();
+            this.listViewPublish = new ArcDB.ListViewNF();
+            this.pub_id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.pub_name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.co_typename = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.unused_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.pub_typename = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.pub_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.published_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.pub_add_date = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.pub_export_date = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPageArctool = new System.Windows.Forms.TabPage();
             this.gboxCreateHitsRecords = new System.Windows.Forms.GroupBox();
             this.lblFinishedCreateHitsRecords = new System.Windows.Forms.Label();
@@ -116,7 +135,41 @@
             this.lblReGenerateAllthumbs = new System.Windows.Forms.Label();
             this.lblRegenerateThumbsCount = new System.Windows.Forms.Label();
             this.btnRegenerateAllthumbs = new System.Windows.Forms.Button();
+            this.tabPageImportLocoySpider = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.panel8 = new System.Windows.Forms.Panel();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label24 = new System.Windows.Forms.Label();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.panel9 = new System.Windows.Forms.Panel();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.label25 = new System.Windows.Forms.Label();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.btnImportFromLocoy = new System.Windows.Forms.Button();
+            this.listViewLocoySpiderRules = new ArcDB.ListViewNF();
+            this.ID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.RuleName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Encode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.SourceSite = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.AddDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.LastImportDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPageConfig = new System.Windows.Forms.TabPage();
+            this.gboxLockspiderDbset = new System.Windows.Forms.GroupBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.tboxLocoyspiderPort = new System.Windows.Forms.TextBox();
+            this.tboxLocoyspiderHostName = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.tboxLocoyspiderDbName = new System.Windows.Forms.TextBox();
+            this.tboxLocoyspiderUserName = new System.Windows.Forms.TextBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.tboxLocoyspiderPassword = new System.Windows.Forms.TextBox();
+            this.cboxLocoyspiderCharset = new System.Windows.Forms.ComboBox();
             this.gbxPubDatabaseSet = new System.Windows.Forms.GroupBox();
             this.label13 = new System.Windows.Forms.Label();
             this.tboxPubTablePrename = new System.Windows.Forms.TextBox();
@@ -146,38 +199,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.tboxCoPassword = new System.Windows.Forms.TextBox();
             this.cboxCoCharset = new System.Windows.Forms.ComboBox();
-            this.listViewCollect = new ArcDB.ListViewNF();
-            this.cid = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.co_name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.type_name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.source_lang = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.source_site = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.up_time = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.co_time = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.co_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.listViewPublish = new ArcDB.ListViewNF();
-            this.pub_id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.pub_name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.co_typename = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.unused_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.pub_typename = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.pub_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.published_nums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.pub_add_date = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.pub_export_date = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.gboxLockspiderDbset = new System.Windows.Forms.GroupBox();
-            this.label17 = new System.Windows.Forms.Label();
-            this.tboxLocoyspiderPort = new System.Windows.Forms.TextBox();
-            this.tboxLocoyspiderHostName = new System.Windows.Forms.TextBox();
-            this.label18 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.tboxLocoyspiderDbName = new System.Windows.Forms.TextBox();
-            this.tboxLocoyspiderUserName = new System.Windows.Forms.TextBox();
-            this.label20 = new System.Windows.Forms.Label();
-            this.label21 = new System.Windows.Forms.Label();
-            this.label22 = new System.Windows.Forms.Label();
-            this.tboxLocoyspiderPassword = new System.Windows.Forms.TextBox();
-            this.cboxLocoyspiderCharset = new System.Windows.Forms.ComboBox();
             this.tabctrMainform.SuspendLayout();
             this.tabPageCollect.SuspendLayout();
             this.gboxCoFilter.SuspendLayout();
@@ -197,10 +218,14 @@
             this.gboxModifyThumbUrl.SuspendLayout();
             this.groupGenerateWatermark.SuspendLayout();
             this.groupGenerateThumb.SuspendLayout();
+            this.tabPageImportLocoySpider.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.panel8.SuspendLayout();
+            this.panel9.SuspendLayout();
             this.tabPageConfig.SuspendLayout();
+            this.gboxLockspiderDbset.SuspendLayout();
             this.gbxPubDatabaseSet.SuspendLayout();
             this.gbxCoDatabaseSet.SuspendLayout();
-            this.gboxLockspiderDbset.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabctrMainform
@@ -210,6 +235,7 @@
             this.tabctrMainform.Controls.Add(this.tabPageDistribute);
             this.tabctrMainform.Controls.Add(this.tabPageArctool);
             this.tabctrMainform.Controls.Add(this.tabPagePictool);
+            this.tabctrMainform.Controls.Add(this.tabPageImportLocoySpider);
             this.tabctrMainform.Controls.Add(this.tabPageConfig);
             this.tabctrMainform.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabctrMainform.Location = new System.Drawing.Point(0, 0);
@@ -493,6 +519,68 @@
             this.btnModifyCoconfig.UseVisualStyleBackColor = true;
             this.btnModifyCoconfig.Click += new System.EventHandler(this.btnModifyCoconfig_Click);
             // 
+            // listViewCollect
+            // 
+            this.listViewCollect.CheckBoxes = true;
+            this.listViewCollect.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.cid,
+            this.co_name,
+            this.type_name,
+            this.source_lang,
+            this.source_site,
+            this.up_time,
+            this.co_time,
+            this.co_nums});
+            this.listViewCollect.FullRowSelect = true;
+            this.listViewCollect.GridLines = true;
+            this.listViewCollect.Location = new System.Drawing.Point(3, 162);
+            this.listViewCollect.MultiSelect = false;
+            this.listViewCollect.Name = "listViewCollect";
+            this.listViewCollect.Size = new System.Drawing.Size(999, 501);
+            this.listViewCollect.TabIndex = 2;
+            this.listViewCollect.UseCompatibleStateImageBehavior = false;
+            this.listViewCollect.View = System.Windows.Forms.View.Details;
+            // 
+            // cid
+            // 
+            this.cid.Text = "ID";
+            this.cid.Width = 50;
+            // 
+            // co_name
+            // 
+            this.co_name.Text = "采集名称";
+            this.co_name.Width = 120;
+            // 
+            // type_name
+            // 
+            this.type_name.Text = "文章分类";
+            this.type_name.Width = 120;
+            // 
+            // source_lang
+            // 
+            this.source_lang.Text = "编码";
+            this.source_lang.Width = 70;
+            // 
+            // source_site
+            // 
+            this.source_site.Text = "采集来源";
+            this.source_site.Width = 120;
+            // 
+            // up_time
+            // 
+            this.up_time.Text = "加入/修改日期";
+            this.up_time.Width = 95;
+            // 
+            // co_time
+            // 
+            this.co_time.Text = "最后采集日期";
+            this.co_time.Width = 95;
+            // 
+            // co_nums
+            // 
+            this.co_nums.Text = "采集数量";
+            this.co_nums.Width = 90;
+            // 
             // btnLoadCoconfig
             // 
             this.btnLoadCoconfig.Location = new System.Drawing.Point(4, 683);
@@ -754,6 +842,73 @@
             this.cboxPubFilterPub_name.Name = "cboxPubFilterPub_name";
             this.cboxPubFilterPub_name.Size = new System.Drawing.Size(72, 26);
             this.cboxPubFilterPub_name.TabIndex = 0;
+            // 
+            // listViewPublish
+            // 
+            this.listViewPublish.CheckBoxes = true;
+            this.listViewPublish.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.pub_id,
+            this.pub_name,
+            this.co_typename,
+            this.unused_nums,
+            this.pub_typename,
+            this.pub_nums,
+            this.published_nums,
+            this.pub_add_date,
+            this.pub_export_date});
+            this.listViewPublish.FullRowSelect = true;
+            this.listViewPublish.GridLines = true;
+            this.listViewPublish.Location = new System.Drawing.Point(3, 162);
+            this.listViewPublish.MultiSelect = false;
+            this.listViewPublish.Name = "listViewPublish";
+            this.listViewPublish.Size = new System.Drawing.Size(999, 501);
+            this.listViewPublish.TabIndex = 0;
+            this.listViewPublish.UseCompatibleStateImageBehavior = false;
+            this.listViewPublish.View = System.Windows.Forms.View.Details;
+            // 
+            // pub_id
+            // 
+            this.pub_id.Text = "ID";
+            // 
+            // pub_name
+            // 
+            this.pub_name.Text = "发布规则名称";
+            this.pub_name.Width = 120;
+            // 
+            // co_typename
+            // 
+            this.co_typename.Text = "采集分类";
+            this.co_typename.Width = 120;
+            // 
+            // unused_nums
+            // 
+            this.unused_nums.Text = "可用文章数";
+            this.unused_nums.Width = 120;
+            // 
+            // pub_typename
+            // 
+            this.pub_typename.Text = "发布分类";
+            this.pub_typename.Width = 120;
+            // 
+            // pub_nums
+            // 
+            this.pub_nums.Text = "单次发布数量";
+            this.pub_nums.Width = 120;
+            // 
+            // published_nums
+            // 
+            this.published_nums.Text = "已发布数量";
+            this.published_nums.Width = 120;
+            // 
+            // pub_add_date
+            // 
+            this.pub_add_date.Text = "添加日期";
+            this.pub_add_date.Width = 120;
+            // 
+            // pub_export_date
+            // 
+            this.pub_export_date.Text = "发布日期";
+            this.pub_export_date.Width = 120;
             // 
             // tabPageArctool
             // 
@@ -1115,6 +1270,195 @@
             this.btnRegenerateAllthumbs.UseVisualStyleBackColor = true;
             this.btnRegenerateAllthumbs.Click += new System.EventHandler(this.btnRegenerateAllthumbs_Click);
             // 
+            // tabPageImportLocoySpider
+            // 
+            this.tabPageImportLocoySpider.Controls.Add(this.groupBox1);
+            this.tabPageImportLocoySpider.Controls.Add(this.btnImportFromLocoy);
+            this.tabPageImportLocoySpider.Controls.Add(this.listViewLocoySpiderRules);
+            this.tabPageImportLocoySpider.Location = new System.Drawing.Point(4, 28);
+            this.tabPageImportLocoySpider.Name = "tabPageImportLocoySpider";
+            this.tabPageImportLocoySpider.Size = new System.Drawing.Size(1007, 726);
+            this.tabPageImportLocoySpider.TabIndex = 6;
+            this.tabPageImportLocoySpider.Text = "导入火车头数据";
+            this.tabPageImportLocoySpider.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.button1);
+            this.groupBox1.Controls.Add(this.button2);
+            this.groupBox1.Controls.Add(this.panel8);
+            this.groupBox1.Controls.Add(this.panel9);
+            this.groupBox1.Location = new System.Drawing.Point(3, 7);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(999, 149);
+            this.groupBox1.TabIndex = 9;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "过滤器";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(147, 92);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(133, 37);
+            this.button1.TabIndex = 11;
+            this.button1.Text = "取消全选";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(8, 92);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(133, 37);
+            this.button2.TabIndex = 10;
+            this.button2.Text = "全选发布规则";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
+            // panel8
+            // 
+            this.panel8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel8.Controls.Add(this.textBox2);
+            this.panel8.Controls.Add(this.label24);
+            this.panel8.Controls.Add(this.comboBox2);
+            this.panel8.Location = new System.Drawing.Point(337, 23);
+            this.panel8.Name = "panel8";
+            this.panel8.Size = new System.Drawing.Size(323, 48);
+            this.panel8.TabIndex = 4;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(170, 11);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(145, 28);
+            this.textBox2.TabIndex = 3;
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(3, 14);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(80, 18);
+            this.label24.TabIndex = 1;
+            this.label24.Text = "采集来源";
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Items.AddRange(new object[] {
+            "=",
+            "like",
+            "<>"});
+            this.comboBox2.Location = new System.Drawing.Point(92, 11);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(72, 26);
+            this.comboBox2.TabIndex = 0;
+            // 
+            // panel9
+            // 
+            this.panel9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel9.Controls.Add(this.textBox3);
+            this.panel9.Controls.Add(this.label25);
+            this.panel9.Controls.Add(this.comboBox3);
+            this.panel9.Location = new System.Drawing.Point(8, 23);
+            this.panel9.Name = "panel9";
+            this.panel9.Size = new System.Drawing.Size(323, 48);
+            this.panel9.TabIndex = 2;
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(170, 11);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(145, 28);
+            this.textBox3.TabIndex = 3;
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(3, 14);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(80, 18);
+            this.label25.TabIndex = 1;
+            this.label25.Text = "导入名称";
+            // 
+            // comboBox3
+            // 
+            this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Items.AddRange(new object[] {
+            "=",
+            "like",
+            "<>"});
+            this.comboBox3.Location = new System.Drawing.Point(92, 11);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(72, 26);
+            this.comboBox3.TabIndex = 0;
+            // 
+            // btnImportFromLocoy
+            // 
+            this.btnImportFromLocoy.Location = new System.Drawing.Point(870, 683);
+            this.btnImportFromLocoy.Name = "btnImportFromLocoy";
+            this.btnImportFromLocoy.Size = new System.Drawing.Size(133, 37);
+            this.btnImportFromLocoy.TabIndex = 8;
+            this.btnImportFromLocoy.Text = "开始导入";
+            this.btnImportFromLocoy.UseVisualStyleBackColor = true;
+            this.btnImportFromLocoy.Click += new System.EventHandler(this.btnImportFromLocoy_Click);
+            // 
+            // listViewLocoySpiderRules
+            // 
+            this.listViewLocoySpiderRules.CheckBoxes = true;
+            this.listViewLocoySpiderRules.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.ID,
+            this.RuleName,
+            this.Encode,
+            this.SourceSite,
+            this.AddDate,
+            this.LastImportDate,
+            this.columnHeader8});
+            this.listViewLocoySpiderRules.FullRowSelect = true;
+            this.listViewLocoySpiderRules.GridLines = true;
+            this.listViewLocoySpiderRules.Location = new System.Drawing.Point(3, 162);
+            this.listViewLocoySpiderRules.MultiSelect = false;
+            this.listViewLocoySpiderRules.Name = "listViewLocoySpiderRules";
+            this.listViewLocoySpiderRules.Size = new System.Drawing.Size(999, 499);
+            this.listViewLocoySpiderRules.TabIndex = 3;
+            this.listViewLocoySpiderRules.UseCompatibleStateImageBehavior = false;
+            this.listViewLocoySpiderRules.View = System.Windows.Forms.View.Details;
+            // 
+            // ID
+            // 
+            this.ID.Text = "ID";
+            this.ID.Width = 50;
+            // 
+            // RuleName
+            // 
+            this.RuleName.Text = "导入规则名称";
+            this.RuleName.Width = 120;
+            // 
+            // Encode
+            // 
+            this.Encode.Text = "编码";
+            this.Encode.Width = 70;
+            // 
+            // SourceSite
+            // 
+            this.SourceSite.Text = "采集来源";
+            this.SourceSite.Width = 120;
+            // 
+            // AddDate
+            // 
+            this.AddDate.Text = "加入/修改日期";
+            this.AddDate.Width = 150;
+            // 
+            // LastImportDate
+            // 
+            this.LastImportDate.Text = "最后导入日期";
+            this.LastImportDate.Width = 120;
+            // 
+            // columnHeader8
+            // 
+            this.columnHeader8.Text = "导入数量";
+            this.columnHeader8.Width = 90;
+            // 
             // tabPageConfig
             // 
             this.tabPageConfig.Controls.Add(this.gboxLockspiderDbset);
@@ -1128,6 +1472,129 @@
             this.tabPageConfig.TabIndex = 3;
             this.tabPageConfig.Text = "系统设置";
             this.tabPageConfig.UseVisualStyleBackColor = true;
+            // 
+            // gboxLockspiderDbset
+            // 
+            this.gboxLockspiderDbset.Controls.Add(this.label17);
+            this.gboxLockspiderDbset.Controls.Add(this.tboxLocoyspiderPort);
+            this.gboxLockspiderDbset.Controls.Add(this.tboxLocoyspiderHostName);
+            this.gboxLockspiderDbset.Controls.Add(this.label18);
+            this.gboxLockspiderDbset.Controls.Add(this.label19);
+            this.gboxLockspiderDbset.Controls.Add(this.tboxLocoyspiderDbName);
+            this.gboxLockspiderDbset.Controls.Add(this.tboxLocoyspiderUserName);
+            this.gboxLockspiderDbset.Controls.Add(this.label20);
+            this.gboxLockspiderDbset.Controls.Add(this.label21);
+            this.gboxLockspiderDbset.Controls.Add(this.label22);
+            this.gboxLockspiderDbset.Controls.Add(this.tboxLocoyspiderPassword);
+            this.gboxLockspiderDbset.Controls.Add(this.cboxLocoyspiderCharset);
+            this.gboxLockspiderDbset.Location = new System.Drawing.Point(8, 387);
+            this.gboxLockspiderDbset.Name = "gboxLockspiderDbset";
+            this.gboxLockspiderDbset.Size = new System.Drawing.Size(651, 162);
+            this.gboxLockspiderDbset.TabIndex = 38;
+            this.gboxLockspiderDbset.TabStop = false;
+            this.gboxLockspiderDbset.Text = "采集数据库设置";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(6, 44);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(143, 18);
+            this.label17.TabIndex = 23;
+            this.label17.Text = "Mysql HostName:";
+            // 
+            // tboxLocoyspiderPort
+            // 
+            this.tboxLocoyspiderPort.Location = new System.Drawing.Point(471, 107);
+            this.tboxLocoyspiderPort.Name = "tboxLocoyspiderPort";
+            this.tboxLocoyspiderPort.Size = new System.Drawing.Size(166, 28);
+            this.tboxLocoyspiderPort.TabIndex = 35;
+            this.tboxLocoyspiderPort.Text = "3306";
+            // 
+            // tboxLocoyspiderHostName
+            // 
+            this.tboxLocoyspiderHostName.Location = new System.Drawing.Point(155, 34);
+            this.tboxLocoyspiderHostName.Name = "tboxLocoyspiderHostName";
+            this.tboxLocoyspiderHostName.Size = new System.Drawing.Size(166, 28);
+            this.tboxLocoyspiderHostName.TabIndex = 22;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(327, 117);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(107, 18);
+            this.label18.TabIndex = 34;
+            this.label18.Text = "Mysql Port:";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(6, 76);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(143, 18);
+            this.label19.TabIndex = 24;
+            this.label19.Text = "Mysql UserName:";
+            // 
+            // tboxLocoyspiderDbName
+            // 
+            this.tboxLocoyspiderDbName.Location = new System.Drawing.Point(155, 107);
+            this.tboxLocoyspiderDbName.Name = "tboxLocoyspiderDbName";
+            this.tboxLocoyspiderDbName.Size = new System.Drawing.Size(166, 28);
+            this.tboxLocoyspiderDbName.TabIndex = 31;
+            // 
+            // tboxLocoyspiderUserName
+            // 
+            this.tboxLocoyspiderUserName.Location = new System.Drawing.Point(155, 68);
+            this.tboxLocoyspiderUserName.Name = "tboxLocoyspiderUserName";
+            this.tboxLocoyspiderUserName.Size = new System.Drawing.Size(166, 28);
+            this.tboxLocoyspiderUserName.TabIndex = 25;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(6, 115);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(125, 18);
+            this.label20.TabIndex = 30;
+            this.label20.Text = "Mysql DbName:";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(327, 76);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(143, 18);
+            this.label21.TabIndex = 26;
+            this.label21.Text = "Mysql Password:";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(327, 37);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(134, 18);
+            this.label22.TabIndex = 29;
+            this.label22.Text = "Mysql Charset:";
+            // 
+            // tboxLocoyspiderPassword
+            // 
+            this.tboxLocoyspiderPassword.Location = new System.Drawing.Point(471, 68);
+            this.tboxLocoyspiderPassword.Name = "tboxLocoyspiderPassword";
+            this.tboxLocoyspiderPassword.Size = new System.Drawing.Size(166, 28);
+            this.tboxLocoyspiderPassword.TabIndex = 27;
+            // 
+            // cboxLocoyspiderCharset
+            // 
+            this.cboxLocoyspiderCharset.FormattingEnabled = true;
+            this.cboxLocoyspiderCharset.Items.AddRange(new object[] {
+            "utf8",
+            "gb2312"});
+            this.cboxLocoyspiderCharset.Location = new System.Drawing.Point(471, 34);
+            this.cboxLocoyspiderCharset.Name = "cboxLocoyspiderCharset";
+            this.cboxLocoyspiderCharset.Size = new System.Drawing.Size(166, 26);
+            this.cboxLocoyspiderCharset.TabIndex = 28;
+            this.cboxLocoyspiderCharset.Text = "utf8";
             // 
             // gbxPubDatabaseSet
             // 
@@ -1403,258 +1870,6 @@
             this.cboxCoCharset.TabIndex = 28;
             this.cboxCoCharset.Text = "utf8";
             // 
-            // listViewCollect
-            // 
-            this.listViewCollect.CheckBoxes = true;
-            this.listViewCollect.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.cid,
-            this.co_name,
-            this.type_name,
-            this.source_lang,
-            this.source_site,
-            this.up_time,
-            this.co_time,
-            this.co_nums});
-            this.listViewCollect.FullRowSelect = true;
-            this.listViewCollect.GridLines = true;
-            this.listViewCollect.Location = new System.Drawing.Point(3, 162);
-            this.listViewCollect.MultiSelect = false;
-            this.listViewCollect.Name = "listViewCollect";
-            this.listViewCollect.Size = new System.Drawing.Size(999, 501);
-            this.listViewCollect.TabIndex = 2;
-            this.listViewCollect.UseCompatibleStateImageBehavior = false;
-            this.listViewCollect.View = System.Windows.Forms.View.Details;
-            // 
-            // cid
-            // 
-            this.cid.Text = "ID";
-            this.cid.Width = 50;
-            // 
-            // co_name
-            // 
-            this.co_name.Text = "采集名称";
-            this.co_name.Width = 120;
-            // 
-            // type_name
-            // 
-            this.type_name.Text = "文章分类";
-            this.type_name.Width = 120;
-            // 
-            // source_lang
-            // 
-            this.source_lang.Text = "编码";
-            this.source_lang.Width = 70;
-            // 
-            // source_site
-            // 
-            this.source_site.Text = "采集来源";
-            this.source_site.Width = 120;
-            // 
-            // up_time
-            // 
-            this.up_time.Text = "加入/修改日期";
-            this.up_time.Width = 95;
-            // 
-            // co_time
-            // 
-            this.co_time.Text = "最后采集日期";
-            this.co_time.Width = 95;
-            // 
-            // co_nums
-            // 
-            this.co_nums.Text = "采集数量";
-            this.co_nums.Width = 90;
-            // 
-            // listViewPublish
-            // 
-            this.listViewPublish.CheckBoxes = true;
-            this.listViewPublish.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.pub_id,
-            this.pub_name,
-            this.co_typename,
-            this.unused_nums,
-            this.pub_typename,
-            this.pub_nums,
-            this.published_nums,
-            this.pub_add_date,
-            this.pub_export_date});
-            this.listViewPublish.FullRowSelect = true;
-            this.listViewPublish.GridLines = true;
-            this.listViewPublish.Location = new System.Drawing.Point(3, 162);
-            this.listViewPublish.MultiSelect = false;
-            this.listViewPublish.Name = "listViewPublish";
-            this.listViewPublish.Size = new System.Drawing.Size(999, 501);
-            this.listViewPublish.TabIndex = 0;
-            this.listViewPublish.UseCompatibleStateImageBehavior = false;
-            this.listViewPublish.View = System.Windows.Forms.View.Details;
-            // 
-            // pub_id
-            // 
-            this.pub_id.Text = "ID";
-            // 
-            // pub_name
-            // 
-            this.pub_name.Text = "发布规则名称";
-            this.pub_name.Width = 120;
-            // 
-            // co_typename
-            // 
-            this.co_typename.Text = "采集分类";
-            this.co_typename.Width = 120;
-            // 
-            // unused_nums
-            // 
-            this.unused_nums.Text = "可用文章数";
-            this.unused_nums.Width = 120;
-            // 
-            // pub_typename
-            // 
-            this.pub_typename.Text = "发布分类";
-            this.pub_typename.Width = 120;
-            // 
-            // pub_nums
-            // 
-            this.pub_nums.Text = "单次发布数量";
-            this.pub_nums.Width = 120;
-            // 
-            // published_nums
-            // 
-            this.published_nums.Text = "已发布数量";
-            this.published_nums.Width = 120;
-            // 
-            // pub_add_date
-            // 
-            this.pub_add_date.Text = "添加日期";
-            this.pub_add_date.Width = 120;
-            // 
-            // pub_export_date
-            // 
-            this.pub_export_date.Text = "发布日期";
-            this.pub_export_date.Width = 120;
-            // 
-            // gboxLockspiderDbset
-            // 
-            this.gboxLockspiderDbset.Controls.Add(this.label17);
-            this.gboxLockspiderDbset.Controls.Add(this.tboxLocoyspiderPort);
-            this.gboxLockspiderDbset.Controls.Add(this.tboxLocoyspiderHostName);
-            this.gboxLockspiderDbset.Controls.Add(this.label18);
-            this.gboxLockspiderDbset.Controls.Add(this.label19);
-            this.gboxLockspiderDbset.Controls.Add(this.tboxLocoyspiderDbName);
-            this.gboxLockspiderDbset.Controls.Add(this.tboxLocoyspiderUserName);
-            this.gboxLockspiderDbset.Controls.Add(this.label20);
-            this.gboxLockspiderDbset.Controls.Add(this.label21);
-            this.gboxLockspiderDbset.Controls.Add(this.label22);
-            this.gboxLockspiderDbset.Controls.Add(this.tboxLocoyspiderPassword);
-            this.gboxLockspiderDbset.Controls.Add(this.cboxLocoyspiderCharset);
-            this.gboxLockspiderDbset.Location = new System.Drawing.Point(8, 387);
-            this.gboxLockspiderDbset.Name = "gboxLockspiderDbset";
-            this.gboxLockspiderDbset.Size = new System.Drawing.Size(651, 162);
-            this.gboxLockspiderDbset.TabIndex = 38;
-            this.gboxLockspiderDbset.TabStop = false;
-            this.gboxLockspiderDbset.Text = "采集数据库设置";
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(6, 44);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(143, 18);
-            this.label17.TabIndex = 23;
-            this.label17.Text = "Mysql HostName:";
-            // 
-            // tboxLocoyspiderPort
-            // 
-            this.tboxLocoyspiderPort.Location = new System.Drawing.Point(471, 107);
-            this.tboxLocoyspiderPort.Name = "tboxLocoyspiderPort";
-            this.tboxLocoyspiderPort.Size = new System.Drawing.Size(166, 28);
-            this.tboxLocoyspiderPort.TabIndex = 35;
-            this.tboxLocoyspiderPort.Text = "3306";
-            // 
-            // tboxLocoyspiderHostName
-            // 
-            this.tboxLocoyspiderHostName.Location = new System.Drawing.Point(155, 34);
-            this.tboxLocoyspiderHostName.Name = "tboxLocoyspiderHostName";
-            this.tboxLocoyspiderHostName.Size = new System.Drawing.Size(166, 28);
-            this.tboxLocoyspiderHostName.TabIndex = 22;
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(327, 117);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(107, 18);
-            this.label18.TabIndex = 34;
-            this.label18.Text = "Mysql Port:";
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(6, 76);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(143, 18);
-            this.label19.TabIndex = 24;
-            this.label19.Text = "Mysql UserName:";
-            // 
-            // tboxLocoyspiderDbName
-            // 
-            this.tboxLocoyspiderDbName.Location = new System.Drawing.Point(155, 107);
-            this.tboxLocoyspiderDbName.Name = "tboxLocoyspiderDbName";
-            this.tboxLocoyspiderDbName.Size = new System.Drawing.Size(166, 28);
-            this.tboxLocoyspiderDbName.TabIndex = 31;
-            // 
-            // tboxLocoyspiderUserName
-            // 
-            this.tboxLocoyspiderUserName.Location = new System.Drawing.Point(155, 68);
-            this.tboxLocoyspiderUserName.Name = "tboxLocoyspiderUserName";
-            this.tboxLocoyspiderUserName.Size = new System.Drawing.Size(166, 28);
-            this.tboxLocoyspiderUserName.TabIndex = 25;
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(6, 115);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(125, 18);
-            this.label20.TabIndex = 30;
-            this.label20.Text = "Mysql DbName:";
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(327, 76);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(143, 18);
-            this.label21.TabIndex = 26;
-            this.label21.Text = "Mysql Password:";
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(327, 37);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(134, 18);
-            this.label22.TabIndex = 29;
-            this.label22.Text = "Mysql Charset:";
-            // 
-            // tboxLocoyspiderPassword
-            // 
-            this.tboxLocoyspiderPassword.Location = new System.Drawing.Point(471, 68);
-            this.tboxLocoyspiderPassword.Name = "tboxLocoyspiderPassword";
-            this.tboxLocoyspiderPassword.Size = new System.Drawing.Size(166, 28);
-            this.tboxLocoyspiderPassword.TabIndex = 27;
-            // 
-            // cboxLocoyspiderCharset
-            // 
-            this.cboxLocoyspiderCharset.FormattingEnabled = true;
-            this.cboxLocoyspiderCharset.Items.AddRange(new object[] {
-            "utf8",
-            "gb2312"});
-            this.cboxLocoyspiderCharset.Location = new System.Drawing.Point(471, 34);
-            this.cboxLocoyspiderCharset.Name = "cboxLocoyspiderCharset";
-            this.cboxLocoyspiderCharset.Size = new System.Drawing.Size(166, 26);
-            this.cboxLocoyspiderCharset.TabIndex = 28;
-            this.cboxLocoyspiderCharset.Text = "utf8";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
@@ -1702,13 +1917,19 @@
             this.groupGenerateWatermark.PerformLayout();
             this.groupGenerateThumb.ResumeLayout(false);
             this.groupGenerateThumb.PerformLayout();
+            this.tabPageImportLocoySpider.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.panel8.ResumeLayout(false);
+            this.panel8.PerformLayout();
+            this.panel9.ResumeLayout(false);
+            this.panel9.PerformLayout();
             this.tabPageConfig.ResumeLayout(false);
+            this.gboxLockspiderDbset.ResumeLayout(false);
+            this.gboxLockspiderDbset.PerformLayout();
             this.gbxPubDatabaseSet.ResumeLayout(false);
             this.gbxPubDatabaseSet.PerformLayout();
             this.gbxCoDatabaseSet.ResumeLayout(false);
             this.gbxCoDatabaseSet.PerformLayout();
-            this.gboxLockspiderDbset.ResumeLayout(false);
-            this.gboxLockspiderDbset.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1865,6 +2086,27 @@
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.TextBox tboxLocoyspiderPassword;
         private System.Windows.Forms.ComboBox cboxLocoyspiderCharset;
+        private System.Windows.Forms.TabPage tabPageImportLocoySpider;
+        private ListViewNF listViewLocoySpiderRules;
+        private System.Windows.Forms.ColumnHeader ID;
+        private System.Windows.Forms.ColumnHeader RuleName;
+        private System.Windows.Forms.ColumnHeader Encode;
+        private System.Windows.Forms.ColumnHeader SourceSite;
+        private System.Windows.Forms.ColumnHeader AddDate;
+        private System.Windows.Forms.ColumnHeader LastImportDate;
+        private System.Windows.Forms.ColumnHeader columnHeader8;
+        private System.Windows.Forms.Button btnImportFromLocoy;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Panel panel8;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.Panel panel9;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.ComboBox comboBox3;
     }
 }
 

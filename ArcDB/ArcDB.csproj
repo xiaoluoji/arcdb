@@ -96,6 +96,12 @@
     <Compile Include="CoConfigForm.Designer.cs">
       <DependentUpon>CoConfigForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ImportFromLocoy.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ImportFromLocoy.Designer.cs">
+      <DependentUpon>ImportFromLocoy.cs</DependentUpon>
+    </Compile>
     <Compile Include="ListViewNF.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -125,6 +131,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CoConfigForm.resx">
       <DependentUpon>CoConfigForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportFromLocoy.resx">
+      <DependentUpon>ImportFromLocoy.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
