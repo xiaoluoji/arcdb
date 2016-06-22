@@ -32,6 +32,7 @@
             this.import_state = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.import_rule_name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.import_type_name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.import_content_tablename = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.import_down_tablename = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.import_need_importnums = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -43,7 +44,6 @@
             this.btnCancelAll = new System.Windows.Forms.Button();
             this.btnCancelCurrent = new System.Windows.Forms.Button();
             this.import_name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.import_type_name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // listViewImportLocoy
@@ -79,6 +79,11 @@
             // 
             this.import_rule_name.Text = "导入规则名称";
             this.import_rule_name.Width = 120;
+            // 
+            // import_type_name
+            // 
+            this.import_type_name.Text = "导入分类";
+            this.import_type_name.Width = 90;
             // 
             // import_content_tablename
             // 
@@ -153,11 +158,6 @@
             // 
             this.import_name.Text = "导入名称";
             this.import_name.Width = 91;
-            // 
-            // import_type_name
-            // 
-            this.import_type_name.Text = "导入分类";
-            this.import_type_name.Width = 90;
             // 
             // ImportFromLocoy
             // 

@@ -1492,7 +1492,7 @@
             this.gboxLockspiderDbset.Size = new System.Drawing.Size(651, 162);
             this.gboxLockspiderDbset.TabIndex = 38;
             this.gboxLockspiderDbset.TabStop = false;
-            this.gboxLockspiderDbset.Text = "采集数据库设置";
+            this.gboxLockspiderDbset.Text = "火车头采集数据库设置";
             // 
             // label17
             // 

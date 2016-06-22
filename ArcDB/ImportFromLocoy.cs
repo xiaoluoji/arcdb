@@ -28,7 +28,7 @@ namespace ArcDB
         private ConcurrentDictionary<string, Dictionary<string, object>> _importCollections; //导入对象集合，每一个集合中包括一个ImportTask采集对象， 一个监控耗时的stopwatch对象
         private Dictionary<long, string> _dicImportIDs;                                                           //导入规则ID和导入名称集合，
         System.Threading.Timer _timerUpdateForm;                                                                //listViewCoArticles状态更新定时器
-        private Queue<ImportTask> _queueImportTasks;                                                        //采集规则ID队列
+        //private Queue<ImportTask> _queueImportTasks;                                                        //采集规则ID队列
         Stopwatch swGlobal = new Stopwatch();                                                                     //监控总任务时间
         private List<string> _hashList;                                                                                      //用来检测采集文章URL HASH是否重复的集合
         private int _cfgPicNum = 0;                                                                                         //保存数据库图片总数，用来判断图片子域名
@@ -41,7 +41,7 @@ namespace ArcDB
         private string _cfgPicNone = "";                                                                                //采集文章内容中出现图片找不到的情况时，使用默认的一张图片来替换找不到的图片
         private List<Exception> _importExceptions;                                                              //保存全局导入过程中出现的异常
 
-
+        /*
         public ImportFromLocoy(string coConnString, string importConnString, Dictionary<long, string> dicImportIDs)
         {
             CheckForIllegalCrossThreadCalls = false;
@@ -494,7 +494,7 @@ namespace ArcDB
             {
                 return true;
             }
-            */
+            
             //如果文章中不带任何图片，则返回false
             return false;
         }
@@ -1209,6 +1209,7 @@ namespace ArcDB
         {
             cancelCurrentTask();
         }
+
     }
 
     public class ImportTask
@@ -1240,6 +1241,7 @@ namespace ArcDB
             ImportState = "待导入";
             taskExceptions = new List<Exception>();
             
-        }
+        } */
     }
+
 }
